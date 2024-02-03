@@ -1,0 +1,39 @@
+.sortFilter {
+  text-align: center;
+  margin: 10px;
+  margin-bottom: 50px;
+}
+
+.sort-formGroup {
+  display: inline-block;
+  text-align: left;
+}
+
+.sort-label {
+  margin-right: 5px;
+}
+
+.sort-select {
+  margin-right: 2px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.sort-btn {
+  background-color: #06bbcc;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.sort-btn:hover {
+  background-color: #0056b3;
+}
+
+::selection{
+  background-color: #06bbcc;
+}

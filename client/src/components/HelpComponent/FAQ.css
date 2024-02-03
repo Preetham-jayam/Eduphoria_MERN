@@ -1,0 +1,93 @@
+.faqs {
+  background: #06bbcc;
+  box-shadow: inset 0 0 3rem rgba(0, 0, 0, 0.914);
+  margin: 20px;
+  border-radius: 7px;
+  padding: 20px;
+}
+
+.faq-heading h2 {
+  color: white;
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.faqs_container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+.qForm label {
+  color: white;
+  font-weight: 700;
+  font-size: larger;
+}
+
+#question {
+  width: 100%;
+  font-size: 15pt;
+  margin: 5px;
+  padding: 10px;
+  border: none;
+  border-radius: 7px;
+}
+
+#question:focus,
+#question:active {
+  outline: none !important;
+}
+
+.button-div {
+  width: 100%;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.faq {
+  padding: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1.4rem;
+  height: fit-content;
+  background: #fff;
+  cursor: pointer;
+  border-radius: 7px;
+}
+
+.faq:hover {
+  background: #f39c12;
+}
+
+.faq h4 {
+  font-size: 1rem;
+  line-height: 2.5;
+}
+
+.faq_icon {
+  align-self: flex-start;
+  font-size: 1.2rem;
+}
+
+.faq p {
+  margin-top: 0.8rem;
+  display: none;
+}
+
+.faq.open p {
+  display: block;
+}
+.btn-submit {
+  background-color: #06bbcc;
+  color: #fff;
+  padding: 10px 20px;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+}

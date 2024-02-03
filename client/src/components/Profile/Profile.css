@@ -1,0 +1,101 @@
+.user-profile {
+    display: flex;
+    background-color: #ffffff;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .user-info {
+    margin-top: 20px;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .user-details {
+    flex: 2;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+
+  .user-name {
+    font-size: 24px;
+    margin: 0;
+    color: #333;
+  }
+  
+  .info-item {
+    margin-bottom: 10px;
+  }
+
+  .info-label {
+    font-weight: bold;
+    color: black;
+  }
+ 
+  .info-value {
+    color: #333;
+  }
+  
+  .info-label {
+    display: inline-block;
+    width: 200px; 
+    text-align: right;
+    margin-right: 10px; 
+  }
+  .profile-item {
+    margin-bottom: 10px;
+  }
+  
+  .profile-label {
+    display: inline-block;
+    width: 150px;
+    font-weight: bold;
+    margin-right: 10px;
+  }
+  
+  .profile-item input {
+    width: 200px; 
+    padding: 5px;
+    font-size: large;
+    
+  }
+
+  .edit-btn{
+    margin-top:10px;
+    margin-left: 190px;
+    background-color: green;
+    color: white;
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 5px; 
+    cursor: pointer;
+    text-decoration: none; 
+    display: inline-block;
+  }
+  .edit-btn:hover{
+    color: green; 
+    background-color: #fff; 
+  }
+  .account-btn{
+    margin-top:10px;
+    margin-left: 180px;
+    background-color: goldenrod;
+    color: white;
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 5px; 
+    cursor: pointer;
+    text-decoration: none; 
+    display: inline-block;
+  }
+  .account-btn:hover{
+    color: goldenrod; 
+    background-color: #fff; 
+  }
+

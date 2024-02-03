@@ -1,0 +1,95 @@
+.container{
+    position:relative;
+    display:flex;
+    margin:10px 50px;
+    padding:20px;
+}
+
+.container >div{
+  margin-left: 10px;
+}
+ h1{
+    display: grid;
+    justify-items: center; 
+    color:black;
+
+}
+.card { 
+    margin: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+    border-radius: 6px;
+    padding: 1rem;
+    overflow: hidden;
+    background: white;
+    width:33%;
+    height:auto;
+  }
+
+  .card-title {
+    padding: 10px;
+    text-align: center;
+  }
+  
+  .card-title h3 {
+    margin: 0;
+    font-size: 2.1rem;
+  }
+  .card-content {
+    padding: 15px;
+  }
+  
+  .skills {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  .card-content p {
+    margin: 0;
+    color: #555;
+  }
+
+  .card-image {
+    width: 100%;
+    height: 13.5rem;
+    margin-right: 1.5rem;
+    background-color:black;
+  }
+
+  .card-image img{
+    mix-blend-mode:screen;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+  }
+
+  .card-footer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .social-icon {
+    background-color: #06bbcc; 
+    color: white; 
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+  }
+  
+  .social-icon:hover {
+    background-color: black;
+  }
+  
+
+  @media (min-width: 768px) {
+    .card-image {
+      height: 22rem;
+    } 
+  }

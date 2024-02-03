@@ -1,0 +1,21 @@
+.go-back {
+    background-color: green; 
+    color: #fff; 
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 5px; 
+    cursor: pointer;
+    text-decoration: none; 
+    display: inline-block;
+    transition: background-color 0.3s;
+    margin-left: 50px;
+    }
+    
+    .go-back:hover {
+      background-color: white;
+      color: green;
+      
+    }
+    
+  

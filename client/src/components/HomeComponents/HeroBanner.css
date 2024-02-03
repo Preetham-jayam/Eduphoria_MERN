@@ -1,0 +1,59 @@
+
+
+.hero-banner {
+    position: relative;
+    background-image: url('F:/fdfed/src/Assets/Banner.avif'); 
+    background-size: cover;
+    background-position: center;
+    height: 70vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #fff; 
+  }
+  .hero-banner::before {
+    content: "";
+    background: rgba(0, 0, 0, 0.5); 
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+  
+  .hero-content {
+    z-index: 1;
+  }
+  
+  .hero-title {
+    color:#fff;
+    font-weight: bolder;
+    font-size: 3rem;
+    margin-bottom: 20px;
+  }
+  
+  .hero-subtitle {
+    font-size: 1.5rem;
+    margin-bottom: 30px;
+    opacity: 0.8;
+  }
+  
+  .join-button {
+  background-color: #06bbcc; 
+  color: #fff; 
+  padding: 10px 20px;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 5px; 
+  cursor: pointer;
+  text-decoration: none; 
+  display: inline-block;
+  transition: background-color 0.3s;
+  }
+  
+  .join-button:hover {
+    background-color: orange;
+    
+  }
+  

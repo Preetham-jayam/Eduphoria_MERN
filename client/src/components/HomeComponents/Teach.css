@@ -1,0 +1,53 @@
+.teach-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 40px;
+  }
+  
+  .teach-left {
+    flex: 1;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .teach-left img {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  .teach-right {
+    flex: 2;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  .teach-heading {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .teach-text {
+    font-size: 18px;
+    margin-bottom: 30px;
+    color: #666;
+  }
+  
+  .teach-now-button {
+    background-color: #06bbcc;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 12px 20px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .teach-now-button:hover {
+    background-color: orange;
+  }
+  

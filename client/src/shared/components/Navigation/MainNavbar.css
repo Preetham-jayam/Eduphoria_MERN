@@ -1,0 +1,70 @@
+.app_name a{
+    text-decoration:none;
+    color:white;
+}
+.hamburger-btn{
+  width: 3rem;
+  height: 3rem;
+  background: transparent;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  margin-right: 2rem;
+  cursor: pointer;
+}
+.hamburger-btn span{
+    display:block;
+    width:3rem;
+    height:2px;
+    background:white;
+}
+
+.opener-nav{
+  height:100%;
+}
+.navigation{
+    display:none;
+}
+.form-field {
+  display: flex;
+  align-items: center;
+  border: 2px solid #06bbcc;
+  border-radius: 5px;
+  padding: 5px;
+  width: 400px;
+}
+
+
+input[type='text'] {
+  border: none;
+  outline: none;
+  flex: 1;
+  padding: 10px;
+  border-radius: 5px;
+  width:100%;
+}
+
+
+
+
+
+@media (min-width: 768px) {
+    .hamburger-btn {
+      display: none;
+    }
+  
+    .navigation {
+      display: block;
+    }
+
+    .form-field {
+      position: relative;
+      display: inline-block;
+    }
+    
+    .icon {
+      position: absolute;
+      right: 0;
+    }
+  }

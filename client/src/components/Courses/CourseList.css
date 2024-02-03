@@ -1,0 +1,17 @@
+.course-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px; 
+  padding: 20px;
+  margin-top: auto;
+}
+
+@media (max-width: 768px) {
+  .course-list {
+      display:flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+  }
+}

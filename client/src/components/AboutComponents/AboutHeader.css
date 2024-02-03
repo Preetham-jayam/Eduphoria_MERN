@@ -1,0 +1,72 @@
+
+.about-us-page {
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .about-us-heading {
+    font-size: 2.5rem;
+    margin: 2rem 0;
+    color: #06bbcc;
+    text-decoration: underline;
+  }
+  .about-us-content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .image-container {
+    position: relative;
+    max-width: 100%;
+    height: auto;
+  }
+  
+
+  .image {
+    max-width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 10px; 
+  }
+  
+  .about-us-text {
+    text-align: center;
+    margin-top: 1rem;
+  }
+  
+
+  .about-us-title {
+    font-size: 2rem;
+    margin: 1rem 0;
+  }
+  
+  .about-us-paragraph {
+    font-size: 1.2rem;
+    margin: 1rem 0;
+  }
+  
+ 
+  .about-us-features {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 1rem;
+  }
+
+  .feature {
+    flex: 1;
+    margin: 0.5rem;
+    padding: 1rem;
+    border: 1px solid #ccc; 
+    border-radius: 5px; 
+    text-align: center;
+    font-size: 18px;
+  }
+  
+
+  .feature-icon {
+    font-size: 24px;
+    margin-right: 0.5rem; 
+  }
+  

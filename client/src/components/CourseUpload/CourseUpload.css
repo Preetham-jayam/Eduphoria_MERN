@@ -1,0 +1,135 @@
+.course-form {
+  width: 80%;
+  margin: auto;
+}
+
+.chapter {
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+  padding: 10px;
+  font-weight: bold;
+}
+
+.chapter-header {
+  background-color: #f0f0f0;
+  padding: 8px;
+  margin-bottom: 8px;
+}
+
+.lessons {
+  padding: 10px;
+}
+
+.lesson {
+  margin-bottom: 15px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  background-color: #fff;
+}
+
+.lesson label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bolder;
+}
+
+.lesson input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 8px;
+  box-sizing: border-box;
+  border: 1px solid #ddd;
+}
+
+.lesson button {
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.lesson button:hover {
+  background-color: #45a049;
+}
+
+.upload-btn {
+  background-color: #06bbcc;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  margin: 5px;
+}
+
+.upload-btn:hover {
+  background-color: white;
+  color: #06bbcc;
+}
+
+.update-chapter-btn,.update-lesson-btn{
+  background-color: rgb(233, 201, 21);
+  color: #fff;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  margin: 5px;
+}
+
+.update-chapter-btn:hover,.update-lesson-btn:hover{
+  background-color: white;
+  color:rgb(233, 201, 21);
+}
+
+.add-button{
+  background-color: #fff;
+  color: #06bbcc;
+  padding: 10px 20px;
+  font-size: 1.2rem;
+  margin:5px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.add-button:hover{
+  background-color: #06bbcc;
+  color: white;
+}
+
+.cancel-button {
+  background-color: #fff;
+  color: red;
+  padding: 10px 20px;
+  margin:5px;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.cancel-button:hover{
+  background-color: red;
+  color: white;
+}
+
+.input-container {
+  margin-bottom: 1rem;
+}
+
+.label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #000;
+  border-radius: 4px;
+}
