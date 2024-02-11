@@ -12,5 +12,6 @@ router.put('/updatechapter/:chapterId', checkAuth, TeacherController.updateChapt
 router.put('/updatelesson/:lessonId', checkAuth, TeacherController.updateLesson);
 
 router.delete('/deletelesson/:lessonId', checkAuth, TeacherController.deleteLesson);
+router.post('/addquiz/:cid', TeacherController.addQuizToCourse);
 
 module.exports = router;

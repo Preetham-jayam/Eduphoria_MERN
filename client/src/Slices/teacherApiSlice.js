@@ -1,10 +1,8 @@
 import { TEACHER_URL } from "../constants";
 import { apiSlice } from "./apiSlice";
 
-const userInfo=JSON.parse(localStorage.getItem('userInfo'));
-const JWT_TOKEN=userInfo ? userInfo.token:null;
-
-
+const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+const JWT_TOKEN = userInfo ? userInfo.token : null;
 
 export const teacherApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -40,6 +38,17 @@ export const teacherApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Course"],
     }),
+    addQuizToCourse: builder.mutation({
+      query: ({ courseId, title, questions }) => ({
+        url: `${TEACHER_URL}/addquiz/${courseId}`, 
+        method: "POST",
+        body: { title, questions },
+        headers: {
+          Authorization: `Bearer ${JWT_TOKEN}`,
+        },
+      }),
+      invalidatesTags: ["Course"],
+    }),
   }),
 });
 
@@ -47,4 +56,5 @@ export const {
   useAddCourseMutation,
   useUpdateCourseMutation,
   useDeleteCourseMutation,
+  useAddQuizToCourseMutation, 
 } = teacherApiSlice;

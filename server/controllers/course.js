@@ -4,6 +4,7 @@ const Lesson = require("../models/lesson");
 const Teacher = require("../models/teacher");
 const User = require("../models/user");
 const Review =require('../models/review');
+const Quiz=require('../models/quiz');
 
 exports.getAllCourses = async (req, res, next) => {
   try {
@@ -56,3 +57,18 @@ exports.getCourseReviews = async (req,res,next)=>{
     res.status(500).json({ message: 'Internal Server Error' });
   }
 }
+
+exports.getQuizByCourseId=async (req,res,next)=>{
+  const courseId = req.params.id;
+  try {
+    const quiz = await Quiz.findOne({ course: courseId });
+
+    if (!quiz) {
+      return res.status(404).json({ message: 'Quiz not found for the given course ID.' });
+    }
+    res.status(200).json({ quiz:quiz });
+  } catch (error) {
+    console.error('Error retrieving quiz questions:', error);
+    res.status(500).json({ message: 'Internal server error.' });
+  }
+};

@@ -25,7 +25,7 @@ const quizSchema = new mongoose.Schema({
         type: String,
         required: true,
       },
-      Marks: {
+      marks: {
         type: Number,
         required: true,
       },

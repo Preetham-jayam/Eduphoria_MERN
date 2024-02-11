@@ -34,6 +34,8 @@ const Profile = () => {
       if(userData.user.role===1){
         setRole(userData.user.role);
         setUser(userData.user.teacher );
+        console.log(userData.user.teacher);
+        setEditedUser(userData.user.teacher);
         setUserCourses(userData.user.teacher.courses);
       }
       if(userData.user.role===2){
@@ -209,23 +211,19 @@ const Profile = () => {
               <div className="user-info">
                 <div className="info-item">
                   <span className="info-label">Full Name:</span>
-                  <span className="info-value">{user.fullName}</span>
+                  <span className="info-value">{user.FullName}</span>
                 </div>
                 <div className="info-item">
                   <span className="info-label">Institute Name:</span>
-                  <span className="info-value">{user.instituteName}</span>
+                  <span className="info-value">{user.InstName}</span>
                 </div>
                 <div className="info-item">
                   <span className="info-label">Email:</span>
-                  <span className="info-value">{user.email}</span>
+                  <span className="info-value">{userData.user.email}</span>
                 </div>
                 <div className="info-item">
                   <span className="info-label">Phone Number:</span>
                   <span className="info-value">{user.phoneNo}</span>
-                </div>
-                <div className="info-item">
-                  <span className="info-label">Gender:</span>
-                  <span className="info-value">{user.gender}</span>
                 </div>
                 <button onClick={openEditModal} className="edit-btn">
                   Edit Profile
@@ -307,7 +305,7 @@ const Profile = () => {
             {userLoading ? (
               <Loader />
             ) : (
-              <EnrolledCourseList courses={userCourses} />
+              <EnrolledCourseList courses={userCourses} user={userData.user} role={role}/>
             )}
           </div>
         </>

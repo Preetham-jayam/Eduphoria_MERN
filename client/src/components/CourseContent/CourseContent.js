@@ -13,6 +13,7 @@ import { useAddReviewMutation } from "../../Slices/studentApiSlice";
 import { useGetCourseReviewsQuery } from "../../Slices/courseApiSlice";
 import { useUpdateCompletedLessonsMutation } from "../../Slices/studentApiSlice";
 import Loader from "../Loader/Loader";
+
 const CourseContent = () => {
   const auth = useSelector((state) => state.auth);
   const { id: courseId } = useParams();
@@ -352,6 +353,7 @@ const VideoPlayer = ({
   courseData,
 }) => {
   const [updateCompletedLessonsMutation] = useUpdateCompletedLessonsMutation();
+  const backendURLPrefix = 'http://localhost:8000';
   const handleVideoEnded = () => {
     const updatedCompletedLessons = [...completedLessons];
 
@@ -365,6 +367,7 @@ const VideoPlayer = ({
         }
       });
     });
+    
 
     setCompletedLessons(updatedCompletedLessons);
     updateCompletedLessons(
@@ -373,11 +376,12 @@ const VideoPlayer = ({
       updateCompletedLessonsMutation
     );
   };
+  const updatedUrl = `${backendURLPrefix}/${url}`;
 
   return (
     <div className="video-player">
       <ReactPlayer
-        url={url}
+        url={updatedUrl}
         controls
         width="100%"
         height="100%"

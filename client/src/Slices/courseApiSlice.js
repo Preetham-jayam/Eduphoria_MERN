@@ -93,6 +93,13 @@ export const coursesApiSlice = apiSlice.injectEndpoints({
       },
       invalidatesTags: ['Course'],
     }),
+    getQuizByCourseId: builder.query({
+      query: (courseId) => ({
+        url: `${COURSES_URL}/${courseId}/quiz`,
+      }),
+      providesTags: ["Quiz"],
+      keepUnusedDataFor: 5,
+    }),
   }),
 });
 
@@ -106,4 +113,5 @@ export const {
   useAddLessonMutation,
   useUpdateChapterMutation,
   useUpdateLessonMutation,
+  useGetQuizByCourseIdQuery
 } = coursesApiSlice;

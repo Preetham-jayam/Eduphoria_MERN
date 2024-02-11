@@ -16,6 +16,8 @@ import CourseContent from "./CourseContent/CourseContent";
 import CourseUploadPage from "../Pages/CourseUploadPage";
 import ProfilePage from '../Pages/ProfilePage';
 import AccountEditPage from "../Pages/AccountEditPage";
+import AddQuizPage from '../Pages/AddQuizPage';
+import StudentQuizPage from '../Pages/StudentQuizPage';
 
 const AnimatedRoutes = () => {
   const location = useLocation();
@@ -38,7 +40,9 @@ const AnimatedRoutes = () => {
         <Route path='/enroll/:cid' element={<EnrollPayment/>}/>
         <Route path='/courseContent/:id' element={<CourseContent/>}/>
         <Route path='/course/upload/:id' element={<ProtectedRoute><CourseUploadPage/></ProtectedRoute>} />
+        <Route path='/course/addquiz/:id' element={<ProtectedRoute><AddQuizPage/></ProtectedRoute>}/>
         <Route path='/profile' element={<ProtectedRoute><ProfilePage/></ProtectedRoute>}/>
+        <Route path='/student/quiz/:id' element={<ProtectedRoute><StudentQuizPage/></ProtectedRoute>} />
         <Route path='/profile/editaccount' element={<ProtectedRoute><AccountEditPage/></ProtectedRoute>}/>
         
 

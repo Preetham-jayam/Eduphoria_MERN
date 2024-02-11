@@ -3,6 +3,7 @@ const Chapter = require("../models/chapter");
 const Lesson = require("../models/lesson");
 const Teacher = require("../models/teacher");
 const User = require("../models/user");
+const Quiz=require('../models/quiz');
 
 exports.getTeacherById = async (req,res,next)=>{
   const userId=req.user.userId;
@@ -182,28 +183,36 @@ exports.addQuizToCourse = async (req, res, next) => {
   const { title, questions } = req.body;
 
   try {
-    const course = await Course.findById(courseId);
+    let course = await Course.findById(courseId);
 
     if (!course) {
       return res.status(404).json({ message: "Course not found." });
     }
 
-    const newQuiz = new Quiz({
-      title,
-      questions,
-      course: courseId,
-    });
+    let existingQuiz = await Quiz.findOne({ course: courseId });
 
-    await newQuiz.save();
+    if (existingQuiz) {
+      existingQuiz.title = title;
+      existingQuiz.questions = questions;
+      await existingQuiz.save();
+    } else {
+      const newQuiz = new Quiz({
+        title,
+        questions,
+        course: courseId,
+      });
 
-    course.quizzes.push(newQuiz._id);
-    await course.save();
+      await newQuiz.save();
 
-    res.status(201).json(newQuiz);
+      course.quizzes.push(newQuiz._id);
+      await course.save();
+
+      res.status(201).json(newQuiz);
+    }
+
+    res.status(200).json({ message: "Quiz updated successfully." });
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Adding quiz failed, please try again later." });
+    res.status(500).json({ message: "Adding/updating quiz failed, please try again later.", error: error.message });
   }
 };
 

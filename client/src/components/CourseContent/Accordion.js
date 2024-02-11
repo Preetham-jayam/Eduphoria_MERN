@@ -1,4 +1,4 @@
-import React, {  useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Accordion.css";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -11,28 +11,39 @@ const Accordion = ({
   setSelectedVideoUrl,
   enrolled,
   completedLessons,
-  percentage
+  percentage,
 }) => {
   const auth = useSelector((state) => state.auth);
-  const [user,setUser]=useState(null);
-  const {data,isLoading:userLoading,isError:userError}=useGetUserDetailsQuery(auth.userInfo?.userId);
+  const [user, setUser] = useState(null);
+  const {
+    data,
+    isLoading: userLoading,
+    isError: userError,
+  } = useGetUserDetailsQuery(auth.userInfo?.userId);
   const loggedIn = auth.loggedIn;
   const [activeChapter, setActiveChapter] = useState(null);
   const [activeLesson, setActiveLesson] = useState(null);
+  const [sCourses,setSCourses]=useState(null);
   const id = course._id;
 
-  useEffect(()=>{
-    if(data){
+  useEffect(() => {
+    if (data && data.user) {
       setUser(data.user);
-
+      if (data.user.role === 0 && data.user.student) {
+        setSCourses(data.user.student.courses);
+        console.log(sCourses);
+      }
+      
     }
-  },[data,user]);
+  }, [data]);
 
-  useEffect(()=>{
-    if(userError){
-      console.log("Error fetching user details:",userError);
+
+
+  useEffect(() => {
+    if (userError) {
+      console.log("Error fetching user details:", userError);
     }
-  },[userError]);
+  }, [userError]);
 
   const toggleChapter = (chapterIndex) => {
     if (activeChapter === chapterIndex) {
@@ -54,15 +65,15 @@ const Accordion = ({
     }
   };
 
-  if(userLoading){
-    return <Loader/>;
+  if (userLoading) {
+    return <Loader />;
   }
 
   return (
     <div className="accordion">
       <h2>Course Content</h2>
 
-      {courseData.length===0 && <h3>No Chapters are added yet!!</h3>}
+      {courseData.length === 0 && <h3>No Chapters are added yet!!</h3>}
       {courseData.map((chapter, chapterIndex) => (
         <div key={chapterIndex}>
           <div
@@ -91,14 +102,15 @@ const Accordion = ({
                   }}
                 >
                   <label>
-                  {auth.userInfo.role===0 && <>
-
-                    <input
-                      type="checkbox"
-                      checked={completedLessons.includes(lesson._id)}
-                      onChange={() => {}}
-                    />
-                  </>}
+                    {auth.userInfo.role === 0 && (
+                      <>
+                        <input
+                          type="checkbox"
+                          checked={completedLessons.includes(lesson._id)}
+                          onChange={() => {}}
+                        />
+                      </>
+                    )}
                     {lesson.title}
                   </label>
                 </div>
@@ -128,8 +140,24 @@ const Accordion = ({
           )}
         </div>
       ))}
-     {loggedIn && enrolled && auth.userInfo.role===0 && percentage>=30 && <Certificate userName={user.student.firstName} courseTitle={course.title} instructorName={course.instructorName}/>}
-      {loggedIn && auth.userInfo.role === 1   && (
+      {loggedIn && enrolled && auth.userInfo.role === 0 && percentage >= 30 && (
+        <Certificate
+          userName={user.student.firstName}
+          courseTitle={course.title}
+          instructorName={course.instructorName}
+        />
+      )}
+
+      {loggedIn && auth.userInfo.role === 0 && sCourses&& sCourses.some(course => course._id === id)&&(
+        <>
+          <div className="upload-div">
+            <Link to={`/student/quiz/${id}`}>
+              <button className="upload">Attempt Quiz</button>
+            </Link>
+          </div>
+        </>
+      )}
+      {loggedIn && auth.userInfo.role === 1  &&(
         <>
           <div className="edit-div">
             <Link to={`/course/edit/${id}`}>
@@ -139,6 +167,11 @@ const Accordion = ({
           <div className="upload-div">
             <Link to={`/course/upload/${id}`}>
               <button className="upload">Upload</button>
+            </Link>
+          </div>
+          <div className="upload-div">
+            <Link to={`/course/addquiz/${id}`}>
+              <button className="upload">Add Quiz</button>
             </Link>
           </div>
         </>
