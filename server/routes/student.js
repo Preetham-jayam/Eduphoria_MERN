@@ -7,4 +7,5 @@ router.patch('/updateCompletedLessons/:id',checkAuth,StudentController.updateCom
 router.post('/addreview/:id',checkAuth,StudentController.postAddReview);
 router.post('/:sid/enrollcourse/:id',checkAuth,StudentController.enrollCourse);
 router.put('/updateprofile/:studentId',checkAuth, StudentController.updateProfile);
+router.patch('/updateQuizResults/:studentId', StudentController.updateQuizResults);
 module.exports = router;

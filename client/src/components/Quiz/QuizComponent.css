@@ -54,7 +54,19 @@
 
 .quizzz-button {
   padding: 12px 24px;
+  font-size: medium;
   background-color: #06bbcc;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.finish-button {
+  padding: 12px 24px;
+  font-size: medium;
+  background-color: #f44336;
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -68,7 +80,8 @@
 }
 
 .quizzz-button:hover {
-  background-color: #06bbcc;
+  background-color: #fff;
+  color:#06bbcc;
 }
 
 .result-container {

@@ -5,6 +5,7 @@ import Shome from "../../Assets/Shome.jpg";
 import Ahome from '../../Assets/Admin.jpg';
 import { Link } from "react-router-dom";
 function Header({user}) {
+  console.log(user.admin);
   let role = user.role;
   return (
     <>
@@ -92,14 +93,6 @@ function Header({user}) {
                   This is a place for Admin to control and manage the website
                 </p>
               </div>
-              <button className="join-button">
-                <Link
-                  to="/users"
-                  style={{ textDecoration: "none", color: "white" }}
-                >
-                  See Users
-                </Link>
-              </button>
             </div>
           </header>
         </>

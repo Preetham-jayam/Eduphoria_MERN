@@ -111,3 +111,44 @@ exports.updateProfile = async (req, res) => {
   }
 };
 
+exports.updateQuizResults = async (req, res) => {
+  const { studentId, quizId, courseId, marks, totalMarks, answers } = req.body;
+
+  try {
+    const student = await Student.findById(studentId);
+
+    if (!student) {
+      return res.status(404).json({ message: 'Student not found' });
+    }
+
+    const quizIndex = student.quizzes.findIndex(
+      (quiz) => quiz.course.toString() === courseId && quiz.quiz.toString() === quizId
+    );
+
+    if (quizIndex !== -1) {
+      student.quizzes[quizIndex] = {
+        course: courseId,
+        quiz: quizId,
+        marks,
+        totalMarks,
+        answers
+      };
+    } else {
+      student.quizzes.push({
+        course: courseId,
+        quiz: quizId,
+        marks,
+        totalMarks,
+        answers
+      });
+    }
+
+    await student.save();
+
+    res.status(200).json({ message: 'Quiz results updated successfully' });
+  } catch (error) {
+    console.error('Error updating quiz results:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+

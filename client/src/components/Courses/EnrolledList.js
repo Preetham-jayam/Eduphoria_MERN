@@ -15,6 +15,7 @@ const EnrolledCourseList = ({user, courses }) => {
       {user.role===0 && <h1 style={{textDecoration:'underline'}}>Your Enrolled Courses</h1>}
       {user.role===1 && <h1 style={{textDecoration:'underline'}}>Your Teaching Courses</h1>}
       <div className="course-list">
+        {courses.length===0 && <h2>No courses enrolled</h2>}
         {courses.map((course) => (
           <CourseCard key={course.id} user={user} course={course} onReadMoreClick={handleReadMore} enrolled={true}/>
         ))}

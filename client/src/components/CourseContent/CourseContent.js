@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import Accordion from "./Accordion";
 import "./CourseContent.css";
 import ReactPlayer from "react-player";
@@ -46,6 +47,7 @@ const CourseContent = () => {
   const [completedLessonCount, setCompletedLessonsCount] = useState(0);
   const [totalLessons, setTotalLessons] = useState(0);
 
+
   useEffect(() => {
     if (data) {
       setCourse(data.course);
@@ -57,12 +59,19 @@ const CourseContent = () => {
       setCompletedLessons(
         userData.user.role === 0 ? userData.user.student.completedLessons : null
       );
+
     }
     if (coursereviewData) {
       setReviews(coursereviewData.reviews);
       console.log(reviews);
     }
   }, [data, userData, coursereviewData,reviews]);
+
+  useEffect(() => {
+    if (courseChapters.length > 0) {
+      setSelectedVideoUrl(courseChapters[0].lessons[0].videoUrl);
+    }
+  }, [courseChapters]);
 
   useEffect(() => {
     if (userError) {
@@ -148,13 +157,16 @@ const CourseContent = () => {
           <div>
             <h2>
               Course Title :{" "}
-              <span style={{ fontWeight: "bolder", color: "Highlight" }}>
+              <span style={{ fontWeight: "bolder",color:'#06bbcc' }}>
                 {course.title}
               </span>
             </h2>
             <div>
-              <h2>Description:</h2>
-              {course.description}
+              <h2>Description:{" "}
+              <span style={{ fontWeight: "bolder",color:'#06bbcc' }}>
+                {course.description}
+              </span>
+              </h2>
             </div>
           </div>
           <div className="course-information">
@@ -285,7 +297,7 @@ const CourseContent = () => {
           </div>
         </div>
       ),
-    },
+    }
   ];
 
   if (userLoading || courseLoading || reviewLoading) {
@@ -293,6 +305,21 @@ const CourseContent = () => {
   }
 
   return (
+    <>
+      <div className="course-buttons">
+         <div className="attempt-div">
+            <Link to={`/student/quiz/${courseId}`}>
+              <button className="attempt-quiz">Attempt Quiz</button>
+            </Link>
+          </div>
+
+          <div className="live-chat-div">
+            <Link to={`/student/quiz/${courseId}`}>
+              <button className="live-chat-button">Live Chat</button>
+            </Link>
+          </div>
+      </div>
+  
     <div className="course-page">
       <div className="course-content">
         <div className="main-content">
@@ -324,6 +351,7 @@ const CourseContent = () => {
         />
       </div>
     </div>
+     </>
   );
 };
 

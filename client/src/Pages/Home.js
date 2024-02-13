@@ -12,31 +12,38 @@ import Header from "../components/Header/Header";
 import Loader from "../components/Loader/Loader";
 import { useGetUserDetailsQuery } from "../Slices/usersApiSlice";
 import { useGetCoursesQuery } from "../Slices/courseApiSlice";
-
+import AdminDashboard from "../components/AdminDashboard/AdminDashboard";
 const Home = () => {
   const [courseData, setCourseData] = useState([]);
   const [userCourses, setUserCourses] = useState([]);
   const auth = useSelector((state) => state.auth);
 
-  const { data: user, isLoading: userLoading, isError: userError } = useGetUserDetailsQuery(auth.userInfo?.userId);
-  const { data: courses, isLoading: courseLoading, isError: courseError } = useGetCoursesQuery();
+  const {
+    data: user,
+    isLoading: userLoading,
+    isError: userError,
+  } = useGetUserDetailsQuery(auth.userInfo?.userId);
+  const {
+    data: courses,
+    isLoading: courseLoading,
+    isError: courseError,
+  } = useGetCoursesQuery();
 
   useTitle("Home Page");
 
   useEffect(() => {
     if (courses) {
-      setCourseData(courses.courses || []); 
+      setCourseData(courses.courses || []);
       console.log(courses.courses);
     }
   }, [courses]);
 
   useEffect(() => {
-    if(user){
-
-      if (auth.loggedIn && user.user.role===1) {
+    if (user) {
+      if (auth.loggedIn && user.user.role === 1) {
         setUserCourses(user.user.teacher.courses);
-      } 
-      if(auth.loggedIn && user.user.role===0){
+      }
+      if (auth.loggedIn && user.user.role === 0) {
         setUserCourses(user.user.student.courses);
       }
     }
@@ -79,9 +86,14 @@ const Home = () => {
       transition={{ duration: 0.5 }}
     >
       <Header user={user.user} />
-      <EnrolledCourseList courses={userCourses} user={user.user} />
-      <Testimonial />
-      <Instructors />
+      {user.user.role === 2 && <AdminDashboard />}
+      {user.user.role !== 2 && (
+        <>
+        <EnrolledCourseList courses={userCourses} user={user.user} />
+          <Testimonial />
+          <Instructors />
+        </>
+      )}
     </motion.div>
   );
 };

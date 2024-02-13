@@ -44,7 +44,9 @@ exports.getUserProfile = async (req, res, next) => {
             },
           },
         },
-      });
+      })
+      .populate('admin')
+      ;
 
     if (!user) {
       const error = new HttpError('Could not find User for the provided id.', 404);
@@ -68,8 +70,8 @@ exports.Login = async (req, res, next) => {
   let existingUser;
 
   try {
-    if (email === 'admin@gmail.com') {
-      existingUser = await Admin.findOne({ email });
+    if (email === process.env.ADMIN_EMAIL) { 
+      existingUser = await User.findOne({ email }).populate('admin');
     } else {
       existingUser = await User.findOne({ email }).populate('student').populate('teacher');
     }
@@ -80,6 +82,11 @@ exports.Login = async (req, res, next) => {
 
   if (!existingUser) {
     const error = new HttpError('Invalid credentials, could not log you in.', 403);
+    return next(error);
+  }
+
+  if (existingUser.flag === 1) {
+    const error = new HttpError('Your account has been blocked by the admin.', 403);
     return next(error);
   }
 
@@ -223,14 +230,45 @@ exports.accountEdit = (req, res) => {
       });
 }
 
-
-
-
-
 exports.getUsers = async (req, res, next) => {
   let users;
   try {
-    users = await User.find({}, '-password');
+    users = await User.find({ role: { $ne: 2 }}, '-password').populate({
+      path: 'student',
+      populate: [
+        {
+          path: 'courses',
+          populate: {
+            path: 'chapters',
+            populate: {
+              path: 'lessons',
+            },
+          },
+        },
+        {
+          path: 'quizzes.course',
+          select: 'quizzes.quiz quizzes.marks quizzes.totalMarks quizzes.answers',
+        },
+        {
+          path: 'completedLessons',
+        },
+      ],
+    })
+    .populate({
+      path: 'teacher',
+      populate: {
+        path: 'courses',
+        populate: {
+          path: 'chapters',
+          populate: {
+            path: 'lessons',
+          },
+        },
+      },
+    })
+  
+    ;
+;
   } catch (err) {
     const error = new HttpError(
       'Fetching users failed, please try again later.',
@@ -241,3 +279,28 @@ exports.getUsers = async (req, res, next) => {
   res.json({users: users.map(user => user.toObject({ getters: true }))});
 };
 
+exports.DeleteUser = (req, res) => {
+  const id = req.params.id;
+  console.log(id);
+  User.findByIdAndDelete(id).then((user) => {
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found." });
+    }
+
+    let model = user.role === 0 ? Student : Teacher;
+    let modelName = user.role === 0 ? "Student" : "Teacher";
+
+    model.findByIdAndDelete(user.student || user.teacher)
+      .then(() => {
+        return res.status(200).json({ success: true, message: `${modelName} deleted successfully.` });
+      })
+      .catch((err) => {
+        console.log(err);
+        console.log("Internal server error");
+        return res.status(500).json({ success: false, message: "Internal server error" });
+      });
+  }).catch((err) => {
+    console.error(err);
+    return res.status(500).json({ success: false, message: "Internal server error" });
+  });
+};

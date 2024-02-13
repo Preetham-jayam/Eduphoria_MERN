@@ -1,23 +1,48 @@
 import React, { useEffect, useState } from 'react';
 import { useGetQuizByCourseIdQuery } from '../../Slices/courseApiSlice';
+import { useUpdateQuizResultsMutation } from '../../Slices/studentApiSlice';
+import { useGetUserDetailsQuery } from '../../Slices/usersApiSlice';
 import './QuizComponent.css'; 
-import {useParams} from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import Loader from '../Loader/Loader';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import {toast} from 'react-toastify';
+
 function StudentQuiz() {
-  const {id:courseId}=useParams();
+  const navigate = useNavigate();
+  const { id: courseId } = useParams();
+  const auth = useSelector((state) => state.auth);
+  const [user, setUser] = useState(null);
   const { data, error, isLoading } = useGetQuizByCourseIdQuery(courseId);
-  const [quizData,setQuizData]=useState(null);
+  const { data: userData, isLoading: userLoading } = useGetUserDetailsQuery(auth.userInfo?.userId);
+  const [updateQuizResults, { isLoading: isUpdating }] = useUpdateQuizResultsMutation();
+  const [quizData, setQuizData] = useState(null);
   const [answers, setAnswers] = useState([]);
-  
-  useEffect(()=>{
-    if(data && data.quiz){
-        setQuizData(data.quiz);
-        setAnswers(new Array(data.quiz.questions.length).fill(null));
-        console.log(data.quiz);
-    }
-  },[data,quizData]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [showResult, setShowResult] = useState(false);
+  const [userAttemptedQuiz, setUserAttemptedQuiz] = useState(false);
+
+  useEffect(() => {
+    if (data && data.quiz) {
+      setQuizData(data.quiz);
+      setAnswers(new Array(data.quiz.questions.length).fill(null));
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (userData) {
+      setUser(userData.user);
+
+      const attemptedQuiz = userData.user.student.quizzes.find(quiz => quiz.course._id === courseId);
+      if (attemptedQuiz) {
+        setUserAttemptedQuiz(true);
+        setAnswers(JSON.parse(attemptedQuiz.answers));
+      } else{
+        setUserAttemptedQuiz(false);
+      }
+    }
+  }, [userData, courseId]);
 
   const handleNext = () => {
     if (currentQuestionIndex < quizData.questions.length - 1) {
@@ -47,11 +72,39 @@ function StudentQuiz() {
     return score;
   };
 
+  const handleFinishQuiz = async () => {
+    if (answers.some(answer => answer === null)) {
+      toast.error('Please answer all questions before submitting.');
+      return;
+    }
+    try {
+      await updateQuizResults({
+        studentId: user.student._id,
+        quizId: quizData._id,
+        courseId,
+        marks: calculateScore(),
+        totalMarks: quizData.questions.length,
+        answers: JSON.stringify(answers) 
+      });
+      setShowResult(true);
+      setUserAttemptedQuiz(true); 
+    } catch (error) {
+      console.error('Error updating quiz results:', error);
+    }
+  };
+
+  const handleRetryQuiz = () => {
+    setAnswers(new Array(quizData.questions.length).fill(null));
+    setCurrentQuestionIndex(0);
+    setShowResult(false);
+    setUserAttemptedQuiz(false);
+  };
+
   const renderResult = () => {
     return (
       <div className="result-container">
         <h2>Quiz Result</h2>
-        <h3>Your Score: {calculateScore()}</h3>
+        <h3>Your Score: {calculateScore()} out of {quizData.questions.length}</h3>
         <div className="answers-container">
           {quizData.questions.map((question, index) => (
             <div key={index} className="question-answer">
@@ -61,19 +114,28 @@ function StudentQuiz() {
             </div>
           ))}
         </div>
+        <button className='quizzz-button' onClick={() => navigate(`/courseContent/${courseId}`)}>Return to Course</button>
       </div>
     );
   };
 
-  if (isLoading || !quizData ) {
-    return <Loader/>;
+  if (isLoading || !quizData || userLoading) {
+    return <Loader />;
   }
-  
-
-  
 
   if (showResult) {
     return renderResult();
+  }
+
+  if (userAttemptedQuiz) {
+    const attemptedQuiz = userData.user.student.quizzes.find(quiz => quiz.course._id === courseId);
+    return (
+      <div className="quiz-container">
+        <h2>You have already attempted this quiz.</h2>
+        <h3>Your Score: {attemptedQuiz.marks} out of {quizData.questions.length}</h3>
+        <button className='quizzz-button' onClick={handleRetryQuiz} disabled={isUpdating}>Try Again ?</button>
+      </div>
+    );
   }
 
   if (error && error.status === 404) {
@@ -108,7 +170,7 @@ function StudentQuiz() {
       <div className="navigation">
         <button className='quizzz-button' onClick={handlePrev} disabled={currentQuestionIndex === 0}>Prev</button>
         <button className='quizzz-button' onClick={handleNext} disabled={currentQuestionIndex === quizData.questions.length - 1}>Next</button>
-        <button className='quizzz-button' onClick={() => setShowResult(true)}>Finish</button>
+        <button className='finish-button' onClick={handleFinishQuiz} disabled={isUpdating}>Submit</button>
       </div>
     </div>
   );

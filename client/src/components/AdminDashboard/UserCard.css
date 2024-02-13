@@ -1,0 +1,98 @@
+.custom-user-card-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  
+  .custom-user-card {
+    position: relative; 
+    height: auto;
+    width: calc(33.33% - 32px);
+    margin: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+    padding-bottom: 60px; 
+  }
+  
+  .custom-user-card:hover {
+    transform: scale(1.05);
+  }
+  
+  .custom-user-info {
+    display: flex;
+    align-items: center;
+    padding: 16px;
+  }
+  
+  .custom-user-image {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin-right: 16px;
+  }
+  
+  .custom-user-details {
+    flex: 1;
+  }
+  
+  .custom-user-details h2 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: bold;
+  }
+  
+  .custom-user-details h4 {
+    margin: 8px 0;
+    font-size: 16px;
+    color: #555;
+  }
+  
+  .custom-user-actions {
+    position: absolute;
+    bottom: 0;
+    left: 0; /* Adjust left position */
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    padding: 16px;
+    background-color: #06bbcc;
+  }
+  
+  .custom-user-actions button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+    font-size: 16px;
+  }
+  
+  .custom-user-actions button:hover {
+    filter: brightness(90%);
+  }
+  
+  .custom-user-actions button.block {
+    background-color: #f44336;
+    color: white;
+  }
+  
+  .custom-user-actions button.unblock {
+    background-color: #4caf50;
+    color: white;
+  }
+  
+  @media screen and (max-width: 1024px) {
+    .custom-user-card {
+      width: calc(50% - 32px);
+    }
+  }
+  
+  @media screen and (max-width: 768px) {
+    .custom-user-card {
+      width: calc(100% - 32px);
+    }
+  }
+  

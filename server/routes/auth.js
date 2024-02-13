@@ -4,6 +4,8 @@ const router = express.Router();
 const authController = require("../controllers/auth");
 const checkAuth=require('../middleware/isAuth');
 
+router.get('/',authController.getUsers);
+router.delete('/:id',authController.DeleteUser);
 router.post("/login", authController.Login);
 router.post("/signup",[
     check('email')

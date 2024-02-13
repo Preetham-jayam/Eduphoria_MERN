@@ -1,0 +1,96 @@
+/* TeacherCard.css */
+
+.teacher-card {
+    width: 350px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 16px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .teacher-card:hover {
+    transform: scale(1.05);
+  }
+  
+  .teacher-info {
+    display: flex;
+    align-items: center;
+    padding: 16px;
+  }
+  
+  .teacher-image {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-right: 16px;
+  }
+  
+  .teacher-details {
+    flex: 1;
+  }
+  
+  .teacher-details h2 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: bold; /* Bold heading */
+  }
+  
+  .teacher-details p {
+    margin: 8px 0;
+    font-size: 16px; /* Increased font size */
+    color: #555;
+  }
+  
+  .teacher-courses {
+    padding: 16px;
+  }
+  
+  .teacher-courses h3 {
+    margin: 0 0 12px;
+    font-size: 18px;
+    font-weight: bold; /* Bold heading */
+  }
+  
+  .teacher-courses ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .teacher-courses li {
+    font-size: 16px;
+    color: #555;
+  }
+  
+  .teacher-actions {
+    display: flex;
+    justify-content: space-around;
+    padding: 16px;
+    background-color: #f4f4f4;
+  }
+  
+  .teacher-actions button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+    font-size: 16px; /* Increased font size */
+  
+    &:hover {
+      filter: brightness(90%); /* Darken on hover */
+    }
+  }
+  
+  .teacher-actions button.accept {
+    background-color: #4caf50; /* Green button */
+    color: white;
+  }
+  
+  .teacher-actions button.decline {
+    background-color: #f44336; /* Red button */
+    color: white;
+  }
+  

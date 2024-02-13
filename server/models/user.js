@@ -23,6 +23,10 @@ const userSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Teacher",
     },
+    admin:{
+      type:mongoose.Schema.Types.ObjectId,
+      ref:"Admin"
+    },
     role: {
       type: Number,
       default: 0,
@@ -30,7 +34,7 @@ const userSchema = new mongoose.Schema(
     flag: {
       type: Number,
       default: 0,
-    },
+    }
   },
   { timestamps: true }
 );

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./CourseCard.css";
 
 const ProgressBar = ({ completed, total }) => {
-  const percentage = (completed / total) * 100;
+  const percentage = total > 0 ? (completed / total) * 100 : 0;
 
   return (
     <>
@@ -35,20 +35,16 @@ const CourseProgress = ({ user, course }) => {
     };
   
     const getCompletedLessons = (course, user) => {
-        const studentCompletedLessons = user.student.completedLessons || [];
-        let completedLessonsCount = 0;
-  
-        course.chapters.forEach((chapter) => {
-          chapter.lessons.forEach((lesson) => {
-            if (studentCompletedLessons.includes(lesson._id)) {
-              completedLessonsCount++;
-            }
-          });
-        });
-        setCompletedLessons(completedLessonsCount);
-        console.log("Completed Lessons Count:", completedLessonsCount);
+      const studentCompletedLessons = user.student.completedLessons || [];
+      const completedLessonIds = studentCompletedLessons.map(lesson => lesson._id);
+      const completedLessonsCount = course.chapters.reduce((count, chapter) => {
+        return count + chapter.lessons.filter(lesson => completedLessonIds.includes(lesson._id)).length;
+      }, 0);
       
+      setCompletedLessons(completedLessonsCount);
+      console.log("Completed Lessons Count:", completedLessonsCount);
     };
+    
    
     getCourseDetails(course);
     getCompletedLessons(course,user);

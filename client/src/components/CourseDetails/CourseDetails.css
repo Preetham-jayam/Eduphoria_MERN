@@ -60,7 +60,7 @@
   margin-left: 20px;
 }
 .course-sidebar {
- height: 650px;
+ height: auto;
   width: 30%;
   background-color: #fff;
   border: 1px solid #e0e0e0;

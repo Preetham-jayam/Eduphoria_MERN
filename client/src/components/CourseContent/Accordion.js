@@ -10,7 +10,6 @@ const Accordion = ({
   courseData,
   setSelectedVideoUrl,
   enrolled,
-  completedLessons,
   percentage,
 }) => {
   const auth = useSelector((state) => state.auth);
@@ -23,6 +22,7 @@ const Accordion = ({
   const loggedIn = auth.loggedIn;
   const [activeChapter, setActiveChapter] = useState(null);
   const [activeLesson, setActiveLesson] = useState(null);
+  const [completedLessons,setCompletedLessons]=useState([]);
   const [sCourses,setSCourses]=useState(null);
   const id = course._id;
 
@@ -31,7 +31,9 @@ const Accordion = ({
       setUser(data.user);
       if (data.user.role === 0 && data.user.student) {
         setSCourses(data.user.student.courses);
-        console.log(sCourses);
+        const lessonIds = data.user.student.completedLessons.map(lesson => lesson.id);
+        setCompletedLessons(lessonIds);
+        
       }
       
     }
@@ -150,9 +152,9 @@ const Accordion = ({
 
       {loggedIn && auth.userInfo.role === 0 && sCourses&& sCourses.some(course => course._id === id)&&(
         <>
-          <div className="upload-div">
+          <div className="attempt-div">
             <Link to={`/student/quiz/${id}`}>
-              <button className="upload">Attempt Quiz</button>
+              <button className="attempt-quiz">Attempt Quiz</button>
             </Link>
           </div>
         </>

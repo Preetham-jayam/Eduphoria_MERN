@@ -1,0 +1,42 @@
+.admindash{
+    margin-top: 20px;
+}
+.appbar {
+    background-color: rgb(255, 250, 243);
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0;
+  }
+  
+  .tab {
+    color: #000;
+    cursor: pointer;
+    padding: 10px 20px;
+    transition: background-color 0.3s ease;
+    border-radius: 5px;
+  }
+  
+  .tab:hover {
+    background-color: #06bbcc;
+  }
+
+  .tab.active {
+    background-color: #06bbcc;
+    color: white;
+  }
+  
+  .dash-container {
+    border: 1px solid #ccc;
+    margin-top: 20px;
+    padding: 20px;
+  }
+  
+  .tabpanel {
+    display: none;
+  }
+  
+  .tabpanel.active {
+    display: block;
+    
+  }
+  

@@ -1,15 +1,19 @@
 import React from "react";
 import "./NavItems.css";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../../../Slices/authenticationSlice';
 
 const NavItems = () => {
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     dispatch(logout());
+    navigate('/');
+    window.location.reload();
+    
   };
 
   return (

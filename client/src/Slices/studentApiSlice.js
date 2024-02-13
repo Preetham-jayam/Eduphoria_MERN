@@ -53,6 +53,18 @@ export const studentApiSlice = apiSlice.injectEndpoints({
       }),
     }),
 
+    updateQuizResults: builder.mutation({
+      query: (data) => ({
+        url: `${STUDENT_URL}/updateQuizResults/${data.studentId}`,
+        method: "PATCH",
+        body: data,
+        headers: {
+          Authorization: `Bearer ${JWT_TOKEN}`,
+        },
+      }),
+      invalidatesTags: ["Student"],
+    }),
+
   }),
 });
 
@@ -60,5 +72,6 @@ export const {
   useUpdateProfileMutation,
   useAddReviewMutation,
   useEnrollCourseMutation,
-  useUpdateCompletedLessonsMutation
+  useUpdateCompletedLessonsMutation,
+  useUpdateQuizResultsMutation
 }=studentApiSlice;
