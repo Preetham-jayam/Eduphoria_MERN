@@ -5,7 +5,6 @@ import Shome from "../../Assets/Shome.jpg";
 import Ahome from '../../Assets/Admin.jpg';
 import { Link } from "react-router-dom";
 function Header({user}) {
-  console.log(user.admin);
   let role = user.role;
   return (
     <>

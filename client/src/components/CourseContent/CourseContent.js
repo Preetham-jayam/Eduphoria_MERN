@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import Accordion from "./Accordion";
 import "./CourseContent.css";
 import ReactPlayer from "react-player";
@@ -44,8 +43,8 @@ const CourseContent = () => {
   const [completedLessons, setCompletedLessons] = useState([]);
   const [selectedVideoUrl, setSelectedVideoUrl] = useState("");
   const [courseChapters, setCourseChapters] = useState([]);
-  const [completedLessonCount, setCompletedLessonsCount] = useState(0);
   const [totalLessons, setTotalLessons] = useState(0);
+  const [percentage,setPercentage]=useState(0);
 
 
   useEffect(() => {
@@ -89,9 +88,6 @@ const CourseContent = () => {
     if (!course || !course.chapters) {
       return;
     }
-
-    console.log(course);
-
     const totalLessonsCount = courseChapters
       ? courseChapters.reduce(
           (count, chapter) => count + chapter.lessons.length,
@@ -101,24 +97,26 @@ const CourseContent = () => {
 
     setTotalLessons(totalLessonsCount);
 
-    if (user && user.role === 0) {
-      const studentCompletedLessons = student.completedLessons || [];
-      let completedLessonsCount = 0;
+    console.log(totalLessonsCount);
 
+    if (user && user.role === 0) {
+      const studentCompletedLessonIds = student.completedLessons.map(lesson => lesson._id) || [];
+      let completedLessonsCount = 0;
+  
       course.chapters.forEach((chapter) => {
         chapter.lessons.forEach((lesson) => {
-          if (studentCompletedLessons.includes(lesson._id)) {
+          if (studentCompletedLessonIds.includes(lesson._id)) {
             completedLessonsCount++;
           }
         });
       });
-
-      setCompletedLessonsCount(completedLessonsCount);
-      console.log("Completed Lessons Count:", completedLessonsCount);
+      const percentage = (completedLessonsCount / totalLessons) * 100;
+      setPercentage(percentage); 
+      console.log("Percentage:", percentage);
     }
-  }, [user, course, student, courseChapters]);
+  }, [user, course, student, courseChapters, percentage, totalLessons]);
 
-  const percentage = (completedLessonCount / totalLessons) * 100;
+ 
 
   const submitReviewHandler = async (e) => {
     e.preventDefault();
@@ -136,8 +134,6 @@ const CourseContent = () => {
         day: "numeric",
       }),
     };
-
-    console.log(reviewData);
 
     try {
       const { data } = await addReview(reviewData);
@@ -306,20 +302,7 @@ const CourseContent = () => {
 
   return (
     <>
-      <div className="course-buttons">
-         <div className="attempt-div">
-            <Link to={`/student/quiz/${courseId}`}>
-              <button className="attempt-quiz">Attempt Quiz</button>
-            </Link>
-          </div>
-
-          <div className="live-chat-div">
-            <Link to={`/student/quiz/${courseId}`}>
-              <button className="live-chat-button">Live Chat</button>
-            </Link>
-          </div>
-      </div>
-  
+     
     <div className="course-page">
       <div className="course-content">
         <div className="main-content">
@@ -396,7 +379,6 @@ const VideoPlayer = ({
       });
     });
     
-
     setCompletedLessons(updatedCompletedLessons);
     updateCompletedLessons(
       student._id,

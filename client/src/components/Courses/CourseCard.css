@@ -90,3 +90,21 @@
 .course-progress {
   margin-top: 20px;
 }
+
+.delete-button {
+  background-color: red;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  position: relative;
+  bottom: 0;
+  
+}
+
+.delete-button:hover {
+ color:red;
+ background-color: #fff;
+}

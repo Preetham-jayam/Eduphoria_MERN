@@ -1,40 +1,50 @@
 .button {
-    font: inherit;
-    padding: 0.5rem 1.5rem;
-    border: 1px solid #ff0055;
-    border-radius: 4px;
-    background: #ff0055;
-    color: white;
-    cursor: pointer;
-    margin-right: 1rem;
-    text-decoration: none;
-    display: inline-block;
-  }
-  
-  .button:focus {
-    outline: none;
-  }
-  
-  .button:hover,
-  .button:active {
-    background: #ff4382;
-    border-color: #ff4382;
-  }
-  
-  .button--inverse {
-    background: transparent;
-    color: #ff0055;
-  }
-  
-  .button--inverse:hover,
-  .button--inverse:active {
-    color: white;
-    background: #ff0055;
-  }
-  
+  font: inherit;
+  padding: 0.5rem 1.5rem;
+  border: 1px solid #06bbcc; 
+  border-radius: 4px;
+  background: #06bbcc; 
+  color: white;
+  cursor: pointer;
+  margin-right: 1rem;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.button:focus {
+  outline: none;
+}
+
+.button:hover,
+.button:active {
+  background: #33ccee; 
+  border-color: #33ccee; 
+}
+
+.button--inverse {
+  background: transparent;
+  color: #06bbcc; 
+}
+
+.button--inverse:hover,
+.button--inverse:active {
+  color: white;
+  background: #06bbcc; 
+}
+
+.button--unblock {
+  background: green;
+  color: white; 
+}
+
+.button--unblock:hover,
+.button--unblock:active {
+  color: green;
+  background: white; 
+}
   .button--danger {
-    background: #830000;
-    border-color: #830000;
+    background: #ff2222;
+    border-color: #ff2222;
   }
   
   .button--danger:hover,

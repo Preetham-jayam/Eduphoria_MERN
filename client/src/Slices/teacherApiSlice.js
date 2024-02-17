@@ -49,6 +49,18 @@ export const teacherApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Course"],
     }),
+
+    updateTeacherProfile: builder.mutation({
+      query: (data) => ({
+        url: `${TEACHER_URL}/updateprofile/${data.teacherId}`,
+        method: "PUT",
+        body: data,
+        headers: {
+          Authorization: `Bearer ${JWT_TOKEN}`,
+        },
+      }),
+      invalidatesTags: ["Teacher"],
+    }),
   }),
 });
 
@@ -57,4 +69,5 @@ export const {
   useUpdateCourseMutation,
   useDeleteCourseMutation,
   useAddQuizToCourseMutation, 
+  useUpdateTeacherProfileMutation
 } = teacherApiSlice;

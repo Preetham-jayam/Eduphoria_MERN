@@ -24,12 +24,12 @@
   .custom-user-info {
     display: flex;
     align-items: center;
-    padding: 16px;
+    padding: 14px;
   }
   
   .custom-user-image {
-    width: 150px;
-    height: 150px;
+    width: 125px;
+    height: 125px;
     border-radius: 50%;
     margin-right: 16px;
   }
@@ -46,19 +46,19 @@
   
   .custom-user-details h4 {
     margin: 8px 0;
-    font-size: 16px;
+    font-size: 14px;
     color: #555;
   }
   
   .custom-user-actions {
     position: absolute;
     bottom: 0;
-    left: 0; /* Adjust left position */
+    left: 0; 
     width: 100%;
     display: flex;
     justify-content: space-around;
     padding: 16px;
-    background-color: #06bbcc;
+    background-color:  #ccc;;
   }
   
   .custom-user-actions button {
@@ -83,10 +83,15 @@
     background-color: #4caf50;
     color: white;
   }
+  @media screen and (min-width: 1025px) {
+    .custom-user-card {
+      width: calc(50% - 32px);
+    }
+  }
   
   @media screen and (max-width: 1024px) {
     .custom-user-card {
-      width: calc(50% - 32px);
+      width: calc(100% - 32px);
     }
   }
   

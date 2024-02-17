@@ -241,7 +241,7 @@ const CourseDetails = () => {
               Certificate of Completion
             </li>
           </ul>
-        {auth.userInfo.role===0 && <>
+        {auth.userInfo && auth.userInfo.role===0 && <>
           <button className="join-button" onClick={handlePayment}>
             Enroll Now
           </button>

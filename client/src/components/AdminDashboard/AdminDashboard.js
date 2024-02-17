@@ -5,23 +5,32 @@ import {
   useDeclineTeacherMutation,
   useBlockUserMutation,
   useDeleteUserMutation,
+  useDeleteCourseMutation
 } from "../../Slices/adminApiSlice";
+import { useGetCoursesQuery } from "../../Slices/courseApiSlice";
 import { useGetUsersQuery } from "../../Slices/usersApiSlice";
 import "./Admindashboard.css";
 import { toast } from "react-toastify";
 import TeacherCard from "./TeacherCard";
 import UserCard from "./UserCard";
 import Loader from "../Loader/Loader";
+import CourseCard from "./CourseCard";
+import Button from "../../shared/components/FrontendTools/Button";
+
 
 function AdminDashboard() {
   const [selectedTab, setSelectedTab] = useState(0);
   const [pendingInstructors, setPendingInstructors] = useState([]);
   const [allUsers, setAllUsers] = useState([]);
+  const [courses, setCourses] = useState([]);
+  const { data: pendingTeachers, isLoading: pendingTeachersLoading } =
+    useGetPendingTeachersQuery();
+
   const {
-    data: pendingTeachers,
-    error: pendingTeachersError,
-    isLoading: pendingTeachersLoading,
-  } = useGetPendingTeachersQuery();
+    data: courseData,
+    isLoading: courseDataLoading,
+    refetch: refetchCourses,
+  } = useGetCoursesQuery();
   const {
     data: users,
     isLoading: usersLoading,
@@ -31,6 +40,12 @@ function AdminDashboard() {
   const [declineTeacher] = useDeclineTeacherMutation();
   const [blockUser] = useBlockUserMutation();
   const [deleteUser] = useDeleteUserMutation();
+  const [deleteCourse] = useDeleteCourseMutation();
+  
+ 
+  
+
+  
 
   useEffect(() => {
     if (pendingTeachers) {
@@ -43,6 +58,12 @@ function AdminDashboard() {
       setAllUsers(users.users);
     }
   }, [users]);
+
+  useEffect(() => {
+    if (courseData) {
+      setCourses(courseData.courses);
+    }
+  }, [courseData]);
 
   const handleTabChange = (index) => {
     setSelectedTab(index);
@@ -72,7 +93,7 @@ function AdminDashboard() {
     try {
       await blockUser(userId).unwrap();
       toast.success("User blocked successfully");
-      refetchUsers(); 
+      refetchUsers();
     } catch (error) {
       toast.error("Failed to block user");
     }
@@ -82,7 +103,7 @@ function AdminDashboard() {
     try {
       await blockUser(userId).unwrap();
       toast.success("User UnBlocked successfully");
-      refetchUsers(); 
+      refetchUsers();
     } catch (error) {
       toast.error("Failed to block user");
     }
@@ -90,15 +111,25 @@ function AdminDashboard() {
 
   const handleDeleteUser = async (userId) => {
     try {
-        await deleteUser(userId).unwrap();
-        toast.success("User deleted successfully");
-        refetchUsers();
-        
+      await deleteUser(userId).unwrap();
+      toast.success("User deleted successfully");
+      refetchUsers();
     } catch (error) {
-        console.error("Failed to delete user:", error);
-        toast.error("Failed to delete user");
+      console.error("Failed to delete user:", error);
+      toast.error("Failed to delete user");
     }
-};
+  };
+
+  const handleDeleteCourse = async (courseId) => {
+    try {
+      await deleteCourse(courseId).unwrap();
+      toast.success("Course Deleted Succesfully");
+      refetchCourses();
+    } catch (error) {
+      console.error("Failed to delete course:", error);
+      toast.error("Failed to delete course");
+    }
+  };
 
 
   const TabPanel = ({ children, index }) => {
@@ -149,12 +180,27 @@ function AdminDashboard() {
           </div>
         </TabPanel>
         <TabPanel index={1}>
-          <h2>Manage Courses</h2>
+        <div className="coursesss-header">
+          <h2 style={{ display: 'inline-block', marginRight: '10px' }}>Manage Courses</h2>
+          <Button to='/admin/add-course'>Add Course</Button>
+        </div>
+         
+          {courseDataLoading && <Loader />}
+          {courses.length === 0 && <h4>No Courses Found!!</h4>}
+          <div className="admin-course-list">
+            {courses.map((course) => (
+              <div className="admin-course-card" key={course._id}>
+                <CourseCard
+                  course={course}
+                  onDeleteCourse={handleDeleteCourse}
+                />
+              </div>
+            ))}
+          </div>
         </TabPanel>
         <TabPanel index={2}>
           <h2>Approve Teachers</h2>
-          {pendingTeachersLoading && <p>Loading...</p>}
-          {pendingTeachersError && <p>Error: {pendingTeachersError.message}</p>}
+          {pendingTeachersLoading && <Loader />}
           {pendingInstructors.length === 0 && <h4>No pending instructors</h4>}
           {pendingInstructors.map((teacher) => (
             <TeacherCard
@@ -166,6 +212,8 @@ function AdminDashboard() {
           ))}
         </TabPanel>
       </div>
+
+     
     </div>
   );
 }

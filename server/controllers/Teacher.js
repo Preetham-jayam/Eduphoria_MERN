@@ -240,3 +240,30 @@ exports.updateQuiz = async (req, res, next) => {
     }
   };
   
+  exports.updateProfile = async (req, res) => {
+    const { teacherId } = req.params;
+    const updates = req.body;
+  
+    try {
+      const updateFields = {};
+      for (const key in updates) {
+        if (updates.hasOwnProperty(key)) {
+          updateFields[key] = updates[key];
+        }
+      }
+  
+      const updatedTeacher = await Teacher.findByIdAndUpdate(
+        teacherId,
+        { $set: updateFields },
+        { new: true }
+      );
+  
+      if (!updatedTeacher) {
+        return res.status(404).json({ message: "Teacher not found" });
+      }
+  
+      res.status(200).json(updatedTeacher);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  };

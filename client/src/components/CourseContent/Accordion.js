@@ -12,6 +12,8 @@ const Accordion = ({
   enrolled,
   percentage,
 }) => {
+
+  console.log(percentage);
   const auth = useSelector((state) => state.auth);
   const [user, setUser] = useState(null);
   const {
@@ -142,7 +144,7 @@ const Accordion = ({
           )}
         </div>
       ))}
-      {loggedIn && enrolled && auth.userInfo.role === 0 && percentage >= 30 && (
+      {loggedIn && enrolled && auth.userInfo.role === 0 && percentage >= 80 && (
         <Certificate
           userName={user.student.firstName}
           courseTitle={course.title}

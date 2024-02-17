@@ -2,10 +2,12 @@
     margin-top: 20px;
 }
 .appbar {
-    background-color: rgb(255, 250, 243);
+    background-color: rgb(183, 239, 238);
     display: flex;
     justify-content: space-around;
     padding: 10px 0;
+    margin: 20px 20px;
+    border-radius: 10px 10px;
   }
   
   .tab {
@@ -14,6 +16,7 @@
     padding: 10px 20px;
     transition: background-color 0.3s ease;
     border-radius: 5px;
+    font-size: medium;
   }
   
   .tab:hover {
@@ -39,4 +42,88 @@
     display: block;
     
   }
+
+  .admin-course-list {
+    display: flex;
+    flex-wrap: wrap;
+    margin: -10px; 
+  }
+  
+  .admin-course-list .admin-course-card {
+    width: calc(25% - 20px); 
+    margin: 10px; 
+  }
+  
+  @media screen and (max-width: 768px) {
+    .admin-course-list .admin-course-card {
+      width: calc(50% - 20px); 
+    }
+  }
+  
+  .delete-course {
+    background-color: red;
+    color: #fff;
+    padding: 5px 10px;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+  }
+  
+  .delete-course:hover {
+    background-color: #fff;
+    color: red;
+  }
+  .coursesss-header{
+    margin-bottom: 20px;
+  }
+  
+ 
+.select-container {
+  width: 100%;
+  position: relative;
+  margin: 5px 0px;
+}
+
+.select-container select {
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+  appearance: none; 
+  cursor: pointer;
+}
+
+.select-container::after {
+  content: '\25BC'; 
+  font-size: 0.8rem;
+  color: #000;
+  position: absolute;
+  top: 70%;
+  right: 10px;
+  transform: translateY(-50%);
+  pointer-events: none; 
+}
+
+.select-container select:hover,
+.select-container select:focus {
+  border-color: #aaa;
+  outline: none;
+}
+
+.select-container select:active,
+.select-container select:checked {
+  border-color: #666;
+}
+
+.select-container option {
+  padding: 0.5rem;
+  background-color: #fff;
+  color: #333;
+}
+
   

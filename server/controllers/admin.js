@@ -3,6 +3,16 @@ const Admin = require("../models/admin");
 const User = require('../models/user');
 const Teacher = require('../models/teacher');
 const Student = require("../models/student");
+const nodemailer = require("nodemailer");
+const sendgridTransport = require("nodemailer-sendgrid-transport");
+const Course = require("../models/course");
+const mailTransporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: "eduphoriaiiits@gmail.com",
+    pass: "mknzpfpcncmrbgua",
+  },
+});
 
 exports.registerAdmin = async (req, res, next) => {
   const { FullName, phoneNo, password, email } = req.body;
@@ -170,4 +180,90 @@ exports.DeleteUser = (req, res) => {
     console.error(err);
     return res.status(500).json({ success: false, message: "Internal server error" });
   });
+};
+
+exports.postsendmail = async (req, res, next) => {
+  try {
+    const { subject, message } = req.body;
+    const users = await User.find({ role: 0 }, "email");
+    if (!users || users.length === 0) {
+      return res.status(404).json({ error: "No users found" });
+    }
+
+    const emailList = users.map((user) => user.email);
+
+    const mailOptions = {
+      from: "eduphoriaiiits@gmail.com",
+      to: emailList.join(","),
+      subject: subject,
+      text: message,
+    };
+
+    const info = await mailTransporter.sendMail(mailOptions);
+    console.log(`Email sent: ${info.response}`);
+    
+    return res.status(200).json({ message: "Mail Sent to all users" });
+  } catch (error) {
+    console.log(`Error occurred while sending email: ${error}`);
+    return res.status(500).json({ error: "Error occurred while sending email" });
+  }
+};
+
+exports.deleteCourse = (req, res) => {
+  const id = req.params.id;
+  Course.findByIdAndDelete(id)
+    .then((deletedCourse) => {
+      if (!deletedCourse) {
+        return res.status(404).json({ success: false, message: 'Course not found' });
+      }
+      return Student.updateMany(
+        { courses: id }, 
+        { $pull: { courses: id } }
+      );
+    })
+    .then(() => {
+      console.log(`Course id ${id} deleted from all students`);
+      res.status(200).json({ success: true, message: 'Course deleted successfully' });
+    })
+    .catch(err => {
+      console.error(`Error deleting course id ${id} from students: ${err}`);
+      res.status(500).json({ success: false, message: 'Internal server error' });
+    });
+};
+
+exports.AdminAddCourse = async (req, res, next) => {
+  
+  const { title, name, description, price,teacher,instructorName } = req.body;
+  const image = req.file;
+  const Imageurl = image.path;
+
+  try {
+    const newCourse = new Course({
+      title,
+      name,
+      description,
+      Imageurl,
+      price,
+      teacher,
+      instructorName
+    });
+
+    const result = await newCourse.save();
+    const courseId = result._id;
+
+    const teacherUser = await Teacher.findById(teacher);
+
+    if (!teacherUser) {
+      return res.status(404).json({ message: "Teacher not found." });
+    }
+
+    teacherUser.courses.push(courseId);
+    await teacherUser.save();
+
+    res.status(201).json(result);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Adding course failed, please try again later." });
+  }
 };

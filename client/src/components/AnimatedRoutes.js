@@ -18,6 +18,8 @@ import ProfilePage from '../Pages/ProfilePage';
 import AccountEditPage from "../Pages/AccountEditPage";
 import AddQuizPage from '../Pages/AddQuizPage';
 import StudentQuizPage from '../Pages/StudentQuizPage';
+import EmailSendingFormPage from "../Pages/EmailSendingPage";
+import AdminAddCoursePage from "../Pages/AdminAddCoursePage";
 
 const AnimatedRoutes = () => {
   const location = useLocation();
@@ -44,7 +46,8 @@ const AnimatedRoutes = () => {
         <Route path='/profile' element={<ProtectedRoute><ProfilePage/></ProtectedRoute>}/>
         <Route path='/student/quiz/:id' element={<ProtectedRoute><StudentQuizPage/></ProtectedRoute>} />
         <Route path='/profile/editaccount' element={<ProtectedRoute><AccountEditPage/></ProtectedRoute>}/>
-        
+        <Route path='/send-mail' element={<ProtectedRoute><EmailSendingFormPage/></ProtectedRoute>}/>
+        <Route path='/admin/add-course' element={<ProtectedRoute><AddCourse/></ProtectedRoute>}/>
 
         
       </Routes>

@@ -46,7 +46,7 @@
   background-color: #ccc;
 }
 
-.navigation {
+.navigation-tabs {
   display: flex;
   justify-content: space-between;
   align-items: center;

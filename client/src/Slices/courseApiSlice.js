@@ -16,7 +16,7 @@ export const coursesApiSlice = apiSlice.injectEndpoints({
     }),
     getCourses: builder.query({
       query: () => ({
-        url: COURSES_URL,
+        url: `${COURSES_URL}`,
       }),
       providesTags: ["Course"],
       keepUnusedDataFor: 5

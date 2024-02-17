@@ -167,7 +167,7 @@ function StudentQuiz() {
           </div>
         ))}
       </div>
-      <div className="navigation">
+      <div className="navigation-tabs">
         <button className='quizzz-button' onClick={handlePrev} disabled={currentQuestionIndex === 0}>Prev</button>
         <button className='quizzz-button' onClick={handleNext} disabled={currentQuestionIndex === quizData.questions.length - 1}>Next</button>
         <button className='finish-button' onClick={handleFinishQuiz} disabled={isUpdating}>Submit</button>

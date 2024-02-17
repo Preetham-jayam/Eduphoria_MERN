@@ -2,10 +2,20 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const cors = require('cors');
+const morgan = require('morgan');
 const HttpError = require('./models/http-error');
-
+const rfs = require('rotating-file-stream');
+const path=require('path');
 const app = express();
 require('dotenv').config();
+
+const accessLogStream = rfs.createStream('access.log', {
+  interval: '1d',
+  path: path.join(__dirname, 'logs')
+});
+
+
+app.use(morgan('combined', { stream: accessLogStream }));
 
 
 const corsOptions = {
@@ -13,7 +23,7 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-
+app.use(morgan('dev'));
 
 app.use(bodyParser.json());
 

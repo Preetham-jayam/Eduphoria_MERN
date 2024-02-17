@@ -63,6 +63,43 @@ export const adminApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Admin"],
     }),
+
+    deleteCourse: builder.mutation({
+      query: (id) => ({
+        url: `${ADMIN_URL}/delete-course/${id}`,
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${JWT_TOKEN}`,
+        },
+      }),
+      invalidatesTags: ["Admin"],
+    }),
+
+    sendMails:builder.mutation({
+      query:({ subject, message })=>({
+        url:`${ADMIN_URL}/send-mail`,
+        method:"POST",
+        body:{subject,message},
+        headers:{
+          Authorization:`Bearer ${JWT_TOKEN}`,
+        }
+      }),
+      invalidatesTags:['Admin']
+    }),
+
+    adminAddCourse: builder.mutation({
+      query: (data) => ({
+        url: `${ADMIN_URL}/add-course`,
+        method: "POST",
+        body: data,
+        headers: {
+          Authorization: `Bearer ${JWT_TOKEN}`,
+        },
+      }),
+      invalidatesTags: ["Course"],
+    }),
+
+
   }),
 });
 
@@ -71,5 +108,8 @@ export const {
   useAcceptTeacherMutation,
   useDeclineTeacherMutation,
   useDeleteUserMutation,
-  useBlockUserMutation
+  useDeleteCourseMutation,
+  useBlockUserMutation,
+  useSendMailsMutation,
+  useAdminAddCourseMutation
 } = adminApiSlice;

@@ -1,8 +1,8 @@
 import React from "react";
 import "./NavItems.css";
 import { NavLink, useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from 'react-redux';
-import { logout } from '../../../Slices/authenticationSlice';
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "../../../Slices/authenticationSlice";
 
 const NavItems = () => {
   const auth = useSelector((state) => state.auth);
@@ -10,10 +10,9 @@ const NavItems = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    dispatch(logout());
-    navigate('/');
+    dispatch(logout()); 
+    navigate("/");
     window.location.reload();
-    
   };
 
   return (
@@ -41,10 +40,23 @@ const NavItems = () => {
           </li>
         </>
       )}
-      {auth.loggedIn && (
+      {auth.loggedIn && auth.userInfo.role !== 2 && (
         <>
           <li>
             <NavLink to="/profile">Profile</NavLink>
+          </li>
+          <li>
+            <button className="logout-btn" onClick={handleLogout}>
+              Logout
+            </button>
+          </li>
+        </>
+      )}
+
+      {auth.loggedIn && auth.userInfo.role === 2 && (
+        <>
+          <li>
+            <NavLink to="/send-mail">Send Mail</NavLink>
           </li>
           <li>
             <button className="logout-btn" onClick={handleLogout}>

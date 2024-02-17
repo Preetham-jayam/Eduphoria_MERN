@@ -1,19 +1,33 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Card from "../../shared/components/FrontendTools/Card";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useAddCourseMutation } from "../../Slices/teacherApiSlice";
-import { useGetUserDetailsQuery } from "../../Slices/usersApiSlice";
+import { useGetUserDetailsQuery,useGetUsersQuery } from "../../Slices/usersApiSlice";
 import Loader from "../Loader/Loader";
+
 const AddCourse = () => {
   const navigate = useNavigate();
   const auth = useSelector((state) => state.auth);
-
+  const [addCourse, { isLoading }] = useAddCourseMutation();
   const { data: user, isLoading: userLoading } = useGetUserDetailsQuery(
     auth.userInfo?.userId
   );
+
+  const {
+    data: users,
+    isLoading: usersLoading,
+  } = useGetUsersQuery();
+  const [teachers, setTeachers] = useState([]);
   
+
+  useEffect(() => {
+    if (users) {
+      const teacherUsers = users.users.filter((user) => user.role === 1).map((user)=>user.teacher);
+      setTeachers(teacherUsers);
+    }
+  }, [users]);
 
   let chapters = [];
   let enrolledStudents = [];
@@ -27,8 +41,7 @@ const AddCourse = () => {
   const [descriptionError, setDescriptionError] = useState("");
   const [priceError, setPriceError] = useState("");
   const [nameError, setNameError] = useState("");
-
-  const [addCourse, { isLoading }] = useAddCourseMutation();
+  const [selectedTeacher, setSelectedTeacher] = useState(""); 
 
   const titleChangeHandler = (e) => {
     setTitle(e.target.value);
@@ -93,10 +106,10 @@ const AddCourse = () => {
     formData.append("description", description);
     formData.append("price", price);
     formData.append("name", name);
-    formData.append("teacher", user.user.teacher._id);
+    formData.append("teacher", auth.userInfo.role === 1 ? user.user.teacher._id : selectedTeacher._id); // Change logic based on user role
     formData.append("chapters", JSON.stringify(chapters));
     formData.append("enrolledStudents", JSON.stringify(enrolledStudents));
-    formData.append("instructorName",user.user.teacher.FullName);
+    formData.append("instructorName",auth.userInfo.role===1? user.user.teacher.FullName:selectedTeacher.FullName);
 
     if (isValid) {
       try {
@@ -119,8 +132,8 @@ const AddCourse = () => {
     }
   };
 
-  if(userLoading){
-    return <Loader/>
+  if (userLoading || usersLoading) {
+    return <Loader />;
   }
 
   return (
@@ -175,11 +188,35 @@ const AddCourse = () => {
               />
               <div className="error-message">{priceError}</div>
             </div>
+            {auth.userInfo.role !== 1 && ( 
+              <div className="form-input select-container">
+              <label htmlFor="teacher">Select Teacher:</label>
+              <select
+                name="teacher"
+                id="teacher"
+                value={selectedTeacher ? selectedTeacher._id : ""}
+                onChange={(e) => {
+                  const selectedTeacherObject = teachers.find(
+                    (teacher) => teacher._id === e.target.value
+                  );
+                  setSelectedTeacher(selectedTeacherObject);
+                }}
+              >
+                <option value="">Select a teacher</option>
+                {teachers.map((teacher) => (
+                  <option key={teacher._id} value={teacher._id}>
+                    {teacher.FullName}
+                  </option>
+                ))}
+              </select>
+            </div>
+            
+            )}
             <div className="form-input">
               <label htmlFor="file">Select Course Image:</label>
               <input
                 type="file"
-                name="file"
+                name="image"
                 id="file"
                 accept="image/*"
                 onChange={fileChangeHandler}

@@ -38,9 +38,9 @@ const MainNavbar = (props) => {
         </h1>
         {/* <SearchBar/> */}
         <nav className='navigation'>
-        <div className="nav-container">
-            <NavItems />
-          </div>
+          <div className="nav-container">
+              <NavItems />
+            </div>
         </nav>
         </Header>
     </React.Fragment>
