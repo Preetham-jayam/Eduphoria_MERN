@@ -19,13 +19,11 @@ import AccountEditPage from "../Pages/AccountEditPage";
 import AddQuizPage from '../Pages/AddQuizPage';
 import StudentQuizPage from '../Pages/StudentQuizPage';
 import EmailSendingFormPage from "../Pages/EmailSendingPage";
-import AdminAddCoursePage from "../Pages/AdminAddCoursePage";
+
 
 const AnimatedRoutes = () => {
   const location = useLocation();
 
-  
-  
 
   return (
     <AnimatePresence>
@@ -37,10 +35,10 @@ const AnimatedRoutes = () => {
         <Route  path="/signin" element={<SignIn />} />
         <Route  path="/signup" element={<StudentSignup />} />
         <Route  path="/tsignup" element={<TeacherSignup />} />
-        <Route path='/AddCourse' element={<ProtectedRoute><AddCourse/></ProtectedRoute>} />
         <Route path ='/courseDetails/:id' element={<CourseDetails/>}/>
         <Route path='/enroll/:cid' element={<EnrollPayment/>}/>
-        <Route path='/courseContent/:id' element={<CourseContent/>}/>
+        <Route path='/AddCourse' element={<ProtectedRoute><AddCourse/></ProtectedRoute>} />
+        <Route path='/courseContent/:id' element={<ProtectedRoute><CourseContent/></ProtectedRoute>}/>
         <Route path='/course/upload/:id' element={<ProtectedRoute><CourseUploadPage/></ProtectedRoute>} />
         <Route path='/course/addquiz/:id' element={<ProtectedRoute><AddQuizPage/></ProtectedRoute>}/>
         <Route path='/profile' element={<ProtectedRoute><ProfilePage/></ProtectedRoute>}/>
@@ -48,6 +46,7 @@ const AnimatedRoutes = () => {
         <Route path='/profile/editaccount' element={<ProtectedRoute><AccountEditPage/></ProtectedRoute>}/>
         <Route path='/send-mail' element={<ProtectedRoute><EmailSendingFormPage/></ProtectedRoute>}/>
         <Route path='/admin/add-course' element={<ProtectedRoute><AddCourse/></ProtectedRoute>}/>
+        
 
         
       </Routes>

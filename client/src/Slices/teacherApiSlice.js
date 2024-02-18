@@ -1,8 +1,11 @@
 import { TEACHER_URL } from "../constants";
 import { apiSlice } from "./apiSlice";
 
-const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-const JWT_TOKEN = userInfo ? userInfo.token : null;
+
+const getJWTToken = () => {
+  const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+  return userInfo ? userInfo.token : null;
+};
 
 export const teacherApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -12,7 +15,7 @@ export const teacherApiSlice = apiSlice.injectEndpoints({
         method: "POST",
         body: data,
         headers: {
-          Authorization: `Bearer ${JWT_TOKEN}`,
+          Authorization: `Bearer ${getJWTToken()}`,
         },
       }),
       invalidatesTags: ["Course"],
@@ -23,7 +26,7 @@ export const teacherApiSlice = apiSlice.injectEndpoints({
         method: "PUT",
         body: data,
         headers: {
-          Authorization: `Bearer ${JWT_TOKEN}`,
+          Authorization: `Bearer ${getJWTToken()}`,
         },
       }),
       invalidatesTags: ["Course"],
@@ -33,7 +36,7 @@ export const teacherApiSlice = apiSlice.injectEndpoints({
         url: `${TEACHER_URL}/delete/${courseId}`,
         method: "DELETE",
         headers: {
-          Authorization: `Bearer ${JWT_TOKEN}`,
+          Authorization: `Bearer ${getJWTToken()}`,
         },
       }),
       invalidatesTags: ["Course"],
@@ -44,7 +47,7 @@ export const teacherApiSlice = apiSlice.injectEndpoints({
         method: "POST",
         body: { title, questions },
         headers: {
-          Authorization: `Bearer ${JWT_TOKEN}`,
+          Authorization: `Bearer ${getJWTToken()}`,
         },
       }),
       invalidatesTags: ["Course"],
@@ -56,10 +59,32 @@ export const teacherApiSlice = apiSlice.injectEndpoints({
         method: "PUT",
         body: data,
         headers: {
-          Authorization: `Bearer ${JWT_TOKEN}`,
+          Authorization: `Bearer ${getJWTToken()}`,
         },
       }),
       invalidatesTags: ["Teacher"],
+    }),
+    addChapter: builder.mutation({
+      query: ({ courseId, newChapter }) => ({
+        url: `${TEACHER_URL}/addchapter/${courseId}`,
+        method: 'POST',
+        body: newChapter,
+        headers: {
+          Authorization:`Bearer ${getJWTToken()}`,
+        },
+      }),
+      invalidatesTags: ['Teacher'],
+    }),
+    addLesson: builder.mutation({
+      query: ({ chapterId, lesson }) => ({
+        url: `${TEACHER_URL}/addlesson/${chapterId}`,
+        method: 'POST',
+        body: lesson,
+        headers: {
+          Authorization: `Bearer ${getJWTToken()}`,
+        },
+      }),
+      invalidatesTags: ['Course'],
     }),
   }),
 });
@@ -69,5 +94,8 @@ export const {
   useUpdateCourseMutation,
   useDeleteCourseMutation,
   useAddQuizToCourseMutation, 
-  useUpdateTeacherProfileMutation
+  useUpdateTeacherProfileMutation,
+  useAddChapterMutation,
+  useAddLessonMutation
+
 } = teacherApiSlice;

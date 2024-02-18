@@ -236,7 +236,6 @@ exports.AdminAddCourse = async (req, res, next) => {
   const { title, name, description, price,teacher,instructorName } = req.body;
   const image = req.file;
   const Imageurl = image.path;
-
   try {
     const newCourse = new Course({
       title,

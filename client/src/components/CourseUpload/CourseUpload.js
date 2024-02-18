@@ -7,11 +7,10 @@ import {
   useGetCourseDetailsQuery,
   useUpdateCourseMutation,
   useDeleteLessonMutation,
-  useAddChapterMutation,
-  useAddLessonMutation,
   useUpdateChapterMutation,
   useUpdateLessonMutation,
 } from "../../Slices/courseApiSlice";
+import { useAddChapterMutation,useAddLessonMutation } from "../../Slices/teacherApiSlice";
 import Loader from "../Loader/Loader";
 import Modal from "../../shared/components/FrontendTools/Modal";
 
@@ -22,6 +21,7 @@ const CourseUpload = () => {
     data: courseData,
     isLoading: courseLoading,
     isError: courseError,
+    refetch:refetchCourseData
   } = useGetCourseDetailsQuery(courseId);
   const [course, setCourse] = useState({});
   const [chIndex,setChIndex]=useState(null);
@@ -127,9 +127,9 @@ const CourseUpload = () => {
 
   const handleChapterModalSubmit = async () => {
     try {
-      const newChapterResponse = await addChapterMutation({
+      await addChapterMutation({
         courseId,
-        chapter: {
+        newChapter: {
           name: newChapter.name,
           description: newChapter.description,
           lessons: [],
@@ -138,8 +138,11 @@ const CourseUpload = () => {
 
       setCourseChapters((prevChapters) => [
         ...prevChapters,
-        newChapterResponse,
+        newChapter,
       ]);
+
+      toast.success("Chapter added succesfully");
+      refetchCourseData();
       setShowChapterModal(false);
       setNewChapter({ name: "", description: "" });
     } catch (error) {
@@ -149,38 +152,58 @@ const CourseUpload = () => {
 
   const handleLessonModalSubmit = async (chapterIndex) => {
     try {
-      console.log(courseChapters);
-      const newLessonResponse = await addLessonMutation({
-        chapterId: courseChapters[chapterIndex]._id,
-        lesson: {
-          number: newLesson.number,
-          title: newLesson.title,
-          description: newLesson.description,
-          videoFile: newLesson.videoFile,
-          checked: 0,
-        },
-      });
-      console.log(newLessonResponse);
-      setCourseChapters((prevChapters) => {
-        const updatedChapters = [...prevChapters];
-        const updatedChapter = { ...updatedChapters[chapterIndex] };
-      
-        updatedChapter.lessons = [
-          ...updatedChapter.lessons,
-          newLessonResponse.lesson,
-        ];
-      
-        updatedChapters[chapterIndex] = updatedChapter;
-        return updatedChapters;
-      });
-      
+      const formData = new FormData();
+      formData.append('chapterId', courseChapters[chapterIndex]._id);
+      formData.append('number', newLesson.number);
+      formData.append('title', newLesson.title);
+      formData.append('description', newLesson.description);
+      formData.append('videoFile', newLesson.videoFile);
+      formData.append('checked', 0);
 
-      setShowLessonModal(false);
-      setNewLesson({ title: "", number: 0, description: "", videoUrl: "" });
+      const datatosend=
+      {
+        chapterId:courseChapters[chapterIndex]._id,
+        number:newLesson.number,
+        title:newLesson.title,
+        description:newLesson.description,
+        videoFile:newLesson.videoFile
+      }
+
+      console.log(datatosend);
+  
+      const response = await addLessonMutation({
+        chapterId: courseChapters[chapterIndex]._id,
+        lesson: formData,
+      });
+  
+      const { data: newLessonData } = response;
+  
+      if (newLessonData) {
+        setCourseChapters((prevChapters) => {
+          const updatedChapters = [...prevChapters];
+          const updatedChapter = { ...updatedChapters[chapterIndex] };
+  
+          updatedChapter.lessons = [
+            ...updatedChapter.lessons,
+            newLessonData.lesson,
+          ];
+  
+          updatedChapters[chapterIndex] = updatedChapter;
+          return updatedChapters;
+        });
+  
+        toast.success("Lesson Added Successfully");
+        setShowLessonModal(false);
+        setNewLesson({ title: "", number: 0, description: "", videoUrl: "" });
+      } else {
+        console.error("Error: No data returned from addLessonMutation");
+      }
     } catch (error) {
       console.error("Error adding lesson:", error);
+      toast.error("Error adding lesson. Please try again.");
     }
   };
+  
 
   const handleUpdateChapter = async (chapterIndex) => {
     try {
@@ -281,7 +304,7 @@ const CourseUpload = () => {
               </div>
             </div>
             <div className="lessons">
-              {chapter.lessons.map((lesson, lessonIndex) => (
+              {chapter.lessons && chapter.lessons.map((lesson, lessonIndex) => (
                 <div className="lesson" key={lessonIndex}>
                   <button
                     className="delete-lesson-btn"
@@ -509,6 +532,7 @@ const CourseUpload = () => {
           <label className="label">Video File:</label>
           <input
             type="file"
+            name='video'
             onChange={(e) =>
               setNewLesson((prevLesson) => ({
                 ...prevLesson,

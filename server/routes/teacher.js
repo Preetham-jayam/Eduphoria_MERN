@@ -5,7 +5,7 @@ const checkAuth = require('../middleware/isAuth');
 const TeacherController = require('../controllers/Teacher');
 
 router.post('/addcourse', checkAuth, fileUpload.single('image'), TeacherController.addCourse);
-router.post('/addchapter/:courseId', checkAuth, TeacherController.addChapter);
+router.post('/addchapter/:courseId', checkAuth,TeacherController.addChapter);
 router.post('/addlesson/:chapterId', checkAuth, fileUpload.single('video'), TeacherController.addLesson);
 
 router.put('/updatechapter/:chapterId', checkAuth, TeacherController.updateChapter);

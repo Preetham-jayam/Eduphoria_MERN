@@ -49,28 +49,7 @@ export const coursesApiSlice = apiSlice.injectEndpoints({
       },
       invalidatesTags: ['Course'],
     }),
-    addChapter: builder.mutation({
-      query: ({ courseId, chapter }) => ({
-        url: `${TEACHER_URL}/addchapter/${courseId}`,
-        method: 'POST',
-        body: chapter,
-      }),
-      headers: {
-        Authorization: `Bearer ${JWT_TOKEN}`,
-      },
-      invalidatesTags: ['Course','Chapter'],
-    }),
-    addLesson: builder.mutation({
-      query: ({ chapterId, lesson }) => ({
-        url: `${TEACHER_URL}/addlesson/${chapterId}`,
-        method: 'POST',
-        body: lesson,
-      }),
-      headers: {
-        Authorization: `Bearer ${JWT_TOKEN}`,
-      },
-      invalidatesTags: ['Course'],
-    }),
+    
     updateChapter: builder.mutation({
       query: ({ chapterId, chapter }) => ({
         url: `${TEACHER_URL}/updatechapter/${chapterId}`,
@@ -109,8 +88,6 @@ export const {
   useGetCourseReviewsQuery,
   useUpdateCourseMutation,
   useDeleteLessonMutation,
-  useAddChapterMutation,
-  useAddLessonMutation,
   useUpdateChapterMutation,
   useUpdateLessonMutation,
   useGetQuizByCourseIdQuery

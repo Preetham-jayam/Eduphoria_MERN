@@ -32,6 +32,7 @@ const CourseContent = () => {
     data: coursereviewData,
     isLoading: reviewLoading,
     isError: reviewError,
+    refetch
   } = useGetCourseReviewsQuery(courseId);
 
   const [user, setUser] = useState(null);
@@ -68,7 +69,7 @@ const CourseContent = () => {
 
   useEffect(() => {
     if (courseChapters.length > 0) {
-      setSelectedVideoUrl(courseChapters[0].lessons[0].videoUrl);
+     courseChapters[0].lessons.length>0 && setSelectedVideoUrl(courseChapters[0].lessons[0].videoUrl);
     }
   }, [courseChapters]);
 
@@ -138,6 +139,7 @@ const CourseContent = () => {
     try {
       const { data } = await addReview(reviewData);
       setReviews([...reviews, data]);
+      refetch();
       toast.success(data.message);
     } catch (error) {
       console.error("Error submitting review:", error.message);

@@ -1,10 +1,10 @@
 import { STUDENT_URL } from "../constants";
 import { apiSlice } from "./apiSlice";
 
-const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-
-const JWT_TOKEN = userInfo ? userInfo.token : null;
-
+const getJWTToken = () => {
+  const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+  return userInfo ? userInfo.token : null;
+};
 export const studentApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     updateProfile: builder.mutation({
@@ -13,7 +13,7 @@ export const studentApiSlice = apiSlice.injectEndpoints({
         method: "PUT",
         body: data,
         headers: {
-          Authorization: `Bearer ${JWT_TOKEN}`,
+          Authorization: `Bearer ${getJWTToken()}`,
         },
       }),
       invalidatesTags: ["Student"],
@@ -25,7 +25,7 @@ export const studentApiSlice = apiSlice.injectEndpoints({
         method: "POST",
         body: data,
         headers: {
-          Authorization: `Bearer ${JWT_TOKEN}`,
+          Authorization: `Bearer ${getJWTToken()}`,
         },
       }),
       invalidatesTags: ["Student"],
@@ -37,7 +37,7 @@ export const studentApiSlice = apiSlice.injectEndpoints({
         method: "POST",
         body: data,
         headers: {
-          Authorization: `Bearer ${JWT_TOKEN}`,
+          Authorization: `Bearer ${getJWTToken()}`,
         },
       }),
       invalidatesTags: ["Student"],
@@ -48,7 +48,7 @@ export const studentApiSlice = apiSlice.injectEndpoints({
         method: "PATCH",
         body: data,
         headers: {
-          Authorization: `Bearer ${JWT_TOKEN}`,
+          Authorization: `Bearer ${getJWTToken()}`,
         },
       }),
     }),
@@ -59,7 +59,7 @@ export const studentApiSlice = apiSlice.injectEndpoints({
         method: "PATCH",
         body: data,
         headers: {
-          Authorization: `Bearer ${JWT_TOKEN}`,
+          Authorization: `Bearer ${getJWTToken()}`,
         },
       }),
       invalidatesTags: ["Student"],

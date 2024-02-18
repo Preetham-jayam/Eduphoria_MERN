@@ -1,9 +1,11 @@
 import { ADMIN_URL } from "../constants";
 import { apiSlice } from "./apiSlice";
 
-const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-const JWT_TOKEN = userInfo ? userInfo.token : null;
-
+const getJWTToken = () => {
+  const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+  return userInfo ? userInfo.token : null;
+};
+console.log(getJWTToken());
 export const adminApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
    
@@ -12,7 +14,7 @@ export const adminApiSlice = apiSlice.injectEndpoints({
         url: `${ADMIN_URL}/pending-teachers`,
         method: "GET",
         headers: {
-          Authorization: `Bearer ${JWT_TOKEN}`,
+          Authorization: `Bearer ${getJWTToken()}`,
         },
       }),
       providesTags: ["Admin"],
@@ -24,7 +26,7 @@ export const adminApiSlice = apiSlice.injectEndpoints({
         url: `${ADMIN_URL}/accept-teacher/${id}`,
         method: "PATCH",
         headers: {
-          Authorization: `Bearer ${JWT_TOKEN}`,
+          Authorization: `Bearer ${getJWTToken()}`,
         },
       }),
       invalidatesTags: ["Admin"],
@@ -36,7 +38,7 @@ export const adminApiSlice = apiSlice.injectEndpoints({
         url: `${ADMIN_URL}/decline-teacher/${id}`,
         method: "PATCH",
         headers: {
-          Authorization: `Bearer ${JWT_TOKEN}`,
+          Authorization: `Bearer ${getJWTToken()}`,
         },
       }),
       invalidatesTags: ["Admin"],
@@ -47,7 +49,7 @@ export const adminApiSlice = apiSlice.injectEndpoints({
         url: `${ADMIN_URL}/block-user/${id}`,
         method: "PATCH",
         headers: {
-          Authorization: `Bearer ${JWT_TOKEN}`,
+          Authorization: `Bearer ${getJWTToken()}`,
         },
       }),
       invalidatesTags: ["Admin"],
@@ -58,7 +60,7 @@ export const adminApiSlice = apiSlice.injectEndpoints({
         url: `${ADMIN_URL}/delete-user/${id}`,
         method: "DELETE",
         headers: {
-          Authorization: `Bearer ${JWT_TOKEN}`,
+          Authorization: `Bearer ${getJWTToken()}`,
         },
       }),
       invalidatesTags: ["Admin"],
@@ -69,7 +71,7 @@ export const adminApiSlice = apiSlice.injectEndpoints({
         url: `${ADMIN_URL}/delete-course/${id}`,
         method: "DELETE",
         headers: {
-          Authorization: `Bearer ${JWT_TOKEN}`,
+          Authorization: `Bearer ${getJWTToken()}`,
         },
       }),
       invalidatesTags: ["Admin"],
@@ -81,7 +83,7 @@ export const adminApiSlice = apiSlice.injectEndpoints({
         method:"POST",
         body:{subject,message},
         headers:{
-          Authorization:`Bearer ${JWT_TOKEN}`,
+          Authorization:`Bearer ${getJWTToken()}`,
         }
       }),
       invalidatesTags:['Admin']
@@ -93,7 +95,7 @@ export const adminApiSlice = apiSlice.injectEndpoints({
         method: "POST",
         body: data,
         headers: {
-          Authorization: `Bearer ${JWT_TOKEN}`,
+          Authorization: `Bearer ${getJWTToken()}`,
         },
       }),
       invalidatesTags: ["Course"],

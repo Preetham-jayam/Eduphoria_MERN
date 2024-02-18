@@ -56,7 +56,7 @@ exports.addChapter = async (req, res) => {
   try {
     const { courseId } = req.params;
     console.log(courseId);
-    const { name, description,lessons } = req.body;
+    const { name, description } = req.body;
   
 
     const course = await Course.findById(courseId);
@@ -68,7 +68,6 @@ exports.addChapter = async (req, res) => {
     const newChapter = new Chapter({
       name,
       description,
-      lessons,
       course: courseId,
     });
 
@@ -88,7 +87,8 @@ exports.addLesson = async (req, res) => {
   try {
     const { chapterId } = req.params;
     const { number, title, description } = req.body;
-    const videoUrl=req.file.path;
+    const video=req.file;
+    const videoUrl=video.path;
 
     const chapter = await Chapter.findById(chapterId);
 
@@ -112,7 +112,7 @@ exports.addLesson = async (req, res) => {
     res.status(201).json({lesson:newLesson});
   } catch (error) {
     console.error('Error adding lesson:', error);
-    res.status(500).json({ message: 'Internal Server Error' });
+    res.status(500).json({ message: 'Internal Server Error',error:error });
   }
 };
 

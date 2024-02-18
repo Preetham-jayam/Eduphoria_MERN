@@ -1,8 +1,9 @@
 import { USERS_URL } from "../constants";
 import { apiSlice } from "./apiSlice";
-const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-
-const JWT_TOKEN = userInfo ? userInfo.token : null;
+const getJWTToken = () => {
+  const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+  return userInfo ? userInfo.token : null;
+};
 
 export const usersApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -60,7 +61,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         method: "PUT",
         body: data,
         headers: {
-          Authorization: `Bearer ${JWT_TOKEN}`,
+          Authorization: `Bearer ${getJWTToken()}`,
         },
       }),
 

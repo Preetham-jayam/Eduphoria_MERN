@@ -67,12 +67,12 @@ const UserCard = ({ user, onBlock, onUnBlock, onDelete }) => {
       <div className="custom-user-actions">
         <>
           {user.flag === 0 && (
-            <Button className="block"  onClick={handleBlockClick}>Block</Button>
+            <Button type='button' className="block"  onClick={handleBlockClick}>Block</Button>
           )}
           {user.flag === 1 && (
-            <Button className="unblock" unblock onClick={handleUnBlockClick}>Unblock</Button>
+            <Button type='button' className="unblock" unblock onClick={handleUnBlockClick}>Unblock</Button>
           )}
-          <Button className="delete" danger onClick={handleDeleteClick}>Delete</Button>
+          <Button type='button' className="delete" danger onClick={handleDeleteClick}>Delete</Button>
         </>
       </div>
       <Modal
@@ -81,8 +81,8 @@ const UserCard = ({ user, onBlock, onUnBlock, onDelete }) => {
         header="Confirmation"
         footer={
           <React.Fragment>
-            <Button danger onClick={handleConfirmAction}>{actionType}</Button>
-            <Button onClick={handleCloseModal}>Cancel</Button>
+            <Button type='button' danger onClick={handleConfirmAction}>{actionType}</Button>
+            <Button type='button' onClick={handleCloseModal}>Cancel</Button>
           </React.Fragment>
         }
       >
