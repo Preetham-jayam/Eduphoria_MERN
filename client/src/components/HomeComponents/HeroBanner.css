@@ -1,8 +1,5 @@
-
-
 .hero-banner {
     position: relative;
-    background-image: url('/Users/preetham_jayam/Eduphoria_MERN/client/src/Assets/Banner.avif'); 
     background-size: cover;
     background-position: center;
     height: 70vh;

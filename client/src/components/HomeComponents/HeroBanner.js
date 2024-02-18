@@ -1,10 +1,11 @@
 import React from 'react';
 import './HeroBanner.css'; 
 import { Link } from 'react-router-dom';
+import Banner from '../../Assets/Banner.avif'
 
 const HeroBanner = () => {
   return (
-    <div className="hero-banner">
+    <div className="hero-banner" style={{backgroundImage: `url(${Banner})`}}>
       <div className="hero-content">
         <h1 className="hero-title">Unlock Your Potential</h1>
         <p className="hero-subtitle">Learn, Grow, and Excel with Our Online Courses</p>
