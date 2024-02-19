@@ -10,7 +10,6 @@ import { Route, Routes, useLocation } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
 import AddCourse from './TeacherHomeComponents/AddCourse';
 import Courses from "../Pages/Course";
-import CourseDetails from "./CourseDetails/CourseDetails";
 import EnrollPayment from "./Payment/EnrollPayment";
 import CourseContent from "./CourseContent/CourseContent";
 import CourseUploadPage from "../Pages/CourseUploadPage";
@@ -19,6 +18,10 @@ import AccountEditPage from "../Pages/AccountEditPage";
 import AddQuizPage from '../Pages/AddQuizPage';
 import StudentQuizPage from '../Pages/StudentQuizPage';
 import EmailSendingFormPage from "../Pages/EmailSendingPage";
+import ResultsPage from "../Pages/ResultPage";
+import CourseDetailsPage from "../Pages/CourseDetailsPage";
+import ForgotPasswordPage from "../Pages/ForgotPasswordPage";
+import ResetPasswordPage from "../Pages/ResetPasswordPage";
 
 
 const AnimatedRoutes = () => {
@@ -33,10 +36,13 @@ const AnimatedRoutes = () => {
         <Route  path="/about" element={<About />} />
         <Route  path='/help' element={<Help/>} />
         <Route  path="/signin" element={<SignIn />} />
+        <Route path='/forgot-password' element={<ForgotPasswordPage/>}/>
+        <Route path='/reset-password/:token' element={<ResetPasswordPage/>}/>
         <Route  path="/signup" element={<StudentSignup />} />
         <Route  path="/tsignup" element={<TeacherSignup />} />
-        <Route path ='/courseDetails/:id' element={<CourseDetails/>}/>
+        <Route path ='/courseDetails/:id' element={<CourseDetailsPage/>}/>
         <Route path='/enroll/:cid' element={<EnrollPayment/>}/>
+        <Route path='/results' element={<ResultsPage/>}/>
         <Route path='/AddCourse' element={<ProtectedRoute><AddCourse/></ProtectedRoute>} />
         <Route path='/courseContent/:id' element={<ProtectedRoute><CourseContent/></ProtectedRoute>}/>
         <Route path='/course/upload/:id' element={<ProtectedRoute><CourseUploadPage/></ProtectedRoute>} />

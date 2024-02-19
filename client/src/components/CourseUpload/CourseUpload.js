@@ -1,33 +1,37 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import "./CourseUpload.css";
-import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
   useGetCourseDetailsQuery,
-  useUpdateCourseMutation,
   useDeleteLessonMutation,
   useUpdateChapterMutation,
   useUpdateLessonMutation,
 } from "../../Slices/courseApiSlice";
-import { useAddChapterMutation,useAddLessonMutation } from "../../Slices/teacherApiSlice";
+import Button from "../../shared/components/FrontendTools/Button";
+import {
+  useAddChapterMutation,
+  useAddLessonMutation,
+} from "../../Slices/teacherApiSlice";
 import Loader from "../Loader/Loader";
 import Modal from "../../shared/components/FrontendTools/Modal";
 
 const CourseUpload = () => {
-  const navigate = useNavigate();
   const { id: courseId } = useParams();
   const {
     data: courseData,
     isLoading: courseLoading,
     isError: courseError,
-    refetch:refetchCourseData
+    refetch: refetchCourseData,
   } = useGetCourseDetailsQuery(courseId);
   const [course, setCourse] = useState({});
-  const [chIndex,setChIndex]=useState(null);
+  const [chIndex, setChIndex] = useState(null);
   const [courseChapters, setCourseChapters] = useState([]);
   const [showChapterModal, setShowChapterModal] = useState(false);
   const [showLessonModal, setShowLessonModal] = useState(false);
+  const [showLessonUpdateModal, setShowLessonUpdateModal] = useState(false);
+  const [currentChapterIndex, setCurrentChapterIndex] = useState(null);
+  const [currentLessonIndex, setCurrentLessonIndex] = useState(null);
   const [newChapter, setNewChapter] = useState({ name: "", description: "" });
   const [newLesson, setNewLesson] = useState({
     title: "",
@@ -35,6 +39,22 @@ const CourseUpload = () => {
     description: "",
     videoFile: null,
   });
+  const [editedChapter, setEditedChapter] = useState({
+    name: "",
+    description: "",
+  });
+  const [editedLesson, setEditedLesson] = useState({
+    title: "",
+    number: 0,
+    description: "",
+    videoFile: null,
+  });
+
+  const [deleteLessonMutation] = useDeleteLessonMutation();
+  const [addChapterMutation] = useAddChapterMutation();
+  const [addLessonMutation] = useAddLessonMutation();
+  const [updateChapterMutation] = useUpdateChapterMutation();
+  const [updateLessonMutation] = useUpdateLessonMutation();
 
   useEffect(() => {
     if (courseData) {
@@ -86,43 +106,42 @@ const CourseUpload = () => {
     });
   };
 
-
-  const [updateCourseMutation] = useUpdateCourseMutation();
-  const [deleteLessonMutation] = useDeleteLessonMutation();
-  const [addChapterMutation] = useAddChapterMutation();
-  const [addLessonMutation] = useAddLessonMutation();
-  const [updateChapterMutation] = useUpdateChapterMutation();
-  const [updateLessonMutation] = useUpdateLessonMutation();
-
-  const updateCourse = useCallback(async () => {
-    try {
-      const updatedCourse = await updateCourseMutation({
-        courseId,
-        course: {
-          ...course,
-          chapters: courseChapters,
-        },
-      });
-
-      console.log("Course", updatedCourse);
-      toast.success("Course Updated Successfully");
-      navigate(`/courseContent/${courseId}`);
-    } catch (error) {
-      console.error("Error updating course:", error);
-    }
-  }, [course, courseChapters, courseId, navigate, updateCourseMutation]);
-
-  const handleSubmit = useCallback(() => {
-    updateCourse();
-  }, [updateCourse]);
-
-  const handleAddChapter = async () => {
+  const handleEditChapter = (chapterIndex) => {
+    const chapterToEdit = courseChapters[chapterIndex];
+    setEditedChapter({
+      name: chapterToEdit.name,
+      description: chapterToEdit.description,
+    });
+    setCurrentChapterIndex(chapterIndex);
     setShowChapterModal(true);
   };
 
-  const handleAddLesson = async (chapterIndex) => {
-    setChIndex(chapterIndex);
-    setShowLessonModal(true);
+  const handleChapterUpdate = async () => {
+    try {
+      const updatedChapter = await updateChapterMutation({
+        chapterId: courseChapters[currentChapterIndex]._id,
+        chapter: {
+          name: editedChapter.name,
+          description: editedChapter.description,
+        },
+      });
+
+      setCourseChapters((prevChapters) => {
+        const updatedChapters = [...prevChapters];
+        updatedChapters[currentChapterIndex] = updatedChapter;
+        return updatedChapters;
+      });
+
+      toast.success("Chapter updated successfully");
+      setShowChapterModal(false);
+    } catch (error) {
+      console.error("Error updating chapter:", error);
+      toast.error("Failed to update chapter. Please try again.");
+    }
+  };
+
+  const handleAddChapter = async () => {
+    setShowChapterModal(true);
   };
 
   const handleChapterModalSubmit = async () => {
@@ -136,10 +155,7 @@ const CourseUpload = () => {
         },
       });
 
-      setCourseChapters((prevChapters) => [
-        ...prevChapters,
-        newChapter,
-      ]);
+      setCourseChapters((prevChapters) => [...prevChapters, newChapter]);
 
       toast.success("Chapter added succesfully");
       refetchCourseData();
@@ -150,48 +166,42 @@ const CourseUpload = () => {
     }
   };
 
+  const handleAddLesson = async (chapterIndex) => {
+    setChIndex(chapterIndex);
+    setShowLessonModal(true);
+  };
+  
   const handleLessonModalSubmit = async (chapterIndex) => {
     try {
       const formData = new FormData();
-      formData.append('chapterId', courseChapters[chapterIndex]._id);
-      formData.append('number', newLesson.number);
-      formData.append('title', newLesson.title);
-      formData.append('description', newLesson.description);
-      formData.append('videoFile', newLesson.videoFile);
-      formData.append('checked', 0);
+      formData.append("chapterId", courseChapters[chapterIndex]._id);
+      formData.append("number", newLesson.number);
+      formData.append("title", newLesson.title);
+      formData.append("description", newLesson.description);
+      formData.append("videoFile", newLesson.videoFile);
+      formData.append("checked", 0);
 
-      const datatosend=
-      {
-        chapterId:courseChapters[chapterIndex]._id,
-        number:newLesson.number,
-        title:newLesson.title,
-        description:newLesson.description,
-        videoFile:newLesson.videoFile
-      }
-
-      console.log(datatosend);
-  
       const response = await addLessonMutation({
         chapterId: courseChapters[chapterIndex]._id,
         lesson: formData,
       });
-  
+
       const { data: newLessonData } = response;
-  
+
       if (newLessonData) {
         setCourseChapters((prevChapters) => {
           const updatedChapters = [...prevChapters];
           const updatedChapter = { ...updatedChapters[chapterIndex] };
-  
+
           updatedChapter.lessons = [
             ...updatedChapter.lessons,
             newLessonData.lesson,
           ];
-  
+
           updatedChapters[chapterIndex] = updatedChapter;
           return updatedChapters;
         });
-  
+
         toast.success("Lesson Added Successfully");
         setShowLessonModal(false);
         setNewLesson({ title: "", number: 0, description: "", videoUrl: "" });
@@ -203,39 +213,62 @@ const CourseUpload = () => {
       toast.error("Error adding lesson. Please try again.");
     }
   };
-  
 
-  const handleUpdateChapter = async (chapterIndex) => {
-    try {
-      const updatedChapter = await updateChapterMutation({
-        chapterId: courseChapters[chapterIndex]._id,
-        chapter: courseChapters[chapterIndex],
-      });
-
-      setCourseChapters((prevChapters) => {
-        const updatedChapters = [...prevChapters];
-        updatedChapters[chapterIndex] = updatedChapter;
-        return updatedChapters;
-      });
-    } catch (error) {
-      console.error("Error updating chapter:", error);
-    }
+  const handleEditLesson = (chapterIndex, lessonIndex) => {
+    const lessonToEdit = courseChapters[chapterIndex].lessons[lessonIndex];
+    setEditedLesson({
+      title: lessonToEdit.title,
+      number: lessonToEdit.number,
+      description: lessonToEdit.description,
+      videoFile: lessonToEdit.videoUrl,
+    });
+    setCurrentChapterIndex(chapterIndex);
+    setCurrentLessonIndex(lessonIndex);
+    setShowLessonUpdateModal(true);
   };
 
-  const handleUpdateLesson = async (chapterIndex, lessonIndex) => {
+  const handleLessonUpdate = async () => {
     try {
-      const updatedLesson = await updateLessonMutation({
-        lessonId: courseChapters[chapterIndex].lessons[lessonIndex]._id,
-        lesson: courseChapters[chapterIndex].lessons[lessonIndex],
+      const formData = new FormData();
+      formData.append("chapterId", courseChapters[currentChapterIndex]._id);
+      formData.append("number", editedLesson.number);
+      formData.append("title", editedLesson.title);
+      formData.append("description", editedLesson.description);
+
+      if (editedLesson.videoFile) {
+        formData.append("videoFile", editedLesson.videoFile);
+      } else {
+        formData.append(
+          "videoUrl",
+          courseChapters[currentChapterIndex].lessons[currentLessonIndex]
+            .videoUrl
+        );
+      }
+
+      formData.append("checked", 0);
+
+      const lessondata = formData;
+      console.log(lessondata);
+
+      const response = await updateLessonMutation({
+        lessonId:
+          courseChapters[currentChapterIndex].lessons[currentLessonIndex]._id,
+        lesson: formData,
       });
 
-      setCourseChapters((prevChapters) => {
-        const updatedChapters = [...prevChapters];
-        updatedChapters[chapterIndex].lessons[lessonIndex] = updatedLesson;
-        return updatedChapters;
-      });
+      const { data: updatedLesson } = response;
+
+      if (updatedLesson) {
+        refetchCourseData();
+        toast.success("Lesson updated successfully");
+        setShowLessonUpdateModal(false);
+      } else {
+        console.error("Error: No data returned from updateLessonMutation");
+        toast.error("Failed to update lesson. Please try again.");
+      }
     } catch (error) {
       console.error("Error updating lesson:", error);
+      toast.error("Failed to update lesson. Please try again.");
     }
   };
 
@@ -253,11 +286,11 @@ const CourseUpload = () => {
         setCourseChapters((prevChapters) => {
           const updatedChapters = [...prevChapters];
           const updatedChapter = { ...updatedChapters[chapterIndex] };
-        
+
           updatedChapter.lessons = updatedChapter.lessons.filter(
             (_, index) => index !== lessonIndex
           );
-        
+
           updatedChapters[chapterIndex] = updatedChapter;
           return updatedChapters;
         });
@@ -284,6 +317,7 @@ const CourseUpload = () => {
               <div className="input-container">
                 <label className="label">Chapter Name:</label>
                 <input
+                  readOnly
                   className="input"
                   type="text"
                   value={chapter.name}
@@ -295,6 +329,7 @@ const CourseUpload = () => {
               <div className="input-container">
                 <label className="label">Chapter Description:</label>
                 <textarea
+                  readOnly
                   className="input"
                   value={chapter.description}
                   onChange={(e) =>
@@ -304,103 +339,107 @@ const CourseUpload = () => {
               </div>
             </div>
             <div className="lessons">
-              {chapter.lessons && chapter.lessons.map((lesson, lessonIndex) => (
-                <div className="lesson" key={lessonIndex}>
-                  <button
-                    className="delete-lesson-btn"
-                    style={{ backgroundColor: "red", color: "white" }}
-                    onClick={() =>
-                      handleLessonDelete(chapterIndex, lessonIndex)
-                    }
-                  >
-                    &#10006;
-                  </button>
-                  <div className="input-container">
-                    <label className="label">Lesson Name:</label>
-                    <input
-                      type="text"
-                      value={lesson.title}
-                      onChange={(e) =>
-                        handleLessonNameChange(
-                          chapterIndex,
-                          lessonIndex,
-                          e.target.value
-                        )
+              {chapter.lessons &&
+                chapter.lessons.map((lesson, lessonIndex) => (
+                  <div className="lesson" key={lessonIndex}>
+                    <button
+                      className="delete-lesson-btn"
+                      style={{ backgroundColor: "red", color: "white" }}
+                      onClick={() =>
+                        handleLessonDelete(chapterIndex, lessonIndex)
                       }
-                      className="input"
-                    />
-                  </div>
-                  <div className="input-container">
-                    <label className="label">Lesson Number:</label>
-                    <input
-                      type="number"
-                      value={lesson.number}
-                      onChange={(e) =>
-                        handleLessonDetailsChange(
-                          chapterIndex,
-                          lessonIndex,
-                          "number",
-                          e.target.value
-                        )
-                      }
-                      className="input"
-                    />
-                  </div>
-                  <div className="input-container">
-                    <label className="label">Lesson Title:</label>
-                    <input
-                      type="text"
-                      value={lesson.title}
-                      onChange={(e) =>
-                        handleLessonDetailsChange(
-                          chapterIndex,
-                          lessonIndex,
-                          "title",
-                          e.target.value
-                        )
-                      }
-                      className="input"
-                    />
-                  </div>
-                  <div className="input-container">
-                    <label className="label">Lesson Description:</label>
-                    <textarea
-                      value={lesson.description}
-                      onChange={(e) =>
-                        handleLessonDetailsChange(
-                          chapterIndex,
-                          lessonIndex,
-                          "description",
-                          e.target.value
-                        )
-                      }
-                      className="input"
-                    />
-                  </div>
-                  <div className="input-container">
-                    <label className="label">Video File:</label>
-                    <input
-                      type="file"
-                      onChange={(e) =>
-                        setNewLesson((prevLesson) => ({
-                          ...prevLesson,
-                          videoFile: e.target.files[0],
-                        }))
-                      }
-                      className="input"
-                    />
-                  </div>
+                    >
+                      &#10006;
+                    </button>
+                    <div className="input-container">
+                      <label className="label">Lesson Name:</label>
+                      <input
+                        readOnly
+                        type="text"
+                        value={lesson.title}
+                        onChange={(e) =>
+                          handleLessonNameChange(
+                            chapterIndex,
+                            lessonIndex,
+                            e.target.value
+                          )
+                        }
+                        className="input"
+                      />
+                    </div>
+                    <div className="input-container">
+                      <label className="label">Lesson Number:</label>
+                      <input
+                        readOnly
+                        type="number"
+                        value={lesson.number}
+                        onChange={(e) =>
+                          handleLessonDetailsChange(
+                            chapterIndex,
+                            lessonIndex,
+                            "number",
+                            e.target.value
+                          )
+                        }
+                        className="input"
+                      />
+                    </div>
+                    <div className="input-container">
+                      <label className="label">Lesson Title:</label>
+                      <input
+                        readOnly
+                        type="text"
+                        value={lesson.title}
+                        onChange={(e) =>
+                          handleLessonDetailsChange(
+                            chapterIndex,
+                            lessonIndex,
+                            "title",
+                            e.target.value
+                          )
+                        }
+                        className="input"
+                      />
+                    </div>
+                    <div className="input-container">
+                      <label className="label">Lesson Description:</label>
+                      <textarea
+                        readOnly
+                        value={lesson.description}
+                        onChange={(e) =>
+                          handleLessonDetailsChange(
+                            chapterIndex,
+                            lessonIndex,
+                            "description",
+                            e.target.value
+                          )
+                        }
+                        className="input"
+                      />
+                    </div>
 
-                  <button
-                    className="update-lesson-btn"
-                    onClick={() =>
-                      handleUpdateLesson(chapterIndex, lessonIndex)
-                    }
-                  >
-                    Update Lesson
-                  </button>
-                </div>
-              ))}
+                    <div className="video-container">
+                      <video
+                        controls
+                        style={{ width: "300px", height: "200px" }}
+                      >
+                        <source
+                          src={`http://localhost:8000/${lesson.videoUrl}`}
+                          type="video/mp4"
+                        />
+                        Your browser does not support the video tag.
+                      </video>
+                    </div>
+                    <button
+                      className="update-lesson-btn"
+                      onClick={() =>
+                        handleEditLesson(chapterIndex, lessonIndex)
+                      }
+                    >
+                      Update Lesson
+                    </button>
+                  </div>
+                ))}
               <button
                 className="upload-btn"
                 onClick={() => handleAddLesson(chapterIndex)}
@@ -409,7 +448,7 @@ const CourseUpload = () => {
               </button>
               <button
                 className="update-chapter-btn"
-                onClick={() => handleUpdateChapter(chapterIndex)}
+                onClick={() => handleEditChapter(chapterIndex)}
               >
                 Update Chapter
               </button>
@@ -418,9 +457,6 @@ const CourseUpload = () => {
         ))}
       <button className="upload-btn" onClick={() => handleAddChapter()}>
         Add Chapter
-      </button>
-      <button className="upload-btn" onClick={handleSubmit}>
-        Submit
       </button>
 
       <Modal
@@ -471,6 +507,56 @@ const CourseUpload = () => {
       </Modal>
 
       <Modal
+        show={showChapterModal}
+        onCancel={() => setShowChapterModal(false)}
+        header="Edit Chapter"
+        footerClass="modal__footer-profile"
+        footer={
+          <React.Fragment>
+            <button
+              className="cancel-button"
+              onClick={() => setShowChapterModal(false)}
+            >
+              Cancel
+            </button>
+            <Button
+              className="update-button"
+              onClick={() => handleChapterUpdate()}
+            >
+              Update Chapter
+            </Button>
+          </React.Fragment>
+        }
+      >
+        <div className="input-container">
+          <label className="label">Chapter Name:</label>
+          <textarea
+            className="input"
+            value={editedChapter.name}
+            onChange={(e) =>
+              setEditedChapter((prevChapter) => ({
+                ...prevChapter,
+                name: e.target.value,
+              }))
+            }
+          />
+        </div>
+        <div className="input-container">
+          <label className="label">Chapter Description:</label>
+          <textarea
+            className="input"
+            value={editedChapter.description}
+            onChange={(e) =>
+              setEditedChapter((prevChapter) => ({
+                ...prevChapter,
+                description: e.target.value,
+              }))
+            }
+          />
+        </div>
+      </Modal>
+
+      <Modal
         show={showLessonModal}
         onCancel={() => setShowLessonModal(false)}
         header="Add Lesson"
@@ -482,7 +568,10 @@ const CourseUpload = () => {
             >
               Cancel
             </button>
-            <button className="add-button" onClick={()=>handleLessonModalSubmit(chIndex)}>
+            <button
+              className="add-button"
+              onClick={() => handleLessonModalSubmit(chIndex)}
+            >
               Add Lesson
             </button>
           </React.Fragment>
@@ -532,7 +621,7 @@ const CourseUpload = () => {
           <label className="label">Video File:</label>
           <input
             type="file"
-            name='video'
+            name="video"
             onChange={(e) =>
               setNewLesson((prevLesson) => ({
                 ...prevLesson,
@@ -540,6 +629,91 @@ const CourseUpload = () => {
               }))
             }
             className="input"
+          />
+        </div>
+      </Modal>
+
+      <Modal
+        show={showLessonUpdateModal}
+        onCancel={() => setShowLessonUpdateModal(false)}
+        header="Edit Lesson"
+        footerClass="modal__footer-profile"
+        footer={
+          <React.Fragment>
+            <button
+              className="cancel-button"
+              onClick={() => setShowLessonUpdateModal(false)}
+            >
+              Cancel
+            </button>
+            <Button className="update-button" onClick={handleLessonUpdate}>
+              Update Lesson
+            </Button>
+          </React.Fragment>
+        }
+      >
+        <div className="input-container">
+          <label className="label">Lesson Title:</label>
+          <input
+            className="input"
+            value={editedLesson.title}
+            onChange={(e) =>
+              setEditedLesson((prevLesson) => ({
+                ...prevLesson,
+                title: e.target.value,
+              }))
+            }
+          />
+        </div>
+        <div className="input-container">
+          <label className="label">Lesson Number:</label>
+          <input
+            className="input"
+            type="number"
+            value={editedLesson.number}
+            onChange={(e) =>
+              setEditedLesson((prevLesson) => ({
+                ...prevLesson,
+                number: e.target.value,
+              }))
+            }
+          />
+        </div>
+        <div className="input-container">
+          <label className="label">Lesson Description:</label>
+          <textarea
+            className="input"
+            value={editedLesson.description}
+            onChange={(e) =>
+              setEditedLesson((prevLesson) => ({
+                ...prevLesson,
+                description: e.target.value,
+              }))
+            }
+          />
+        </div>
+        <div className="input-container">
+          <label className="label">Current Video:</label>
+          <video controls style={{ width: "100%" }}>
+            <source
+              src={`http://localhost:8000/${editedLesson.videoFile}`}
+              type="video/mp4"
+            />
+            Your browser does not support the video tag.
+          </video>
+        </div>
+        <div className="input-container">
+          <label className="label">Choose New Video:</label>
+          <input
+            name="video"
+            type="file"
+            accept="video/mp4"
+            onChange={(e) =>
+              setEditedLesson((prevLesson) => ({
+                ...prevLesson,
+                videoFile: e.target.files[0],
+              }))
+            }
           />
         </div>
       </Modal>

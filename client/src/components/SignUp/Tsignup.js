@@ -21,6 +21,10 @@ const Tsignup = () => {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
   const teachingCourses=[];
   const completedLessons=[];
   const role=1;
@@ -215,25 +219,39 @@ const Tsignup = () => {
               <div className="error-message">{emailError}</div>
             </div>
             <div className="form-input">
+              <div style={{position:'relative'}}>
               <label htmlFor="password">Password:</label>
               <input
-                type="password"
+                type={showPassword ? "text":"password"}
                 name="password"
                 id="password"
                 value={password}
                 onChange={handlePasswordChange}
               />
+               <i
+                className={`fa ${showPassword ? "fa-eye-slash" : "fa-eye"}`}
+                onClick={togglePasswordVisibility}
+                style={{ cursor: "pointer", position: "absolute", right: "10px", top: "70%", transform: "translateY(-50%)" }}
+              ></i>
+              </div>
               <div className="error-message">{passwordError}</div>
             </div>
             <div className="form-input">
+              <div style={{position:'relative'}}>
               <label htmlFor="confirmPassword">Confirm Password:</label>
               <input
-                type="password"
+                type={showPassword ? "text":"password"}
                 name="confirmPassword"
                 id="confirmPassword"
                 value={confirmPassword}
                 onChange={handleConfirmPasswordChange}
               />
+              <i
+                className={`fa ${showPassword ? "fa-eye-slash" : "fa-eye"}`}
+                onClick={togglePasswordVisibility}
+                style={{ cursor: "pointer", position: "absolute", right: "10px", top: "70%", transform: "translateY(-50%)" }}
+              ></i>
+              </div>
               <div className="error-message">{confirmPasswordError}</div>
             </div>
             

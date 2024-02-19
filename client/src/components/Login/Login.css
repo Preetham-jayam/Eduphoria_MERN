@@ -49,6 +49,26 @@
   transition: background-color 0.3s;
 }
 
+.signup-link {
+  margin-top: 10px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.signup-link span {
+  color: #555; 
+}
+
+.signup-link a {
+  color: #06bbcc; 
+  text-decoration: none;
+  margin-left: 5px; 
+}
+
+.signup-link a:hover {
+  text-decoration: underline; 
+}
+
 
 @media (max-width: 768px) {
   .form-input input,

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import "./Signup.css";
 import Card from "../../shared/components/FrontendTools/Card";
@@ -25,6 +25,17 @@ const SignUp = () => {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+const togglePasswordVisibility = () => {
+  setShowPassword(!showPassword);
+};
+
+const toggleConfirmPasswordVisibility = () => {
+  setShowConfirmPassword(!showConfirmPassword);
+};
+
   const enrolledCourses = [];
   const completedLessons = [];
   const role = 0;
@@ -235,29 +246,47 @@ const SignUp = () => {
               <div className="error-message">{emailError}</div>
             </div>
             <div className="form-input">
+              <div style={{position:'relative'}}>
               <label htmlFor="password">Password:</label>
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 name="password"
                 id="password"
                 value={password}
                 onChange={handlePasswordChange}
               />
+               <i
+                className={`fa ${showPassword ? "fa-eye-slash" : "fa-eye"}`}
+                onClick={togglePasswordVisibility}
+                style={{ cursor: "pointer", position: "absolute", right: "10px", top: "70%", transform: "translateY(-50%)" }}
+              ></i>
+              </div>
               <div className="error-message">{passwordError}</div>
             </div>
             <div className="form-input">
+              <div style={{position:'relative'}}>
               <label htmlFor="confirmPassword">Confirm Password:</label>
               <input
-                type="password"
+                type={showConfirmPassword ? "text":"password"}
                 name="confirmPassword"
                 id="confirmPassword"
                 value={confirmPassword}
                 onChange={handleConfirmPasswordChange}
               />
+              <i
+                className={`fa ${showConfirmPassword ? "fa-eye-slash" : "fa-eye"}`}
+                onClick={toggleConfirmPasswordVisibility}
+                style={{ cursor: "pointer", position: "absolute", right: "10px", top: "70%", transform: "translateY(-50%)" }}
+              ></i>
+              </div>
               <div className="error-message">{confirmPasswordError}</div>
             </div>
             <div className="submitButtton">
               <button type="submit">Submit</button>
+            </div>
+            <div className="signup-link">
+              <span>Already have an account?</span>{" "}
+              <Link to="/signin">Sign In</Link>
             </div>
           </div>
         </form>

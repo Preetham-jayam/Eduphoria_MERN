@@ -13,7 +13,6 @@ const Accordion = ({
   percentage,
 }) => {
 
-  console.log(percentage);
   const auth = useSelector((state) => state.auth);
   const [user, setUser] = useState(null);
   const {
@@ -26,6 +25,7 @@ const Accordion = ({
   const [activeLesson, setActiveLesson] = useState(null);
   const [completedLessons,setCompletedLessons]=useState([]);
   const [sCourses,setSCourses]=useState(null);
+  const [tCourses,setTCourses]=useState(null);
   const id = course._id;
 
   useEffect(() => {
@@ -36,6 +36,10 @@ const Accordion = ({
         const lessonIds = data.user.student.completedLessons.map(lesson => lesson.id);
         setCompletedLessons(lessonIds);
         
+      }
+
+      if(data.user.role===1 && data.user.teacher){
+        setTCourses(data.user.teacher.courses);
       }
       
     }
@@ -161,13 +165,8 @@ const Accordion = ({
           </div>
         </>
       )}
-      {loggedIn && auth.userInfo.role === 1  &&(
+      {loggedIn && auth.userInfo.role === 1  && tCourses&& tCourses.some(course => course._id === id)&&(
         <>
-          <div className="edit-div">
-            <Link to={`/course/edit/${id}`}>
-              <button className="edit">Edit</button>
-            </Link>
-          </div>
           <div className="upload-div">
             <Link to={`/course/upload/${id}`}>
               <button className="upload">Upload</button>

@@ -33,20 +33,20 @@ export const coursesApiSlice = apiSlice.injectEndpoints({
         url: `${TEACHER_URL}/${courseId}`,
         method: 'PUT',
         body: course,
+        headers: {
+          Authorization: `Bearer ${JWT_TOKEN}`,
+        },
       }),
-      headers: {
-        Authorization: `Bearer ${JWT_TOKEN}`,
-      },
       invalidatesTags: ['Course'],
     }),
     deleteLesson: builder.mutation({
       query: ({ lessonId }) => ({
         url: `${TEACHER_URL}/deletelesson/${lessonId}`, 
         method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${JWT_TOKEN}`,
+        },
       }),
-      headers: {
-        Authorization: `Bearer ${JWT_TOKEN}`,
-      },
       invalidatesTags: ['Course'],
     }),
     
@@ -55,10 +55,10 @@ export const coursesApiSlice = apiSlice.injectEndpoints({
         url: `${TEACHER_URL}/updatechapter/${chapterId}`,
         method: 'PUT',
         body: chapter,
+        headers: {
+          Authorization: `Bearer ${JWT_TOKEN}`,
+        },
       }),
-      headers: {
-        Authorization: `Bearer ${JWT_TOKEN}`,
-      },
       invalidatesTags: ['Course'],
     }),
     updateLesson: builder.mutation({
@@ -66,10 +66,10 @@ export const coursesApiSlice = apiSlice.injectEndpoints({
         url: `${TEACHER_URL}/updatelesson/${lessonId}`,
         method: 'PUT',
         body: lesson,
+        headers: {
+          Authorization: `Bearer ${JWT_TOKEN}`,
+        },
       }),
-      headers: {
-        Authorization: `Bearer ${JWT_TOKEN}`,
-      },
       invalidatesTags: ['Course'],
     }),
     getQuizByCourseId: builder.query({

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./Login.css";
 import { useDispatch } from "react-redux";
 import Card from "../../shared/components/FrontendTools/Card";
@@ -17,6 +17,10 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   const emailChangeHandler = (e) => {
     setEmail(e.target.value);
@@ -84,20 +88,35 @@ const Login = () => {
               <div className="error-message">{emailError}</div>
             </div>
             <div className="form-input">
+              <div style={{position:'relative'}}>
               <label htmlFor="password">Password:</label>
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 name="password"
                 id="password"
                 value={password}
                 onChange={PasswordChangeHandler}
               />
+              <i
+                className={`fa ${showPassword ? "fa-eye-slash" : "fa-eye"}`}
+                onClick={togglePasswordVisibility}
+                style={{ cursor: "pointer", position: "absolute", right: "10px", top: "70%", transform: "translateY(-50%)" }}
+              ></i>
+              </div>
               <div className="error-message">{passwordError}</div>
             </div>
             <div className="submitBtn">
               <button type="submit" >
                  {isLoading ? 'Logging In' : 'Login'}
               </button>
+            </div>
+            <div className="signup-link">
+              <span>Don't have an account?</span>{" "}
+              <Link to="/signup">Sign Up</Link>
+            </div>
+
+            <div className="signup-link">
+              <Link to="/forgot-password">Forgot Password?</Link>
             </div>
           </div>
         </form>

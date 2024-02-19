@@ -1,27 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./SearchBar.css";
+import { useGetCoursesQuery } from "../../Slices/courseApiSlice";
 
 const SearchBar = () => {
   const [courses, setCourses] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [results, setResults] = useState([]);
+  const {data:courseData,isLoading}=useGetCoursesQuery();
+  
   const navigate = useNavigate();
 
   useEffect(() => {
-    const getCourses = () => {
-      fetch("http://localhost:8000/courses")
-        .then((res) => res.json())
-        .then((courses) => {
-          setCourses(courses);
-        })
-        .catch((err) => {
-          console.log(err.message);
-        });
-    };
-    getCourses();
-  }, []);
+   if(courseData){
+    setCourses(courseData.courses);
+   }
+  }, [courseData]);
 
   const handleInputChange = (e) => {
     const query = e.target.value.toLowerCase();
@@ -53,6 +48,10 @@ const SearchBar = () => {
     setShowSuggestions(false);
   };
 
+  if(isLoading){
+    return <p>Loading...</p>;
+  }
+
   return (
     <div>
       <div className="search-bar">
@@ -78,7 +77,7 @@ const SearchBar = () => {
               onClick={() => {
                 setSearchQuery("");
                 setResults([]);
-                navigate(`/courseDetails/${course.id}`);
+                navigate(`/courseDetails/${course._id}`);
               }}
             >
               {course.title} - {course.instructorName}

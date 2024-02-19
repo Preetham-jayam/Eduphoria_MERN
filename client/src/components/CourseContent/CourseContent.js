@@ -21,7 +21,7 @@ const CourseContent = () => {
   const {
     data: userData,
     isLoading: userLoading,
-    isError: userError,
+    isError: userError
   } = useGetUserDetailsQuery(auth.userInfo?.userId);
   const {
     data,
@@ -113,7 +113,6 @@ const CourseContent = () => {
       });
       const percentage = (completedLessonsCount / totalLessons) * 100;
       setPercentage(percentage); 
-      console.log("Percentage:", percentage);
     }
   }, [user, course, student, courseChapters, percentage, totalLessons]);
 
@@ -343,7 +342,8 @@ const CourseContent = () => {
 const updateCompletedLessons = (
   studentId,
   completedLessons,
-  updateCompletedLessonsMutation
+  updateCompletedLessonsMutation,
+  refetchUser
 ) => {
   updateCompletedLessonsMutation({
     studentId,
@@ -351,6 +351,8 @@ const updateCompletedLessons = (
   })
     .unwrap()
     .then((updatedUser) => {
+      refetchUser();
+      
       console.log("User data updated with completed lessons:", updatedUser);
     })
     .catch((err) => {
@@ -366,6 +368,7 @@ const VideoPlayer = ({
   courseData,
 }) => {
   const [updateCompletedLessonsMutation] = useUpdateCompletedLessonsMutation();
+  const {refetch:refetchUser}=useGetUserDetailsQuery();
   const backendURLPrefix = 'http://localhost:8000';
   const handleVideoEnded = () => {
     const updatedCompletedLessons = [...completedLessons];
@@ -385,7 +388,8 @@ const VideoPlayer = ({
     updateCompletedLessons(
       student._id,
       updatedCompletedLessons,
-      updateCompletedLessonsMutation
+      updateCompletedLessonsMutation,
+      refetchUser
     );
   };
   const updatedUrl = `${backendURLPrefix}/${url}`;

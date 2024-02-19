@@ -125,6 +125,7 @@ const AddCourse = () => {
           console.log(data);
           toast.success("Course Added Successfully");
           navigate("/");
+          window.location.reload();
         }
       } catch (error) {
         toast.error("Failed to add course: " + error.message);

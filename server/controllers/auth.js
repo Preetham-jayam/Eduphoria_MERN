@@ -6,6 +6,93 @@ const Admin = require("../models/admin");
 const { validationResult } = require('express-validator');
 const HttpError = require('../models/http-error');
 const jwt = require('jsonwebtoken');
+const nodemailer = require("nodemailer");
+const crypto = require("crypto");
+
+const generateToken = () => {
+  return crypto.randomBytes(20).toString("hex");
+};
+
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: "eduphoriaiiits@gmail.com",
+    pass: "mknzpfpcncmrbgua",
+  },
+});
+
+exports.forgotPassword = async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const token = generateToken();
+    user.resetPasswordToken = token;
+    user.resetPasswordExpires = Date.now() + 3600000; 
+
+    await user.save();
+
+    await transporter.sendMail({
+      to: email,
+      subject: "Reset your password",
+      html: `
+        <div style="font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;">
+          <div style="background-color: #fff; border-radius: 8px; padding: 20px;">
+            <h2 style="color: #333; margin-bottom: 20px;">Reset Your Password</h2>
+            <p style="color: #333; margin-bottom: 20px;">
+              You have requested to reset your password. Click the link below to reset your password:
+            </p>
+            <a href="http://localhost:3000/reset-password/${token}" 
+              style="display: inline-block; padding: 10px 20px; background-color: #06bbcc; color: #fff; text-decoration: none; border-radius: 5px; margin-bottom: 20px;">
+              Reset Password
+            </a>
+            <p style="color: #333; margin-bottom: 20px;">
+              If you didn't request this, you can safely ignore this email.
+            </p>
+          </div>
+        </div>
+      `,
+    });
+    
+    res.status(200).json({ message: "Email sent successfully" });
+  } catch (error) {
+    console.error("Error sending email:", error);
+    res.status(500).json({ message: "Failed to send email" });
+  }
+};
+
+
+exports.resetPassword = async (req, res) => {
+  const { token, newPassword } = req.body;
+
+  try {
+    const user = await User.findOne({
+      resetPasswordToken: token,
+      resetPasswordExpires: { $gt: Date.now() }, 
+    });
+
+    if (!user) {
+      return res.status(400).json({ message: "Invalid or expired token" });
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    user.password = hashedPassword;
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpires = undefined;
+    await user.save();
+
+    res.status(200).json({ message: "Password reset successful" });
+  } catch (error) {
+    console.error("Error resetting password:", error);
+    res.status(500).json({ message: "Failed to reset password" });
+  }
+};
 
 exports.getUserProfile = async (req, res, next) => {
   const userId = req.params.id;

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Document, Page, Text, View, StyleSheet, PDFDownloadLink } from '@react-pdf/renderer';
-
+import Button from '../../shared/components/FrontendTools/Button'
 const Certificate = ({ userName, courseTitle, instructorName }) => {
   const today = new Date();
   const formattedDate = `${today.getDate()}/${today.getMonth() + 1}/${today.getFullYear()}`;
@@ -45,13 +45,9 @@ const Certificate = ({ userName, courseTitle, instructorName }) => {
       color: '#34495e',
     },
     downloadButton: {
-     marginLeft:110,
+     
       marginTop: 20,
-      padding: 10,
-      backgroundColor: '#06bbcc',
-      color: '#fff',
-      cursor: 'pointer',
-      borderRadius: 5,
+      marginBottom:10
     },
   });
   return (
@@ -80,9 +76,11 @@ const Certificate = ({ userName, courseTitle, instructorName }) => {
     </Document>} fileName={`Certificate_${userName}`}>
       {({ loading }) =>
         loading ? 'Loading document...' : (
-          <button style={styles.downloadButton}>
+          <div style={{marginBottom:'10px',marginTop:'10px'}}>
+          <Button >
             Download Certificate
-          </button>
+          </Button>
+          </div>
         )
       }
     </PDFDownloadLink>

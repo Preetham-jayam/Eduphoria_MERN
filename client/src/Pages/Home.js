@@ -34,7 +34,7 @@ const Home = () => {
 
   useEffect(() => {
     if (courses) {
-      setCourseData(courses.courses || []);
+      setCourseData(courses.courses.slice(0,4) || []);
     }
   }, [courses]);
 

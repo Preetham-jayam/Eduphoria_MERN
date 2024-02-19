@@ -17,5 +17,7 @@ router.post("/signup",[
 router.get('/profile',authController.getUserProfile);
 router.get('/:id',authController.getUserProfile);
 router.put('/:userId', checkAuth,authController.accountEdit);
+router.post('/forgot-password', authController.forgotPassword);
+router.post('/reset-password', authController.resetPassword);
 
 module.exports = router;

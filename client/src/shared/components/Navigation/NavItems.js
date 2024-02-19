@@ -9,6 +9,7 @@ const NavItems = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+
   const handleLogout = () => {
     dispatch(logout()); 
     navigate("/");
@@ -17,6 +18,7 @@ const NavItems = () => {
 
   return (
     <ul className="nav-items">
+      
       <li>
         <NavLink to="/">Home</NavLink>
       </li>

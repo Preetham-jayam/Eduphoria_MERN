@@ -141,25 +141,29 @@ exports.updateChapter = async (req, res) => {
 exports.updateLesson = async (req, res) => {
   try {
     const { lessonId } = req.params;
-    const { number, title, description, videoUrl } = req.body;
+    const { number, title, description } = req.body;
+    let { videoUrl } = req.body;
+
+    if (req.file) {
+      videoUrl = req.file.path; 
+    }
 
     const lesson = await Lesson.findByIdAndUpdate(
       lessonId,
-      { number, title, description, videoUrl },
-      { new: true }
+      { $set: { number, title, description, videoUrl } },
+      { new: true } 
     );
 
     if (!lesson) {
       return res.status(404).json({ message: 'Lesson not found' });
     }
 
-    res.status(200).json(lesson);
+    res.status(200).json({ lesson });
   } catch (error) {
     console.error('Error updating lesson:', error);
     res.status(500).json({ message: 'Internal Server Error' });
   }
 };
-
 
 exports.deleteLesson = async (req, res) => {
   try {

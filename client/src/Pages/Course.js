@@ -41,7 +41,9 @@ const Courses = () => {
   }, [courseError]);
   
 
-  const otherCourses = user?.role === 0 && courseData.filter((course) => !user.student.courses.includes(course.id));
+  const enrolledCourseIds = user && user?.student?.courses.map(course => course._id);
+  const otherCourses =user &&( user?.role === 0 ? courseData.filter(course => !enrolledCourseIds.includes(course._id)) : []);
+
 
   const sortHandler = () => {
     if (sortValue === "price:asc") {
@@ -101,7 +103,7 @@ const Courses = () => {
         {userLoading || courseLoading ? (
           <Loader />
         ) : (
-          <CourseList courses={user?.role === 0 ? otherCourses : courseData} />
+          <CourseList courses={auth && auth.userInfo && auth.userInfo.role === 0 ? otherCourses : courseData} />
         )}
       </div>
     </motion.div>

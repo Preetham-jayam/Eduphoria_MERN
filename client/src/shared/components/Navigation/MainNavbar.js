@@ -5,7 +5,7 @@ import Header from './Header'
 import Backdrop from '../../components/FrontendTools/Backdrop'
 import NavItems from './NavItems'
 import SideOpener from './SideOpener'
-// import SearchBar from '../../../components/SearchBar/SearchBar'
+import SearchBar from '../../../components/SearchBar/SearchBar'
 const MainNavbar = (props) => {
     const [drawerIsOpen, setDrawerIsOpen] = useState(false);
 
@@ -36,7 +36,7 @@ const MainNavbar = (props) => {
         <h1 className="app_name">  
           <Link to='/'>Eduphoria</Link>
         </h1>
-        {/* <SearchBar/> */}
+        <SearchBar/>
         <nav className='navigation'>
           <div className="nav-container">
               <NavItems />
