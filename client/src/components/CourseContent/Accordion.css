@@ -21,15 +21,19 @@
 .accordion-title::after {
   content: "\25B8";
   position: absolute;
+  font-size: 25px;
   top: 50%;
   right: 0px;
+  margin-right: 10px;
   transform: translateY(-50%);
   transition: transform 0.2s ease-in-out;
+  transform-origin: center; 
 }
 
 .accordion-title.active::after {
-  transform: rotate(90deg);
+  transform: translateY(-50%) rotate(90deg);
 }
+
 
 .accordion-chapters {
   display: none;

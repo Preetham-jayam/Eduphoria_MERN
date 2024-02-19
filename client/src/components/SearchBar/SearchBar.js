@@ -49,7 +49,7 @@ const SearchBar = () => {
   };
 
   if(isLoading){
-    return <p>Loading...</p>;
+    return <p style={{color:'#06bbcc'}}>...</p>;
   }
 
   return (

@@ -23,22 +23,31 @@ const ForgotPassword = () => {
     setEmailError("");
     
     if (!email) {
-      setEmailError("Email is required");
-      return;
+        setEmailError("Email is required");
+        return;
     }
   
     try {
         setIsLoading(true);
         const response = await forgotPassword(email); 
-        setEmailSent(true);
-        toast.success(response.data.message || "Email sent successfully");
-        setIsLoading(false);
+       
+        if (response.data && response.data.message) {
+            toast.success(response.data.message);
+            setEmailSent(true);
+        } else {
+            toast.error(response.data.message);
+        }
     } catch (error) {
-      setIsLoading(false);
-      toast.error(error?.data?.message || "Failed to send reset link");
+        if (error.response && error.response.data && error.response.data.message) {
+            toast.error(error.response.data.message);
+        } else {
+            toast.error("Failed to send ");
+        }
+    } finally {
+        setIsLoading(false);
     }
-  };
-  
+};
+
   return (
     <div className="signup-container">
     <Card>

@@ -119,8 +119,12 @@ function StudentQuiz() {
     );
   };
 
-  if (isLoading || !quizData || userLoading) {
+  if (isLoading  || userLoading) {
     return <Loader />;
+  }
+
+  if(!quizData){
+    return <h1>Quiz questions not added yet!!</h1>
   }
 
   if (showResult) {

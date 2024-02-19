@@ -98,7 +98,8 @@ const Accordion = ({
                 chapterIndex === activeChapter ? "open" : ""
               }`}
             >
-              {chapter.lessons.map((lesson) => (
+               {chapter.lessons.length===0 && <p>No lessons added yet</p>}
+              {chapter.lessons && chapter.lessons.map((lesson) => (
                 <div
                   key={lesson._id}
                   className={`lesson-item ${
@@ -131,7 +132,8 @@ const Accordion = ({
                 chapterIndex === activeChapter ? "open" : ""
               }`}
             >
-              {chapter.lessons.map((lesson, lessonIndex) => (
+              {chapter.lessons.length===0 && <p>No lessons added yet</p>}
+              {chapter.lessons && chapter.lessons.map((lesson, lessonIndex) => (
                 <div
                   key={lessonIndex}
                   className={`lesson-item ${
