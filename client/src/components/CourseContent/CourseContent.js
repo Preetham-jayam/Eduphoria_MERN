@@ -304,7 +304,7 @@ const CourseContent = () => {
   return (
     <>
      
-    <div className="course-page">
+    <div className="course-page" >
       <div className="course-content">
         <div className="main-content">
           <div className="video-player-container">

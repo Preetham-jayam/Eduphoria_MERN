@@ -8,6 +8,7 @@ const rfs = require('rotating-file-stream');
 const path=require('path');
 const app = express();
 require('dotenv').config();
+const { MONGODB_URL } = process.env;
 
 const accessLogStream = rfs.createStream('access.log', {
   interval: '1d',
@@ -75,7 +76,7 @@ app.use((error, req, res, next) => {
 
 
 mongoose
-  .connect("mongodb+srv://nagapreethamj21:preetham@cluster0.jhy2xxy.mongodb.net/MERN")
+  .connect(MONGODB_URL)
   .then(() => {
     const server = app.listen(8000, () => {
       console.log("App Listening to port 8000");
