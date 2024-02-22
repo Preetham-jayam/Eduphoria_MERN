@@ -52,7 +52,9 @@ Eduphoria caters to three main types of users:
 
 - All users can view the website and browse available courses.
 - Access to courses requires signup and signin.
+- Good authentication system using JWT tokens.
 - Forgot password functionality is available.
+- Implemtation of mutations for getting data from server using modern redux-toolkit
 
 ### Student Features
 
