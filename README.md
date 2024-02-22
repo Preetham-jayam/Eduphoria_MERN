@@ -7,32 +7,34 @@ Welcome to Eduphoria, an e-learning platform built using the MERN stack. Eduphor
 To get started with Eduphoria, follow these steps:
 
 1. Clone the GitHub repository:
-'''bash
-     git clone https://github.com/Preetham-jayam/Eduphoria_MERN.git
-
+```bash
+git clone https://github.com/Preetham-jayam/Eduphoria_MERN.git
+```
 
 2. Open your terminal and navigate to the cloned directory.
 
 3. Install Node.js modules for both the client and server:
-
-'''bash
+```bash
 cd client
 npm install
+```
 
-'''bash
+```bash
 cd server
 npm install
+```
 
 4. Start the development server:
 
-''bash
+```bash
 cd client
 npm start
+```
 
-'''bash
+```bash
 cd server
 npm start
-
+```
 
 5. Access the website at [http://localhost:3000](http://localhost:3000).
 
