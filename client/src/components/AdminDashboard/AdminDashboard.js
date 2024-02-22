@@ -74,7 +74,7 @@ function AdminDashboard() {
       await acceptTeacher(teacherId).unwrap();
       toast.success("Teacher accepted successfully");
     } catch (error) {
-      toast.error("Failed to accept teacher");
+      toast.error(error?.data?.message);
     }
   };
 
@@ -84,8 +84,7 @@ function AdminDashboard() {
       console.log("Decline Teacher Response:", response);
       toast.success("Teacher declined successfully");
     } catch (error) {
-      console.error("Decline Teacher Error:", error);
-      toast.error("Failed to decline teacher");
+      toast.error(error?.data?.message);
     }
   };
 
@@ -95,7 +94,7 @@ function AdminDashboard() {
       toast.success("User blocked successfully");
       refetchUsers();
     } catch (error) {
-      toast.error("Failed to block user");
+      toast.error(error?.data?.message);
     }
   };
 
@@ -105,7 +104,7 @@ function AdminDashboard() {
       toast.success("User UnBlocked successfully");
       refetchUsers();
     } catch (error) {
-      toast.error("Failed to block user");
+      toast.error(error?.data?.message);
     }
   };
 
@@ -115,8 +114,7 @@ function AdminDashboard() {
       toast.success("User deleted successfully");
       refetchUsers();
     } catch (error) {
-      console.error("Failed to delete user:", error);
-      toast.error("Failed to delete user");
+      toast.error(error?.data?.message);
     }
   };
 
@@ -126,8 +124,7 @@ function AdminDashboard() {
       toast.success("Course Deleted Succesfully");
       refetchCourses();
     } catch (error) {
-      console.error("Failed to delete course:", error);
-      toast.error("Failed to delete course");
+      toast.error(error?.data?.message);
     }
   };
 

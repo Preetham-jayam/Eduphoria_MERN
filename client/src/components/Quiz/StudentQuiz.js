@@ -85,11 +85,11 @@ function StudentQuiz() {
         marks: calculateScore(),
         totalMarks: quizData.questions.length,
         answers: JSON.stringify(answers) 
-      });
+      }).unwrap();
       setShowResult(true);
       setUserAttemptedQuiz(true); 
     } catch (error) {
-      console.error('Error updating quiz results:', error);
+      toast.error(error?.data?.message);
     }
   };
 

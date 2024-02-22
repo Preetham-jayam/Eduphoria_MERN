@@ -42,7 +42,7 @@ const AddQuiz = () => {
         questions: questions,
       };
 
-      const result = await addQuizToCourse({ courseId: courseId, ...quizData });
+      const result = await addQuizToCourse({ courseId: courseId, ...quizData }).unwrap();
 
       console.log('Quiz added successfully:', result);
 
@@ -52,7 +52,7 @@ const AddQuiz = () => {
       navigate(`/courseContent/${courseId}`);
       toast.success("Quiz questions added succesfully");
     } catch (error) {
-      console.error('Error adding quiz:', error);
+      toast.error(error?.data?.message);
     }
   };
 

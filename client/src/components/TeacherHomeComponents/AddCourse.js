@@ -113,7 +113,7 @@ const AddCourse = () => {
 
     if (isValid) {
       try {
-        const { data, error } = await addCourse(formData);
+        const { data, error } = await addCourse(formData).unwrap();
 
         if (error) {
           if (error.status === 403) {
@@ -128,7 +128,7 @@ const AddCourse = () => {
           window.location.reload();
         }
       } catch (error) {
-        toast.error("Failed to add course: " + error.message);
+        toast.error(error?.data?.message);
       }
     }
   };

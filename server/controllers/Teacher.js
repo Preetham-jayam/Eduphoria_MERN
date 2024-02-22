@@ -4,6 +4,7 @@ const Lesson = require("../models/lesson");
 const Teacher = require("../models/teacher");
 const User = require("../models/user");
 const Quiz=require('../models/quiz');
+const HttpError = require("../models/http-error");
 
 exports.getTeacherById = async (req,res,next)=>{
   const userId=req.user.userId;
@@ -39,7 +40,7 @@ exports.addCourse = async (req, res, next) => {
     const teacherUser = await Teacher.findById(teacher);
 
     if (!teacherUser) {
-      return res.status(404).json({ message: "Teacher not found." });
+      throw new HttpError("Teacher not found",404);
     }
 
     teacherUser.courses.push(courseId);
@@ -47,9 +48,7 @@ exports.addCourse = async (req, res, next) => {
 
     res.status(201).json(result);
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Adding course failed, please try again later." });
+    return next(error);
   }
 };
 exports.addChapter = async (req, res) => {
@@ -62,7 +61,7 @@ exports.addChapter = async (req, res) => {
     const course = await Course.findById(courseId);
 
     if (!course) {
-      return res.status(404).json({ message: 'Course not found' });
+      throw new HttpError("Couldn't find the course for this chapter.", 404);
     }
 
     const newChapter = new Chapter({
@@ -78,8 +77,7 @@ exports.addChapter = async (req, res) => {
 
     res.status(201).json(newChapter);
   } catch (error) {
-    console.error('Error adding chapter:', error);
-    res.status(500).json({ message: 'Internal Server Error' });
+    return next(error);
   }
 };
 
@@ -128,13 +126,12 @@ exports.updateChapter = async (req, res) => {
     );
 
     if (!chapter) {
-      return res.status(404).json({ message: 'Chapter not found' });
+      throw new HttpError("Chapter not found",404);
     }
 
     res.status(200).json(chapter);
   } catch (error) {
-    console.error('Error updating chapter:', error);
-    res.status(500).json({ message: 'Internal Server Error' });
+    return next(error);
   }
 };
 
@@ -155,13 +152,12 @@ exports.updateLesson = async (req, res) => {
     );
 
     if (!lesson) {
-      return res.status(404).json({ message: 'Lesson not found' });
+      throw new HttpError("Lesson not found",404);
     }
 
     res.status(200).json({ lesson });
   } catch (error) {
-    console.error('Error updating lesson:', error);
-    res.status(500).json({ message: 'Internal Server Error' });
+    return next(error);
   }
 };
 
@@ -172,13 +168,12 @@ exports.deleteLesson = async (req, res) => {
     const lesson = await Lesson.findByIdAndDelete(lessonId);
 
     if (!lesson) {
-      return res.status(404).json({ message: 'Lesson not found' });
+      throw new HttpError("Lesson not found",404);
     }
 
     res.status(200).json({ message: 'Lesson deleted successfully' });
   } catch (error) {
-    console.error('Error deleting lesson:', error);
-    res.status(500).json({ message: 'Internal Server Error' });
+    return next(error);
   }
 };
 
@@ -190,7 +185,8 @@ exports.addQuizToCourse = async (req, res, next) => {
     let course = await Course.findById(courseId);
 
     if (!course) {
-      return res.status(404).json({ message: "Course not found." });
+      throw new HttpError('Course not Found', 404);
+     
     }
 
     let existingQuiz = await Quiz.findOne({ course: courseId });
@@ -216,7 +212,7 @@ exports.addQuizToCourse = async (req, res, next) => {
 
     res.status(200).json({ message: "Quiz updated successfully." });
   } catch (error) {
-    res.status(500).json({ message: "Adding/updating quiz failed, please try again later.", error: error.message });
+    return next(error);
   }
 };
 
@@ -228,7 +224,7 @@ exports.updateQuiz = async (req, res, next) => {
       const quiz = await Quiz.findById(quizId);
   
       if (!quiz) {
-        return res.status(404).json({ message: "Quiz not found." });
+        throw new HttpError("Quiz not found",404);
       }
   
       quiz.title = title;
@@ -238,9 +234,7 @@ exports.updateQuiz = async (req, res, next) => {
   
       res.status(200).json(quiz);
     } catch (error) {
-      res
-        .status(500)
-        .json({ message: "Updating quiz failed, please try again later." });
+      return next(error);
     }
   };
   
@@ -263,11 +257,12 @@ exports.updateQuiz = async (req, res, next) => {
       );
   
       if (!updatedTeacher) {
-        return res.status(404).json({ message: "Teacher not found" });
+        throw new HttpError("Teacher not found",404);
+
       }
   
       res.status(200).json(updatedTeacher);
     } catch (error) {
-      res.status(500).json({ message: error.message });
+      return next(error);
     }
   };

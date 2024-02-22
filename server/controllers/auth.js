@@ -28,7 +28,7 @@ exports.forgotPassword = async (req, res) => {
     const user = await User.findOne({ email });
 
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+     throw new HttpError("User not found",404);
     }
 
     const token = generateToken();
@@ -61,8 +61,8 @@ exports.forgotPassword = async (req, res) => {
     
     res.status(200).json({ message: "Email sent successfully" });
   } catch (error) {
-    console.error("Error sending email:", error);
-    res.status(500).json({ message: "Failed to send email" });
+    const err=new HttpError("Failed to send mail");
+    return next(err);
   }
 };
 
@@ -77,7 +77,9 @@ exports.resetPassword = async (req, res) => {
     });
 
     if (!user) {
-      return res.status(400).json({ message: "Invalid or expired token" });
+      const error=new HttpError("Invalid or expired token",404);
+      return next(error);
+     
     }
 
     const hashedPassword = await bcrypt.hash(newPassword, 10);
@@ -88,9 +90,9 @@ exports.resetPassword = async (req, res) => {
     await user.save();
 
     res.status(200).json({ message: "Password reset successful" });
-  } catch (error) {
-    console.error("Error resetting password:", error);
-    res.status(500).json({ message: "Failed to reset password" });
+  } catch (err) {
+    const error=new HttpError('Could not reset password',500);
+    return next(error);
   }
 };
 
@@ -218,11 +220,10 @@ exports.Signup = async (req, res, next) => {
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
-      return res.status(422).json({ message: 'Invalid inputs passed, please check your data.' });
+      throw new HttpError('Invalid inputs passed, please check your data.', 422);
     }
 
     const data = req.body;
-    console.log(data);
     const role = data.role;
     const email = data.email;
     const pwd = req.body.password;
@@ -230,7 +231,7 @@ exports.Signup = async (req, res, next) => {
     const existingUser = await User.findOne({ email });
 
     if (existingUser) {
-      return res.status(422).json({ message: 'User with this email already exists, please enter another' });
+      throw new HttpError('User with this email already exists, please enter another', 422);
     }
 
     const hashedPwd = await bcrypt.hash(pwd, 12);
@@ -272,8 +273,7 @@ exports.Signup = async (req, res, next) => {
 
     return res.status(200).json({ user: user.toObject({ getters: true }) });
   } catch (err) {
-    console.log(err);
-    return res.status(500).json({ message: 'Internal Server Error' });
+    return next(err); 
   }
 };
 
@@ -316,7 +316,6 @@ exports.accountEdit = (req, res) => {
           res.status(500).json({ message: 'Internal server error' });
       });
 }
-
 exports.getUsers = async (req, res, next) => {
   let users;
   try {
@@ -371,7 +370,9 @@ exports.DeleteUser = (req, res) => {
   console.log(id);
   User.findByIdAndDelete(id).then((user) => {
     if (!user) {
-      return res.status(404).json({ success: false, message: "User not found." });
+      const error=new HttpError("User not found", 404);
+      return next(error);
+      
     }
 
     let model = user.role === 0 ? Student : Teacher;
@@ -382,12 +383,14 @@ exports.DeleteUser = (req, res) => {
         return res.status(200).json({ success: true, message: `${modelName} deleted successfully.` });
       })
       .catch((err) => {
-        console.log(err);
-        console.log("Internal server error");
-        return res.status(500).json({ success: false, message: "Internal server error" });
+       const error=new HttpError(`${model} not found`,404);
+       return next(error);
       });
   }).catch((err) => {
-    console.error(err);
-    return res.status(500).json({ success: false, message: "Internal server error" });
+    const error = new HttpError(
+      'Deleting user failed, please try again later.',
+      500
+    );
+    return next(error);
   });
 };

@@ -2,6 +2,7 @@ const Course = require("../models/course");
 const Student = require("../models/student");
 const Review = require("../models/review");
 const User = require("../models/user");
+const HttpError = require('../models/http-error');
 exports.enrollCourse = async (req, res) => {
   const courseId = req.params.id;
   const userId = req.params.sid;
@@ -12,13 +13,14 @@ exports.enrollCourse = async (req, res) => {
   Student.findById(studentId)
     .then((student) => {
       if (!student) {
-        return res.status(404).json({ error: "Student not found" });
+        throw new HttpError("Student Not found",404);
+       
       }
       return Course.findById(courseId).populate("students");
     })
     .then((course) => {
       if (!course) {
-        return res.status(404).json({ error: "Course not found" });
+        throw new HttpError("Course Not found",404);
       }
       if (
         course.students.some((student) => student._id.toString() === studentId)
@@ -39,9 +41,7 @@ exports.enrollCourse = async (req, res) => {
         .json({ message: "Student has been enrolled in the course" });
     })
     .catch((err) => {
-      res
-        .status(500)
-        .json({ error: `Error enrolling student in course: ${err.message}` });
+      return next(err);
     });
 };
 
@@ -62,7 +62,8 @@ exports.postAddReview = (req, res) => {
       res.status(200).json({ message: "Review added successfully" });
     })
     .catch((err) => {
-      res.status(500).json({ message: "Unable to add review" });
+      const error=new HttpError("Unable to add review",500);
+      return next(error);
     });
 };
 
@@ -79,7 +80,8 @@ exports.updateCompletedLessons = async (req, res, next) => {
 
     res.status(200).json(updatedUser);
   } catch (error) {
-    res.status(500).json({ error: "Internal Server Error" });
+    const err=new HttpError("Internal server error",500);
+    return next(err);
   }
 };
 
@@ -102,12 +104,12 @@ exports.updateProfile = async (req, res) => {
     );
 
     if (!updatedStudent) {
-      return res.status(404).json({ message: "Student not found" });
+      throw new HttpError("Student not found",404);
     }
 
-    res.status(200).json(updatedStudent);
+    res.status(200).json({student:updatedStudent});
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    return next(error);
   }
 };
 
@@ -118,7 +120,7 @@ exports.updateQuizResults = async (req, res) => {
     const student = await Student.findById(studentId);
 
     if (!student) {
-      return res.status(404).json({ message: 'Student not found' });
+      throw new HttpError("Student not found",404);
     }
 
     const quizIndex = student.quizzes.findIndex(
@@ -147,8 +149,7 @@ exports.updateQuizResults = async (req, res) => {
 
     res.status(200).json({ message: 'Quiz results updated successfully' });
   } catch (error) {
-    console.error('Error updating quiz results:', error);
-    res.status(500).json({ message: 'Internal server error' });
+     return next(error);
   }
 };
 

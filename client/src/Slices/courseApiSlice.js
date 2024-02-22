@@ -2,8 +2,10 @@ import { COURSES_URL,TEACHER_URL } from "../constants";
 
 import { apiSlice } from "./apiSlice";
 
-const userInfo=JSON.parse(localStorage.getItem('userInfo'));
-const JWT_TOKEN=userInfo ? userInfo.token:null;
+const getJWTToken = () => {
+  const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+  return userInfo ? userInfo.token : null;
+};
 
 export const coursesApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -34,7 +36,7 @@ export const coursesApiSlice = apiSlice.injectEndpoints({
         method: 'PUT',
         body: course,
         headers: {
-          Authorization: `Bearer ${JWT_TOKEN}`,
+          Authorization: `Bearer ${getJWTToken()}`,
         },
       }),
       invalidatesTags: ['Course'],
@@ -44,7 +46,7 @@ export const coursesApiSlice = apiSlice.injectEndpoints({
         url: `${TEACHER_URL}/deletelesson/${lessonId}`, 
         method: 'DELETE',
         headers: {
-          Authorization: `Bearer ${JWT_TOKEN}`,
+          Authorization: `Bearer ${getJWTToken()}`,
         },
       }),
       invalidatesTags: ['Course'],
@@ -56,7 +58,7 @@ export const coursesApiSlice = apiSlice.injectEndpoints({
         method: 'PUT',
         body: chapter,
         headers: {
-          Authorization: `Bearer ${JWT_TOKEN}`,
+          Authorization: `Bearer ${getJWTToken()}`,
         },
       }),
       invalidatesTags: ['Course'],
@@ -67,7 +69,7 @@ export const coursesApiSlice = apiSlice.injectEndpoints({
         method: 'PUT',
         body: lesson,
         headers: {
-          Authorization: `Bearer ${JWT_TOKEN}`,
+          Authorization: `Bearer ${getJWTToken()}`,
         },
       }),
       invalidatesTags: ['Course'],

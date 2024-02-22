@@ -5,15 +5,15 @@ const Teacher = require("../models/teacher");
 const User = require("../models/user");
 const Review =require('../models/review');
 const Quiz=require('../models/quiz');
+const HttpError = require("../models/http-error");
 
 exports.getAllCourses = async (req, res, next) => {
   try {
     const courses = await Course.find().populate('teacher');
     res.status(200).json({courses:courses});
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Fetching courses failed, please try again later." });
+    const err=new HttpError( 'Could not get courses data',500);
+    return next(err);
   }
 };
 
@@ -41,9 +41,8 @@ exports.getCourseById = async (req, res, next) => {
     ]);
     res.status(200).json({ course: course });
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Fetching course failed, please try again later." });
+    const err=new HttpError( 'Could not get course data',500);
+    return next(err);
   }
 };
 
@@ -54,7 +53,8 @@ exports.getCourseReviews = async (req,res,next)=>{
     const reviews = await Review.find({ courseId: courseId });
     res.status(200).json({ reviews:reviews });
   } catch (error) {
-    res.status(500).json({ message: 'Internal Server Error' });
+    const err=new HttpError( 'Could not get course review data',500);
+    return next(err);
   }
 }
 
@@ -64,11 +64,11 @@ exports.getQuizByCourseId=async (req,res,next)=>{
     const quiz = await Quiz.findOne({ course: courseId });
 
     if (!quiz) {
-      return res.status(404).json({ message: 'Quiz not found for the given course ID.' });
+      throw new HttpError("Quiz not found for the given course Id",404);
+     
     }
     res.status(200).json({ quiz:quiz });
   } catch (error) {
-    console.error('Error retrieving quiz questions:', error);
-    res.status(500).json({ message: 'Internal server error.' });
+      return next(error);
   }
 };

@@ -28,6 +28,7 @@ const CourseUpload = () => {
   const [chIndex, setChIndex] = useState(null);
   const [courseChapters, setCourseChapters] = useState([]);
   const [showChapterModal, setShowChapterModal] = useState(false);
+  const [showChapterUpdateModal,setShowChapterUpdateModal]=useState(false);
   const [showLessonModal, setShowLessonModal] = useState(false);
   const [showLessonUpdateModal, setShowLessonUpdateModal] = useState(false);
   const [currentChapterIndex, setCurrentChapterIndex] = useState(null);
@@ -113,7 +114,7 @@ const CourseUpload = () => {
       description: chapterToEdit.description,
     });
     setCurrentChapterIndex(chapterIndex);
-    setShowChapterModal(true);
+    setShowChapterUpdateModal(true);
   };
 
   const handleChapterUpdate = async () => {
@@ -133,7 +134,7 @@ const CourseUpload = () => {
       });
 
       toast.success("Chapter updated successfully");
-      setShowChapterModal(false);
+      setShowChapterUpdateModal(false);
     } catch (error) {
       console.error("Error updating chapter:", error);
       toast.error("Failed to update chapter. Please try again.");
@@ -507,15 +508,15 @@ const CourseUpload = () => {
       </Modal>
 
       <Modal
-        show={showChapterModal}
-        onCancel={() => setShowChapterModal(false)}
+        show={showChapterUpdateModal}
+        onCancel={() => setShowChapterUpdateModal(false)}
         header="Edit Chapter"
         footerClass="modal__footer-profile"
         footer={
           <React.Fragment>
             <button
               className="cancel-button"
-              onClick={() => setShowChapterModal(false)}
+              onClick={() => setShowChapterUpdateModal(false)}
             >
               Cancel
             </button>

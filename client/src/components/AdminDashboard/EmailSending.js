@@ -37,7 +37,7 @@ const EmailSendingForm = () => {
         setSubject("");
         setMessage("");
       } catch (error) {
-        toast.error(error.message);
+        toast.error(error?.data?.message);
       }
       setSubject("");
       setMessage("");

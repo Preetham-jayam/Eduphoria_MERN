@@ -68,10 +68,9 @@ const Profile = () => {
     try {
       
       console.log("Edited User:", editedUser);
-      // const response = auth.userInfo.role===0 ?await updateProfile({ studentId: editedUser._id, ...editedUser }):await upadateTeacherProfile({teacherId:editedUser._id,...editedUser}).unwrap();
       const response= await updateProfile({studentId: editedUser._id, ...editedUser});
       if (response.error) {
-        toast.error("Failed to update profile");
+        toast.error(response?.data?.message || "Failed to update profile");
         console.error('Failed to update user:', response.error);
       } else {
         toast.success("Profile updated succesfully");
@@ -81,7 +80,7 @@ const Profile = () => {
         refetchUserData();
       }
     } catch (error) {
-      console.error('Error updating user:', error);
+      toast.error(error?.data?.message || "Failed to update profile");
     }
   };
 
@@ -99,7 +98,7 @@ const Profile = () => {
         refetchUserData();
       }
     } catch(error){
-      console.error('Error updating teacher :',error);
+      toast.error(error?.data?.message);
     }
 
   }

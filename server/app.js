@@ -15,9 +15,7 @@ const accessLogStream = rfs.createStream('access.log', {
   path: path.join(__dirname, 'logs')
 });
 
-
 app.use(morgan('combined', { stream: accessLogStream }));
-
 
 const corsOptions = {
   origin: 'http://localhost:3000',

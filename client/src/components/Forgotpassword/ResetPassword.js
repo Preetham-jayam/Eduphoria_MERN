@@ -33,14 +33,14 @@ const ResetPassword = () => {
     }
 
     try {
-      const response = await resetPassword({ token, newPassword: password });
+      const response = await resetPassword({ token, newPassword: password }).unwrap();
       setPassword("");
       setConfirmPassword("");
       toast.success(response.data.message);
       navigate("/signin");
       setIsLoading(false);
     } catch (error) {
-      toast.error(error.response?.data?.message || "Failed to reset password");
+      toast.error(error?.data?.message);
       setIsLoading(false);
     }
   };

@@ -91,8 +91,7 @@ const AdminAddCourse = () => {
       await addCourse(formDataToSend).unwrap();
       toast.success("Added Course Successfully!");
     } catch (error) {
-      console.error("Failed to Add course:", error);
-      toast.error("Failed to Add course");
+      toast.error(error?.data?.message);
     }
   };
 

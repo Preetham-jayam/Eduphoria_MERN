@@ -6,6 +6,7 @@ const Student = require("../models/student");
 const nodemailer = require("nodemailer");
 const sendgridTransport = require("nodemailer-sendgrid-transport");
 const Course = require("../models/course");
+const HttpError = require("../models/http-error");
 const mailTransporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
@@ -20,12 +21,14 @@ exports.registerAdmin = async (req, res, next) => {
   try {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.status(422).json({ message: 'User with this email already exists, please enter another' });
+      throw new HttpError("User with this email already exists, please enter another",422);
+      
     }
 
     const existingAdmin = await Admin.findOne({ email });
     if (existingAdmin) {
-      return res.status(422).json({ message: "Admin already exists" });
+      throw new HttpError("Admin already exists",422);
+      
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -51,8 +54,7 @@ exports.registerAdmin = async (req, res, next) => {
 
     res.status(201).json({ message: "Admin registered successfully" });
   } catch (error) {
-    console.error("Error registering admin:", error);
-    res.status(500).json({ message: "Server error" });
+    return next(error);
   }
 };
 
@@ -75,11 +77,8 @@ exports.pendingTeachers = async (req, res) => {
       teachers: pendingTeachers,
     });
   } catch (error) {
-    console.error('Error fetching pending teachers:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Internal server error',
-    });
+    const err=new HttpError("failed to retrieve teachers",500);
+    return next(err);
   }
 };
 
@@ -101,11 +100,8 @@ exports.acceptTeacher = async (req, res) => {
       message: 'Teacher accepted successfully',
     });
   } catch (error) {
-    console.error('Error accepting teacher:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Internal server error',
-    });
+    const err=new HttpError("Failed to accept teachers",500);
+    return next(err);
   }
 };
 
@@ -126,11 +122,8 @@ exports.declineTeacher = async (req, res) => {
       message: 'Teacher declined successfully',
     });
   } catch (error) {
-    console.error('Error declining teacher:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Internal server error',
-    });
+    const err=new HttpError("Failed to decline teacher",500);
+    return next(err);
   }
 };
 
@@ -139,7 +132,7 @@ exports.BlockUser = (req, res) => {
   User.findById(userId)
     .then((user) => {
       if (!user) {
-        return res.status(404).json({ success: false, message: "User not found." });
+        throw new HttpError("User not found",404);
       }
       user.flag = user.flag === 0 ? 1 : 0;
       return user.save();
@@ -151,8 +144,8 @@ exports.BlockUser = (req, res) => {
       return res.status(200).json({ success: true, message: successMessage });
     })
     .catch((err) => {
-      console.error(err);
-      return res.status(500).json({ success: false, message: "Internal server error" });
+     const error=new HttpError("Failed to block user",500);
+     return next(error);
     });
 };
 
@@ -161,7 +154,7 @@ exports.DeleteUser = (req, res) => {
   console.log(id);
   User.findByIdAndDelete(id).then((user) => {
     if (!user) {
-      return res.status(404).json({ success: false, message: "User not found." });
+      throw new HttpError("User not found",404);
     }
 
     let model = user.role === 0 ? Student : Teacher;
@@ -172,13 +165,12 @@ exports.DeleteUser = (req, res) => {
         return res.status(200).json({ success: true, message: `${modelName} deleted successfully.` });
       })
       .catch((err) => {
-        console.log(err);
-        console.log("Internal server error");
-        return res.status(500).json({ success: false, message: "Internal server error" });
+        const error=new HttpError("Failed to delete user",500);
+        return next(error);
       });
   }).catch((err) => {
-    console.error(err);
-    return res.status(500).json({ success: false, message: "Internal server error" });
+    const error=new HttpError("Failed to delete user",500);
+     return next(error);
   });
 };
 
@@ -204,8 +196,8 @@ exports.postsendmail = async (req, res, next) => {
     
     return res.status(200).json({ message: "Mail Sent to all users" });
   } catch (error) {
-    console.log(`Error occurred while sending email: ${error}`);
-    return res.status(500).json({ error: "Error occurred while sending email" });
+    const err=new HttpError("Failed to send mail",500);
+    return next(err);
   }
 };
 
@@ -214,7 +206,7 @@ exports.deleteCourse = (req, res) => {
   Course.findByIdAndDelete(id)
     .then((deletedCourse) => {
       if (!deletedCourse) {
-        return res.status(404).json({ success: false, message: 'Course not found' });
+        throw new HttpError("Course not found",404);
       }
       return Student.updateMany(
         { courses: id }, 
@@ -226,8 +218,8 @@ exports.deleteCourse = (req, res) => {
       res.status(200).json({ success: true, message: 'Course deleted successfully' });
     })
     .catch(err => {
-      console.error(`Error deleting course id ${id} from students: ${err}`);
-      res.status(500).json({ success: false, message: 'Internal server error' });
+      const error=new HttpError("Failed to delete course",500);
+     return next(error);
     });
 };
 
@@ -253,7 +245,7 @@ exports.AdminAddCourse = async (req, res, next) => {
     const teacherUser = await Teacher.findById(teacher);
 
     if (!teacherUser) {
-      return res.status(404).json({ message: "Teacher not found." });
+      throw new HttpError("Teacher not found",404);
     }
 
     teacherUser.courses.push(courseId);
@@ -261,8 +253,7 @@ exports.AdminAddCourse = async (req, res, next) => {
 
     res.status(201).json(result);
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Adding course failed, please try again later." });
+    const err=new HttpError("Failed to add course",500);
+    return next(err);
   }
 };

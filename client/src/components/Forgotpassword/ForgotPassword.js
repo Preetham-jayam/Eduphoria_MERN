@@ -29,17 +29,17 @@ const ForgotPassword = () => {
   
     try {
         setIsLoading(true);
-        const response = await forgotPassword(email); 
+        const response = await forgotPassword(email).unwrap(); 
        
         if (response.data && response.data.message) {
             toast.success(response.data.message);
             setEmailSent(true);
         } else {
-            toast.error(response.data.message);
+            toast.error(response?.data?.message);
         }
     } catch (error) {
         if (error.response && error.response.data && error.response.data.message) {
-            toast.error(error.response.data.message);
+          toast.error(error?.data?.message);
         } else {
             toast.error("Failed to send ");
         }

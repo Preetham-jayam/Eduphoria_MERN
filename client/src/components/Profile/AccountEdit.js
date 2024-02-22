@@ -66,7 +66,6 @@ const AccountEdit = () => {
       toast.error(error.message);
     }
   };
-
   if (userLoading) {
     return <Loader />;
   }

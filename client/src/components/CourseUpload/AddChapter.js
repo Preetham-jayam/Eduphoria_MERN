@@ -14,11 +14,11 @@ const AddChapter = () => {
       await addChapter({
         courseId:'65a2c832e29c10e18344a721',
         newChapter: { ...newChapter },
-      });
+      }).unwrap();
       setNewChapter({ name: "", description: "" });
      toast.success('Chapter added succesfully');
     } catch (error) {
-      console.error("Error adding chapter:", error);
+     toast.error(error?.data?.message || "Error occured at adding chapter");
     }
   };
 
