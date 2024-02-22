@@ -8,7 +8,7 @@ To get started with Eduphoria, follow these steps:
 
 1. Clone the GitHub repository:
 '''bash
-git clone https://github.com/Preetham-jayam/Eduphoria_MERN.git
+     git clone https://github.com/Preetham-jayam/Eduphoria_MERN.git
 
 
 2. Open your terminal and navigate to the cloned directory.
