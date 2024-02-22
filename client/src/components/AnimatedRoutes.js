@@ -22,6 +22,7 @@ import ResultsPage from "../Pages/ResultPage";
 import CourseDetailsPage from "../Pages/CourseDetailsPage";
 import ForgotPasswordPage from "../Pages/ForgotPasswordPage";
 import ResetPasswordPage from "../Pages/ResetPasswordPage";
+import NotFoundPage from "../Pages/NotFound";
 
 
 const AnimatedRoutes = () => {
@@ -52,6 +53,8 @@ const AnimatedRoutes = () => {
         <Route path='/profile/editaccount' element={<ProtectedRoute><AccountEditPage/></ProtectedRoute>}/>
         <Route path='/send-mail' element={<ProtectedRoute><EmailSendingFormPage/></ProtectedRoute>}/>
         <Route path='/admin/add-course' element={<ProtectedRoute><AddCourse/></ProtectedRoute>}/>
+
+        <Route path="*" element={<NotFoundPage />} />
         
 
         
