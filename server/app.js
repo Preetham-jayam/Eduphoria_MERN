@@ -8,6 +8,8 @@ const rfs = require('rotating-file-stream');
 const path=require('path');
 const app = express();
 require('dotenv').config();
+const swaggerjsdoc=require('swagger-jsdoc');
+const swaggerui = require('swagger-ui-express');
 const { MONGODB_URL } = process.env;
 
 const accessLogStream = rfs.createStream('access.log', {
@@ -54,12 +56,41 @@ app.use('/api/courses', courseRoutes);
 app.use('/api/student', studentRoutes);
 app.use("/api/admin", adminRoutes);
 
+const options = {
+  definition: {
+    openapi: "3.0.0",
+    info: {
+      title: "Eduphoria API",
+      version: "1.0.0",
+      description: "This is eduphoria API application made with express and documented with swagger"
+    },
+    servers: [
+      {
+        url: "http://localhost:8000/",
+      },
+    ],
+  },
+  apis: ['./routes/*.js'],
+};
+
+const specs=swaggerjsdoc(options);
+
+app.use(
+  "/api-docs",
+  swaggerui.serve,
+  swaggerui.setup(specs)
+)
+
+
+
+
 app.use((req, res, next) => {
   const error = new HttpError('Could not find this route.', 404);
   throw error;
 });
 
 app.use((error, req, res, next) => {
+  console.error(error.stack);
   if (req.file) {
     fs.unlink(req.file.path, err => {
       console.log(err);
@@ -71,6 +102,7 @@ app.use((error, req, res, next) => {
   res.status(error.code || 500);
   res.json({ message: error.message || 'An unknown error occurred!' });
 });
+
 
 
 mongoose

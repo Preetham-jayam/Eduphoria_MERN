@@ -79,6 +79,12 @@ const Home = () => {
     );
   }
 
+  if(!user){
+    return(
+      <h1>No user found</h1>
+    )
+  }
+
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.5 }}
@@ -112,6 +118,18 @@ const Home = () => {
          </div>
         </>
       )}
+
+    {user.user.role===1 && user.user.teacher.flag===2 && (
+            <>
+            <div>
+            <h1>Hello {user.user.teacher.FullName}</h1>
+            <div style={{textAlign:'center'}}>
+            <h2>You are not approved by admin .</h2>
+            
+            </div> 
+            </div> 
+            </>
+          )}
 
       {user.user.role === 1 && user.user.teacher.flag===1 && (
         <>

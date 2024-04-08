@@ -1,0 +1,28 @@
+version: "3.8"
+services:
+  api-server:
+    build: ./server
+    container_name: node-api
+    restart: always
+    ports:
+      - "8000:8000"
+    volumes: 
+      - ./server:/usr/src/app
+    environment:
+      - MONGODB_URL=mongodb+srv://nagapreethamj21:preetham@cluster0.jhy2xxy.mongodb.net/MERN
+    networks:
+      - mern-network
+
+  frontend:
+    build: ./client
+    container_name: react-app
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./client:/usr/src/app
+    networks:
+      - mern-network
+
+networks:
+  mern-network:
+    driver: bridge
