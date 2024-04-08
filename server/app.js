@@ -88,7 +88,7 @@ app.use((req, res, next) => {
   const error = new HttpError('Could not find this route.', 404);
   throw error;
 });
-
+const fs=require('fs');
 app.use((error, req, res, next) => {
   console.error(error.stack);
   if (req.file) {

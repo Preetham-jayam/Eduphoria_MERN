@@ -5,6 +5,7 @@ const Teacher = require("../models/teacher");
 const User = require("../models/user");
 const Quiz=require('../models/quiz');
 const HttpError = require("../models/http-error");
+const cloudinaryconfig = require("../cloudconfig");
 
 exports.getTeacherById = async (req,res,next)=>{
   const userId=req.user.userId;
@@ -20,15 +21,21 @@ exports.getTeacherById = async (req,res,next)=>{
 exports.addCourse = async (req, res, next) => {
   
   const { title, name, description, price,teacher,instructorName } = req.body;
-  const image = req.file;
-  const Imageurl = image.path;
+  
 
   try {
+    let image; 
+    if (req.file) {
+      const result = await cloudinaryconfig.v2.uploader.upload(req.file.path,{
+        upload_preset: "eduphoria",
+      }); 
+      image = result.secure_url; 
+    }
     const newCourse = new Course({
       title,
       name,
       description,
-      Imageurl,
+      Imageurl:image,
       price,
       teacher,
       instructorName
@@ -85,8 +92,14 @@ exports.addLesson = async (req, res) => {
   try {
     const { chapterId } = req.params;
     const { number, title, description } = req.body;
-    const video=req.file;
-    const videoUrl=video.path;
+    const video = req.file;
+
+    const result = await cloudinaryconfig.v2.uploader.upload(video.path, {
+      resource_type: "video",
+      upload_preset:'eduphoria'
+    });
+    const videoUrl = result.secure_url;
+
 
     const chapter = await Chapter.findById(chapterId);
 
@@ -142,7 +155,13 @@ exports.updateLesson = async (req, res) => {
     let { videoUrl } = req.body;
 
     if (req.file) {
-      videoUrl = req.file.path; 
+      const video = req.file;
+
+      const result = await cloudinaryconfig.v2.uploader.upload(video.path, {
+        resource_type: "video",
+        upload_preset:'eduphoria'
+      });
+       videoUrl = result.secure_url;
     }
 
     const lesson = await Lesson.findByIdAndUpdate(

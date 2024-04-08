@@ -69,7 +69,7 @@ const CourseCard = ({user, course, onReadMoreClick, enrolled }) => {
         boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
       }}
     >
-      <img src={`http://localhost:8000/${course.Imageurl}`} alt={course.title} className="course-image" />
+      <img src={`${course.Imageurl}`} alt={course.title} className="course-image" />
       <div className="course-info">
         <h3 className="course-title">{course.title}</h3>
         {!enrolled && <p className="course-price">₹{course.price}</p>}

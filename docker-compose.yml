@@ -10,6 +10,8 @@ services:
       - ./server:/usr/src/app
     environment:
       - MONGODB_URL=mongodb+srv://nagapreethamj21:preetham@cluster0.jhy2xxy.mongodb.net/MERN
+      - ADMIN_EMAIL=admin@gmail.com
+      - ADMIN_PASSWORD=admin@123
     networks:
       - mern-network
 

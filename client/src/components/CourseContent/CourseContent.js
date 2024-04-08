@@ -392,7 +392,7 @@ const VideoPlayer = ({
       refetchUser
     );
   };
-  const updatedUrl = `${backendURLPrefix}/${url}`;
+  const updatedUrl = `${url}`;
 
   return (
     <div className="video-player">

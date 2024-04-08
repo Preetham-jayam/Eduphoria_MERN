@@ -425,7 +425,7 @@ const CourseUpload = () => {
                         style={{ width: "300px", height: "200px" }}
                       >
                         <source
-                          src={`http://localhost:8000/${lesson.videoUrl}`}
+                          src={`${lesson.videoUrl}`}
                           type="video/mp4"
                         />
                         Your browser does not support the video tag.
@@ -697,7 +697,7 @@ const CourseUpload = () => {
           <label className="label">Current Video:</label>
           <video controls style={{ width: "100%" }}>
             <source
-              src={`http://localhost:8000/${editedLesson.videoFile}`}
+              src={`${editedLesson.videoFile}`}
               type="video/mp4"
             />
             Your browser does not support the video tag.

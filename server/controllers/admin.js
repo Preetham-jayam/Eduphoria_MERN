@@ -7,6 +7,7 @@ const nodemailer = require("nodemailer");
 const sendgridTransport = require("nodemailer-sendgrid-transport");
 const Course = require("../models/course");
 const HttpError = require("../models/http-error");
+const cloudinaryconfig = require("../cloudconfig");
 const mailTransporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
@@ -226,9 +227,15 @@ exports.deleteCourse = (req, res) => {
 exports.AdminAddCourse = async (req, res, next) => {
   
   const { title, name, description, price,teacher,instructorName } = req.body;
-  const image = req.file;
-  const Imageurl = image.path;
+ 
   try {
+    let image; 
+    if (req.file) {
+      const result = await cloudinaryconfig.v2.uploader.upload(req.file.path,{
+        upload_preset: "eduphoria",
+      }); 
+      image = result.secure_url; 
+    }
     const newCourse = new Course({
       title,
       name,
