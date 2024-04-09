@@ -29,10 +29,10 @@ const Courses = () => {
   }, [courses]);
 
   useEffect(() => {
-    if (userError) {
+    if (auth.loggedIn && userError) {
       console.error("Error fetching user details:", userError);
     }
-  }, [userError]);
+  }, [userError,auth]);
   
   useEffect(() => {
     if (courseError) {

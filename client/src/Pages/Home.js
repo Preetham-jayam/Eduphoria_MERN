@@ -50,13 +50,13 @@ const Home = () => {
   }, [auth.loggedIn, user]);
 
   useEffect(() => {
-    if (userError) {
+    if (auth.loggedIn && userError) {
       console.error("Error fetching user details:", userError);
     }
     if (courseError) {
       console.error("Error fetching courses:", courseError);
     }
-  }, [userError, courseError]);
+  }, [userError,auth, courseError]);
 
   if (userLoading || courseLoading) {
     return <Loader />;
