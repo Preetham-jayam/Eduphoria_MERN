@@ -12,6 +12,13 @@ services:
       - MONGODB_URL=mongodb+srv://nagapreethamj21:preetham@cluster0.jhy2xxy.mongodb.net/MERN
       - ADMIN_EMAIL=admin@gmail.com
       - ADMIN_PASSWORD=admin@123
+      - CLOUD_NAME= dd69f40wm
+      - API_KEY=525221319513236
+      - API_SECRET=EGG14l7jlLdhAmI-CpAD0X5igCU
+      - CLOUDINARY_URL=cloudinary://235945948599421:FQ5F-noEos9Fia8wZwBIA5Q2Wn0@dd69f40wm
+      - REDIS_PASSWORD=2QaKhhA5Dn8IXsO7kWwSaKIMexkrl9bn
+      - REDIS_HOST=redis-17510.c232.us-east-1-2.ec2.cloud.redislabs.com
+      - REDIS_PORT=17510
     networks:
       - mern-network
 
