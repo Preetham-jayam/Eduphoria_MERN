@@ -169,6 +169,12 @@ const Accordion = ({
       )}
       {loggedIn && auth.userInfo.role === 1  && tCourses&& tCourses.some(course => course._id === id)&&(
         <>
+
+        <div className="upload-div">
+            <Link to={`/course/edit/${id}`}>
+              <button className="upload">Edit</button>
+            </Link>
+          </div>
           <div className="upload-div">
             <Link to={`/course/upload/${id}`}>
               <button className="upload">Upload</button>

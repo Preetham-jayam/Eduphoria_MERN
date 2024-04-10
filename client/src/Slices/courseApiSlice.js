@@ -30,17 +30,6 @@ export const coursesApiSlice = apiSlice.injectEndpoints({
       providesTags:["Course"],
       keepUnusedDataFor:5,
     }),
-    updateCourse: builder.mutation({
-      query: ({ courseId, course }) => ({
-        url: `${TEACHER_URL}/${courseId}`,
-        method: 'PUT',
-        body: course,
-        headers: {
-          Authorization: `Bearer ${getJWTToken()}`,
-        },
-      }),
-      invalidatesTags: ['Course'],
-    }),
     deleteLesson: builder.mutation({
       query: ({ lessonId }) => ({
         url: `${TEACHER_URL}/deletelesson/${lessonId}`, 
@@ -88,7 +77,6 @@ export const {
   useGetCourseDetailsQuery,
   useGetCoursesQuery,
   useGetCourseReviewsQuery,
-  useUpdateCourseMutation,
   useDeleteLessonMutation,
   useUpdateChapterMutation,
   useUpdateLessonMutation,

@@ -369,7 +369,6 @@ const VideoPlayer = ({
 }) => {
   const [updateCompletedLessonsMutation] = useUpdateCompletedLessonsMutation();
   const {refetch:refetchUser}=useGetUserDetailsQuery();
-  const backendURLPrefix = 'http://localhost:8000';
   const handleVideoEnded = () => {
     const updatedCompletedLessons = [...completedLessons];
 

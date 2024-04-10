@@ -21,8 +21,8 @@ export const teacherApiSlice = apiSlice.injectEndpoints({
       invalidatesTags: ["Course"],
     }),
     updateCourse: builder.mutation({
-      query: (data) => ({
-        url: `${TEACHER_URL}/update/${data.courseId}`,
+      query: ({data,courseId}) => ({
+        url: `${TEACHER_URL}/editcourse/${courseId}`,
         method: "PUT",
         body: data,
         headers: {

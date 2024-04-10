@@ -58,13 +58,13 @@
     }
   };
 
-  exports.editCourse=async (req,res) =>{
+  exports.editCourse=async (req,res,next) =>{
     try{
       const {courseId} =req.params;
       const { title, name, description, price,teacher,instructorName } = req.body;
-      const {Imageurl}=req.body;
-  
+      let {Imageurl}=req.body;
       if (req.file) {
+
         const result = await cloudinaryconfig.v2.uploader.upload(req.file.path,{
           upload_preset: "eduphoria",
         }); 
@@ -75,7 +75,7 @@
         title,
         name,
         description,
-        Imageurl:image,
+        Imageurl:Imageurl,
         price,
         teacher,
         instructorName
@@ -291,7 +291,7 @@
       }
     };
     
-    exports.updateProfile = async (req, res) => {
+    exports.updateProfile = async (req, res,next) => {
       const { teacherId } = req.params;
       const updates = req.body;
     

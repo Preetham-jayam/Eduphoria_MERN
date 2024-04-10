@@ -185,7 +185,7 @@ router.post('/addcourse', checkAuth, fileUpload.single('image'), TeacherControll
  *           description: Course not found
  */
 
-router.put('/editcourse/:courseId',checkAuth,fileUpload.single('image',TeacherController.editCourse));
+router.put('/editcourse/:courseId',checkAuth,fileUpload.single('image'),TeacherController.editCourse);
 
 /**
  * @swagger

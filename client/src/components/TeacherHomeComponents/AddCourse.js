@@ -106,7 +106,7 @@ const AddCourse = () => {
     formData.append("description", description);
     formData.append("price", price);
     formData.append("name", name);
-    formData.append("teacher", auth.userInfo.role === 1 ? user.user.teacher._id : selectedTeacher._id); // Change logic based on user role
+    formData.append("teacher", auth.userInfo.role === 1 ? user.user.teacher._id : selectedTeacher._id);
     formData.append("chapters", JSON.stringify(chapters));
     formData.append("enrolledStudents", JSON.stringify(enrolledStudents));
     formData.append("instructorName",auth.userInfo.role===1? user.user.teacher.FullName:selectedTeacher.FullName);

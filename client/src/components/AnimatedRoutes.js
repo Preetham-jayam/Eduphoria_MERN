@@ -23,6 +23,7 @@ import CourseDetailsPage from "../Pages/CourseDetailsPage";
 import ForgotPasswordPage from "../Pages/ForgotPasswordPage";
 import ResetPasswordPage from "../Pages/ResetPasswordPage";
 import NotFoundPage from "../Pages/NotFound";
+import EditCourse from "./TeacherHomeComponents/EditCourse";
 
 
 const AnimatedRoutes = () => {
@@ -47,6 +48,7 @@ const AnimatedRoutes = () => {
         <Route path='/AddCourse' element={<ProtectedRoute><AddCourse/></ProtectedRoute>} />
         <Route path='/courseContent/:id' element={<ProtectedRoute><CourseContent/></ProtectedRoute>}/>
         <Route path='/course/upload/:id' element={<ProtectedRoute><CourseUploadPage/></ProtectedRoute>} />
+        <Route path='/course/edit/:id' element={<ProtectedRoute><EditCourse/></ProtectedRoute>} />
         <Route path='/course/addquiz/:id' element={<ProtectedRoute><AddQuizPage/></ProtectedRoute>}/>
         <Route path='/profile' element={<ProtectedRoute><ProfilePage/></ProtectedRoute>}/>
         <Route path='/student/quiz/:id' element={<ProtectedRoute><StudentQuizPage/></ProtectedRoute>} />
