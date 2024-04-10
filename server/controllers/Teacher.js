@@ -57,6 +57,41 @@
       return next(error);
     }
   };
+
+  exports.editCourse=async (req,res) =>{
+    try{
+      const {courseId} =req.params;
+      const { title, name, description, price,teacher,instructorName } = req.body;
+      const {Imageurl}=req.body;
+  
+      if (req.file) {
+        const result = await cloudinaryconfig.v2.uploader.upload(req.file.path,{
+          upload_preset: "eduphoria",
+        }); 
+        Imageurl = result.secure_url; 
+      }
+  
+      const updatedCourse = await Course.findByIdAndUpdate(courseId,{
+        title,
+        name,
+        description,
+        Imageurl:image,
+        price,
+        teacher,
+        instructorName
+      },{new : true});
+
+      if(!updatedCourse){
+        throw new HttpError('Course Not Found',404);
+      }
+
+      res.status(200).json(updatedCourse);
+
+    } catch(error){
+      return next(error);
+    }
+
+  }
   exports.addChapter = async (req, res) => {
     try {
       const { courseId } = req.params;
@@ -284,3 +319,5 @@
         return next(error);
       }
     };
+
+   

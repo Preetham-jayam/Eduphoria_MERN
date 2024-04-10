@@ -84,192 +84,385 @@ const TeacherController = require('../controllers/Teacher');
 
 /**
  * @swagger
- * /api/teacher/addcourse:
- *   post:
- *     summary: Add a new course
- *     tags: [Teacher]
- *     security:
- *       - BearerAuth: []
- *     consumes:
- *       - multipart/form-data
- *     parameters:
- *       - in: formData
- *         name: image
- *         type: file
- *         description: Image file for the course
- *       - in: formData
- *         name: FullName
- *         type: string
+ * paths:
+ *   /api/teacher/addcourse:
+ *     post:
+ *       summary: Add a new course
+ *       tags: [Teacher]
+ *       security:
+ *         - bearerAuth: []
+ *       requestBody:
  *         required: true
- *         description: Teacher's full name
- *       - in: formData
- *         name: InstName
- *         type: string
- *         required: true
- *         description: Institute name
- *       - in: formData
- *         name: phoneNo
- *         type: string
- *         required: true
- *         description: Phone number
- *     responses:
- *       200:
- *         description: Course added successfully
+ *         content:
+ *           multipart/form-data:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 title:
+ *                   type: string
+ *                   description: The title of the course
+ *                 name:
+ *                   type: string
+ *                   description: The name of the course
+ *                 description:
+ *                   type: string
+ *                   description: Description of the course
+ *                 price:
+ *                   type: number
+ *                   description: The price of the course
+ *                 teacher:
+ *                   type: string
+ *                   description: ID of the teacher associated with the course
+ *                 instructorName:
+ *                   type: string
+ *                   description: Name of the instructor
+ *                 image:
+ *                   type: string
+ *                   format: binary
+ *                   description: The image file of the course
+ *       responses:
+ *         '201':
+ *           description: Successfully added the course
+ *         '401':
+ *            description: Unauthorized Error
+ *         '404':
+ *           description: Teacher not found
+ *           
  */
+
 router.post('/addcourse', checkAuth, fileUpload.single('image'), TeacherController.addCourse);
 
 /**
  * @swagger
- * /api/teacher/addchapter/{courseId}:
- *   post:
- *     summary: Add a new chapter to a course
- *     tags: [Teacher]
- *     security:
- *       - BearerAuth: []
- *     parameters:
- *       - in: path
- *         name: courseId
- *         type: string
- *         required: true
- *         description: ID of the course to which the chapter belongs
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
+ * paths:
+ *   /api/teacher/editcourse/{courseId}:
+ *     put:
+ *       summary: Edit an existing course
+ *       tags: [Teacher]
+ *       security:
+ *         - bearerAuth: []
+ *       parameters:
+ *         - in: path
+ *           name: courseId
+ *           required: true
+ *           description: ID of the course to edit
  *           schema:
- *             type: object
- *             properties:
- *               chapterName:
- *                 type: string
- *                 description: Name of the chapter
- *     responses:
- *       200:
- *         description: Chapter added successfully
+ *             type: string
+ *       requestBody:
+ *         required: true
+ *         content:
+ *           multipart/form-data:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 title:
+ *                   type: string
+ *                   description: The updated title of the course
+ *                 name:
+ *                   type: string
+ *                   description: The updated name of the course
+ *                 description:
+ *                   type: string
+ *                   description: The updated description of the course
+ *                 price:
+ *                   type: number
+ *                   description: The updated price of the course
+ *                 teacher:
+ *                   type: string
+ *                   description: The updated ID of the teacher associated with the course
+ *                 instructorName:
+ *                   type: string
+ *                   description: The updated name of the instructor
+ *                 image:
+ *                   type: file
+ *                   description: The updated image of the course
+ *       responses:
+ *         '200':
+ *           description: Successfully updated the course
+ *         '401':
+ *           description: Unauthorized access
+ *         '404':
+ *           description: Course not found
  */
+
+router.put('/editcourse/:courseId',checkAuth,fileUpload.single('image',TeacherController.editCourse));
+
+/**
+ * @swagger
+ * paths:
+ *   /api/teacher/addchapter/{courseId}:
+ *     post:
+ *       summary: Add a new chapter to a course
+ *       tags: [Teacher]
+ *       security:
+ *         - bearerAuth: []
+ *       parameters:
+ *         - in: path
+ *           name: courseId
+ *           required: true
+ *           description: ID of the course to add the chapter to
+ *           schema:
+ *             type: string
+ *       requestBody:
+ *         required: true
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 name:
+ *                   type: string
+ *                   description: The name of the chapter
+ *                 description:
+ *                   type: string
+ *                   description: Description of the chapter
+ *       responses:
+ *         '201':
+ *           description: Successfully added the chapter to the course
+ *         '401':
+ *           description: Unauthorized access
+ *         '404':
+ *           description: Course not found
+ */
+
 router.post('/addchapter/:courseId', checkAuth, TeacherController.addChapter);
 
 /**
  * @swagger
- * /api/teacher/addlesson/{chapterId}:
- *   post:
- *     summary: Add a new lesson to a chapter
- *     tags: [Teacher]
- *     security:
- *       - BearerAuth: []
- *     consumes:
- *       - multipart/form-data
- *     parameters:
- *       - in: path
- *         name: chapterId
- *         type: string
+ * paths:
+ *   /api/teacher/addlesson/{chapterId}:
+ *     post:
+ *       summary: Add a new lesson to a chapter
+ *       tags: [Teacher]
+ *       security:
+ *         - bearerAuth: []
+ *       parameters:
+ *         - in: path
+ *           name: chapterId
+ *           required: true
+ *           description: ID of the chapter to add the lesson to
+ *           schema:
+ *             type: string
+ *       requestBody:
  *         required: true
- *         description: ID of the chapter to which the lesson belongs
- *       - in: formData
- *         name: videoFile
- *         type: file
- *         description: Video file for the lesson
- *     responses:
- *       200:
- *         description: Lesson added successfully
+ *         content:
+ *           multipart/form-data:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 number:
+ *                   type: number
+ *                   description: The number of the lesson
+ *                 title:
+ *                   type: string
+ *                   description: The title of the lesson
+ *                 description:
+ *                   type: string
+ *                   description: The description of the lesson
+ *                 videoFile:
+ *                   type: file
+ *                   description: The video file for the lesson
+ *       responses:
+ *         '201':
+ *           description: Successfully added the lesson
+ *         '401':
+ *           description: Unauthorized access
+ *         '404':
+ *           description: Chapter not found
+ *         '500':
+ *           description: Internal Server Error
  */
+
 router.post('/addlesson/:chapterId', checkAuth, fileUpload.single('videoFile'), TeacherController.addLesson);
 
 /**
  * @swagger
- * /api/teacher/updatechapter/{chapterId}:
- *   put:
- *     summary: Update a chapter
- *     tags: [Teacher]
- *     security:
- *       - BearerAuth: []
- *     parameters:
- *       - in: path
- *         name: chapterId
- *         type: string
- *         required: true
- *         description: ID of the chapter to update
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
+ * paths:
+ *   /api/teacher/updatechapter/{chapterId}:
+ *     put:
+ *       summary: Update a chapter
+ *       tags: [Teacher]
+ *       security:
+ *         - bearerAuth: []
+ *       parameters:
+ *         - in: path
+ *           name: chapterId
+ *           required: true
+ *           description: ID of the chapter to update
  *           schema:
- *             type: object
- *             properties:
- *               chapterName:
- *                 type: string
- *                 description: New name for the chapter
- *     responses:
- *       200:
- *         description: Chapter updated successfully
+ *             type: string
+ *       requestBody:
+ *         required: true
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 name:
+ *                   type: string
+ *                   description: The updated name of the chapter
+ *                 description:
+ *                   type: string
+ *                   description: The updated description of the chapter
+ *       responses:
+ *         '200':
+ *           description: Successfully updated the chapter
+ *         '401':
+ *           description: Unauthorized access
+ *         '404':
+ *           description: Chapter not found
+ *         '500':
+ *           description: Internal Server Error
  */
+
 router.put('/updatechapter/:chapterId', checkAuth, TeacherController.updateChapter);
 
 /**
  * @swagger
- * /api/teacher/updatelesson/{lessonId}:
- *   put:
- *     summary: Update a lesson
- *     tags: [Teacher]
- *     security:
- *       - BearerAuth: []
- *     parameters:
- *       - in: path
- *         name: lessonId
- *         type: string
- *         required: true
- *         description: ID of the lesson to update
- *     requestBody:
- *       required: true
- *       content:
- *         multipart/form-data:
+ * paths:
+ *   /api/teacher/updatelesson/{lessonId}:
+ *     put:
+ *       summary: Update a lesson
+ *       tags: [Teacher]
+ *       security:
+ *         - bearerAuth: []
+ *       parameters:
+ *         - in: path
+ *           name: lessonId
+ *           required: true
+ *           description: ID of the lesson to update
  *           schema:
- *             type: object
- *             properties:
- *               videoFile:
- *                 type: file
- *                 description: New video file for the lesson
- *     responses:
- *       200:
- *         description: Lesson updated successfully
+ *             type: string
+ *       requestBody:
+ *         required: true
+ *         content:
+ *           multipart/form-data:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 number:
+ *                   type: number
+ *                   description: The updated lesson number
+ *                 title:
+ *                   type: string
+ *                   description: The updated title of the lesson
+ *                 description:
+ *                   type: string
+ *                   description: The updated description of the lesson
+ *                 videoFile:
+ *                   type: string
+ *                   format: binary
+ *                   description: The updated video file for the lesson
+ *       responses:
+ *         '200':
+ *           description: Successfully updated the lesson
+ *         '401':
+ *           description: Unauthorized access
+ *         '404':
+ *           description: Lesson not found
+ *         '500':
+ *           description: Internal Server Error
  */
+
 router.put('/updatelesson/:lessonId', checkAuth, fileUpload.single('videoFile'), TeacherController.updateLesson);
 
 /**
  * @swagger
- * /api/teacher/deletelesson/{lessonId}:
- *   delete:
- *     summary: Delete a lesson
- *     tags: [Teacher]
- *     security:
- *       - BearerAuth: []
- *     parameters:
- *       - in: path
- *         name: lessonId
- *         type: string
- *         required: true
- *         description: ID of the lesson to delete
- *     responses:
- *       200:
- *         description: Lesson deleted successfully
+ * paths:
+ *   /api/teacher/deletelesson/{lessonId}:
+ *     delete:
+ *       summary: Delete a lesson
+ *       tags: [Teacher]
+ *       security:
+ *         - bearerAuth: []
+ *       parameters:
+ *         - in: path
+ *           name: lessonId
+ *           required: true
+ *           description: ID of the lesson to delete
+ *           schema:
+ *             type: string
+ *       responses:
+ *         '200':
+ *           description: Successfully deleted the lesson
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 type: object
+ *                 properties:
+ *                   message:
+ *                     type: string
+ *                     description: Message indicating successful deletion
+ *         '401':
+ *           description: Unauthorized access
+ *         '404':
+ *           description: Lesson not found
+ *         '500':
+ *           description: Internal Server Error
  */
+
 router.delete('/deletelesson/:lessonId', checkAuth, TeacherController.deleteLesson);
 
 /**
  * @swagger
- * /api/teacher/addquiz/{cid}:
- *   post:
- *     summary: Add a quiz to a course
- *     tags: [Teacher]
- *     parameters:
- *       - in: path
- *         name: cid
- *         type: string
+ * paths:
+ *   /api/teacher/addquiz/{cid}:
+ *     post:
+ *       summary: Add or update a quiz for a course
+ *       tags: [Teacher]
+ *       parameters:
+ *         - in: path
+ *           name: cid
+ *           required: true
+ *           description: ID of the course to add or update the quiz
+ *           schema:
+ *             type: string
+ *       requestBody:
  *         required: true
- *         description: ID of the course to which the quiz belongs
- *     responses:
- *       200:
- *         description: Quiz added successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 title:
+ *                   type: string
+ *                   description: Title of the quiz
+ *                 questions:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       question:
+ *                         type: string
+ *                         description: The question text
+ *                       options:
+ *                         type: array
+ *                         items:
+ *                           type: string
+ *                         description: Array of options for the question
+ *                       answer:
+ *                         type: string
+ *                         description: Correct answer for the question
+ *                       marks:
+ *                         type: number
+ *                         description: Marks allocated for the question
+ *       responses:
+ *         '200':
+ *           description: Quiz added or updated successfully
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 type: object
+ *                 properties:
+ *                   message:
+ *                     type: string
+ *                     description: Message indicating successful addition or update
+ *         '404':
+ *           description: Course not found
+ *         '500':
+ *           description: Internal Server Error
  */
+
 router.post('/addquiz/:cid', TeacherController.addQuizToCourse);
 
 /**

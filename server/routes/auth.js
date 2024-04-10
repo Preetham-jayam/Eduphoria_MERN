@@ -146,21 +146,7 @@ router.post("/signup", [
   check('password').isLength({ min: 6 })
 ], authController.Signup);
 
-/**
- * @swagger
- * /api/user/profile:
- *   get:
- *     summary: Get user profile
- *     tags: [Authentication]
- *     responses:
- *       200:
- *         description: User profile retrieved successfully
- *       404:
- *         description: User not found
- *       500:
- *         description: Something went wrong, could not find a user
- */
-router.get('/profile', authController.getUserProfile);
+
 
 /**
  * @swagger
