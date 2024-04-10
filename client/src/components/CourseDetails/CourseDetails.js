@@ -209,7 +209,7 @@ const CourseDetails = () => {
 
       <div className="course-sidebar">
         <div className="img-box position-relative">
-          <img src={`http://localhost:8000/${course.Imageurl}`} className="course-image" alt={course.title} />
+          <img src={`${course.Imageurl}`} className="course-image" alt={course.title} />
           <h2 style={{ textAlign: "center" }}>Course Details</h2>
         </div>
         <div className="center-items">

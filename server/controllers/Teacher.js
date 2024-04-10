@@ -92,7 +92,7 @@
     }
 
   }
-  exports.addChapter = async (req, res) => {
+  exports.addChapter = async (req, res,next) => {
     try {
       const { courseId } = req.params;
       console.log(courseId);
@@ -122,7 +122,7 @@
     }
   };
 
-  exports.addLesson = async (req, res) => {
+  exports.addLesson = async (req, res,next) => {
     try {
       const { chapterId } = req.params;
       const { number, title, description } = req.body;
@@ -161,7 +161,7 @@
     }
   };
 
-  exports.updateChapter = async (req, res) => {
+  exports.updateChapter = async (req, res,next) => {
     try {
       const { chapterId } = req.params;
       const { name, description } = req.body;
@@ -182,7 +182,7 @@
     }
   };
 
-  exports.updateLesson = async (req, res) => {
+  exports.updateLesson = async (req, res,next) => {
     try {
       const { lessonId } = req.params;
       const { number, title, description } = req.body;
@@ -214,7 +214,7 @@
     }
   };
 
-  exports.deleteLesson = async (req, res) => {
+  exports.deleteLesson = async (req, res,next) => {
     try {
       const { lessonId } = req.params;
 
