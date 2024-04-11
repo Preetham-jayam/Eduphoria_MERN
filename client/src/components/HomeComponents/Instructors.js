@@ -1,6 +1,7 @@
 import React from "react";
-import Instructor1 from '../../Assets/Instructor1.jpg'
-import Instructor2 from '../../Assets/Instructor2.webp'
+import Instructor1 from '../../Assets/Teacher1.jpeg'
+import Instructor2 from '../../Assets/Teacher2.jpeg'
+import Instructor3 from '../../Assets/Teacher3.jpeg'
 import { FaFacebook, FaInstagram, FaTwitter } from "react-icons/fa";
 import "./Instructors.css";
 
@@ -15,7 +16,7 @@ const teachers = [
   },
   {
     id:2,
-    name: "Linda",
+    name: "Max",
     role: "Data Analyst",
     content:
       "As a seasoned Data Analyst, I bring a wealth of experience in harnessing the power of data to drive informed decision-making and optimize online strategies. With a track record of 6 years in the field, I have honed my skills in collecting, processing, and analyzing web data to extract valuable insights that propel businesses forward",
@@ -23,11 +24,11 @@ const teachers = [
   },
   {
     id:3,
-    name: "Max",
+    name: "Linda",
     role: "Full Stack Developer",
     content:
       "As a seasoned FullStackDeveloper, I bring a wealth of experience in harnessing the power of data to drive informed decision-making and optimize online strategies. With a track record of 5 years in the field, I have honed my skills in collecting, processing, and analyzing web data to extract valuable insights that propel businesses forward",
-    img: "https://captiontools.com/wp-content/uploads/2017/03/testy3-1.png",
+    img: Instructor3,
   },
 ];
 

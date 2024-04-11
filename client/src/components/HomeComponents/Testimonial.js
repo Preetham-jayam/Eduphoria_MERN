@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
-import Preetham from '../../Assets/Preetham.jpg';
-import Chaitanya from '../../Assets/Chaitanya.jpg';
-import Abhishikth from '../../Assets/Abhishikth.jpg';
-import Narasimha from '../../Assets/Narasimha.jpg';
-import Person1 from '../../Assets/Person1.jpg'
+import User1 from '../../Assets/User1.png'
+import User2 from '../../Assets/User2.png'
+import User3 from '../../Assets/User3.png'
+import User4 from '../../Assets/User4.png'
+import User5 from '../../Assets/User5.png'
 import './Testimonial.css'; 
 
 const Testimonial = () => {
@@ -14,27 +14,27 @@ const Testimonial = () => {
     {
       name: 'Preetham',
       quote: "I've learned so much from this platform. The courses are top-notch, and the instructors are experts in their fields.",
-      image: Preetham,
+      image: User5,
     },
     {
       name: 'Chaitanya',
       quote: 'The interactive lessons and quizzes have made my learning experience enjoyable and effective. I highly recommend it!',
-      image: Chaitanya,
+      image: User4,
     },
     {
       name: 'Abhishikth',
       quote: "This e-learning platform has been a game-changer for me. It's convenient, flexible, and has helped me advance in my career.",
-      image: Abhishikth,
+      image: User3,
     },
     {
       name: 'Narasimha',
       quote: "I can't believe how much I've grown as a learner. The variety of courses is impressive, and the support is outstanding.",
-      image: Narasimha,
+      image: User1,
     },
     {
       name: 'Manjith',
       quote: "The quality of education here is unmatched. I'm grateful for the opportunity to expand my knowledge and skills.",
-      image: Person1,
+      image: User2,
     },
   ];
 

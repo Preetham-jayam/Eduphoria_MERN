@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
-import {useSelector} from 'react-redux';
-import { useParams,useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useParams, useNavigate } from "react-router-dom";
 import Tab from "../Tabs/Tab";
 import { FaCode, FaUniversity } from "react-icons/fa";
 import "./CourseDetails.css";
 import Accordion from "../CourseContent/Accordion";
-import { useGetCourseDetailsQuery ,useGetCourseReviewsQuery} from "../../Slices/courseApiSlice";
+import {
+  useGetCourseDetailsQuery,
+  useGetCourseReviewsQuery,
+} from "../../Slices/courseApiSlice";
 import Loader from "../Loader/Loader";
 import {
   FaStar,
@@ -17,56 +20,55 @@ import {
   FaTrophy,
 } from "react-icons/fa";
 const CourseDetails = () => {
-  
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const { id: courseId } = useParams();
-  const auth=useSelector((state)=>state.auth);
-  const {data,isLoading:courseLoading,isError:courseError}=useGetCourseDetailsQuery(courseId);
-  const {data:reviewData,isLoading:reviewLoading,isError:reviewError}=useGetCourseReviewsQuery(courseId);
+  const auth = useSelector((state) => state.auth);
+  const {
+    data,
+    isLoading: courseLoading,
+    isError: courseError,
+  } = useGetCourseDetailsQuery(courseId);
+  const {
+    data: reviewData,
+    isLoading: reviewLoading,
+    isError: reviewError,
+  } = useGetCourseReviewsQuery(courseId);
   const [course, setCourse] = useState([]);
-  const [price,setPrice]=useState(0);
+  const [price, setPrice] = useState(0);
   const [reviews, setReviews] = useState([]);
-  const [courseChapters,setCourseChapters]=useState([]);
+  const [courseChapters, setCourseChapters] = useState([]);
 
-  
-  useEffect(()=>{
-    if(data){
+  useEffect(() => {
+    if (data) {
       setCourse(data.course);
       setCourseChapters(data.course.chapters);
       setPrice(course.price);
     }
-    if(reviewData){
+    if (reviewData) {
       setReviews(reviewData.reviews);
     }
-  },[data,course.price,reviewData]);
+  }, [data, course.price, reviewData]);
   useEffect(() => {
-
-    if(courseError){
-      console.log("error fetching course:",courseError);
+    if (courseError) {
+      console.log("error fetching course:", courseError);
     }
 
-    if(reviewError){
-      console.log("Error while fetching reviews :",reviewError);
+    if (reviewError) {
+      console.log("Error while fetching reviews :", reviewError);
     }
-   
-  }, [courseError,reviewError]);
-  let discount=parseInt(((10999-price)/10999)*100);
- 
-  
-
-
+  }, [courseError, reviewError]);
+  let discount = parseInt(((10999 - price) / 10999) * 100);
 
   const tabs = [
     {
       label: "Curriculum",
       content: (
         <>
-        <Accordion
-          course={course}
-          courseData={courseChapters}
-          enrolled={false}
-        />
-          
+          <Accordion
+            course={course}
+            courseData={courseChapters}
+            enrolled={false}
+          />
         </>
       ),
     },
@@ -121,10 +123,11 @@ const CourseDetails = () => {
     },
     {
       label: "Reviews",
-      content: <>
-      <div className="reviews-container">
+      content: (
+        <>
+          <div className="reviews-container">
             <h2 className="reviews-title">Student Reviews</h2>
-            {reviews.length===0 && <h3>No Reviews Yet!!</h3>}
+            {reviews.length === 0 && <h3>No Reviews Yet!!</h3>}
             <div className="review-list">
               {reviews.map((review, index) => (
                 <div key={index} className="review-item">
@@ -140,24 +143,21 @@ const CourseDetails = () => {
               ))}
             </div>
           </div>
-      </>,
+        </>
+      ),
     },
   ];
 
-  const handlePayment=()=>{
-
-    if(!auth.loggedIn){
-      navigate('/signin');
-    } else{
+  const handlePayment = () => {
+    if (!auth.loggedIn) {
+      navigate("/signin");
+    } else {
       navigate(`/enroll/${courseId}`);
-
     }
+  };
 
-    
-  }
-
-  if(courseLoading || reviewLoading){
-    return <Loader/>;
+  if (courseLoading || reviewLoading) {
+    return <Loader />;
   }
 
   return (
@@ -167,7 +167,7 @@ const CourseDetails = () => {
           <h2 className="course-title">
             Course Title :
             <span style={{ fontWeight: "normal", color: "#06bbcc" }}>
-              {course.title} 
+              {course.title}
             </span>
           </h2>
           <div className="rating">
@@ -185,8 +185,14 @@ const CourseDetails = () => {
 
             <ul>
               <li className="items-4">
-                Enrolled students - <span>10</span>
+                Enrolled students -{" "}
+                <span>
+                  {course.students && Array.isArray(course.students)
+                    ? course.students.length
+                    : 0}
+                </span>
               </li>
+
               <li className="items-4">
                 Created by - <span>{course.instructorName}</span>
               </li>
@@ -209,7 +215,11 @@ const CourseDetails = () => {
 
       <div className="course-sidebar">
         <div className="img-box position-relative">
-          <img src={`${course.Imageurl}`} className="course-image" alt={course.title} />
+          <img
+            src={`${course.Imageurl}`}
+            className="course-image"
+            alt={course.title}
+          />
           <h2 style={{ textAlign: "center" }}>Course Details</h2>
         </div>
         <div className="center-items">
@@ -241,12 +251,13 @@ const CourseDetails = () => {
               Certificate of Completion
             </li>
           </ul>
-        {auth.userInfo && auth.userInfo.role===0 && <>
-          <button className="join-button" onClick={handlePayment}>
-            Enroll Now
-          </button>
-
-        </>}
+          {(!auth.userInfo || (auth.userInfo && auth.userInfo.role === 0)) && (
+            <>
+              <button className="join-button" onClick={handlePayment}>
+                Enroll Now
+              </button>
+            </>
+          )}
         </div>
       </div>
     </div>
