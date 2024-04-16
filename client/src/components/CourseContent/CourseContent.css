@@ -272,3 +272,138 @@
   background-color: #fff;
   color: #06bbcc;
 }
+
+@media (max-width: 1024px) {
+  .course-page {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .course-content {
+    width: 90%;
+  }
+
+  .main-content,
+  .sidebar {
+    width: 100%;
+    margin: 0;
+  }
+
+  .video-player-container,
+  .course-details-section {
+    width: 100%;
+  }
+
+  .sidebar {
+    margin-top: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .course-information {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .rating-section,
+  .student-section,
+  .hours-section {
+    padding: 10px;
+  }
+
+  .what-learn {
+    margin-top: 20px;
+  }
+
+  .what-learn h2 {
+    font-size: 1.2rem;
+  }
+
+  .learn-list {
+    margin-left: 0;
+    padding-left: 0;
+  }
+
+  .learn-list li {
+    margin: 0.5rem 0;
+  }
+
+  .instructor-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .instructor-info {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .instructor-updated,
+  .instructor-institute {
+    margin-top: 20px;
+  }
+
+  .instructor-experience {
+    padding-top: 0;
+  }
+
+  .instructor-experience p {
+    font-size: 14px;
+  }
+
+  .reviews-container {
+    padding: 10px;
+  }
+
+  .reviews-container h2 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+  }
+
+  .review-item {
+    padding: 10px;
+    margin-bottom: 15px;
+  }
+
+  .review-header {
+    flex-direction: column;
+  }
+
+  .review-author,
+  .review-date {
+    margin: 5px 0;
+  }
+
+  .review-rating {
+    font-size: 18px;
+    margin-bottom: 5px;
+  }
+
+  .review-comment {
+    font-size: 14px;
+    line-height: 1.3;
+  }
+
+  .review-form-container {
+    width: 100%;
+  }
+
+  .review-input {
+    margin-bottom: 10px;
+  }
+
+  .review-input label {
+    font-size: 14px;
+  }
+
+  .review-input input[type="text"],
+  .review-input textarea,
+  .review-input select {
+    font-size: 14px;
+  }
+
+  .review-input button[type="submit"] {
+    font-size: 14px;
+    padding: 8px 16px;
+  }
+}

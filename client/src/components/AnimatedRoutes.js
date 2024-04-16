@@ -8,7 +8,7 @@ import Help from "../Pages/Help";
 import { AnimatePresence } from "../../node_modules/framer-motion/dist/framer-motion";
 import { Route, Routes, useLocation } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
-import AddCourse from './TeacherHomeComponents/AddCourse';
+import AddCoursePage from "../Pages/AddCoursePage";
 import Courses from "../Pages/Course";
 import EnrollPayment from "./Payment/EnrollPayment";
 import CourseContent from "./CourseContent/CourseContent";
@@ -23,13 +23,11 @@ import CourseDetailsPage from "../Pages/CourseDetailsPage";
 import ForgotPasswordPage from "../Pages/ForgotPasswordPage";
 import ResetPasswordPage from "../Pages/ResetPasswordPage";
 import NotFoundPage from "../Pages/NotFound";
-import EditCourse from "./TeacherHomeComponents/EditCourse";
+import EditCoursePage from "../Pages/EditCoursePage";
 
 
 const AnimatedRoutes = () => {
   const location = useLocation();
-
-
   return (
     <AnimatePresence>
       <Routes location={location} key={location.pathname}>
@@ -45,24 +43,19 @@ const AnimatedRoutes = () => {
         <Route path ='/courseDetails/:id' element={<CourseDetailsPage/>}/>
         <Route path='/enroll/:cid' element={<EnrollPayment/>}/>
         <Route path='/results' element={<ResultsPage/>}/>
-        <Route path='/AddCourse' element={<ProtectedRoute><AddCourse/></ProtectedRoute>} />
+        <Route path='/AddCourse' element={<ProtectedRoute><AddCoursePage/></ProtectedRoute>} />
         <Route path='/courseContent/:id' element={<ProtectedRoute><CourseContent/></ProtectedRoute>}/>
         <Route path='/course/upload/:id' element={<ProtectedRoute><CourseUploadPage/></ProtectedRoute>} />
-        <Route path='/course/edit/:id' element={<ProtectedRoute><EditCourse/></ProtectedRoute>} />
+        <Route path='/course/edit/:id' element={<ProtectedRoute><EditCoursePage/></ProtectedRoute>} />
         <Route path='/course/addquiz/:id' element={<ProtectedRoute><AddQuizPage/></ProtectedRoute>}/>
         <Route path='/profile' element={<ProtectedRoute><ProfilePage/></ProtectedRoute>}/>
         <Route path='/student/quiz/:id' element={<ProtectedRoute><StudentQuizPage/></ProtectedRoute>} />
         <Route path='/profile/editaccount' element={<ProtectedRoute><AccountEditPage/></ProtectedRoute>}/>
         <Route path='/send-mail' element={<ProtectedRoute><EmailSendingFormPage/></ProtectedRoute>}/>
-        <Route path='/admin/add-course' element={<ProtectedRoute><AddCourse/></ProtectedRoute>}/>
-
-        <Route path="*" element={<NotFoundPage />} />
-        
-
-        
+        <Route path='/admin/add-course' element={<ProtectedRoute><AddCoursePage/></ProtectedRoute>}/>
+        <Route path="*" element={<NotFoundPage />} />  
       </Routes>
     </AnimatePresence>
   );
 };
-
 export default AnimatedRoutes;

@@ -1,0 +1,28 @@
+.notification {
+    background-color: #f8d7da; 
+    color: #721c24; 
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    font-size: 18px; 
+    text-align: center;
+  }
+  
+  .notification p {
+    margin: 0;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  .notification {
+    animation: fadeIn 0.5s ease-in-out;
+  }
+  

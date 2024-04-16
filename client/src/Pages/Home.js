@@ -14,6 +14,7 @@ import { useGetUserDetailsQuery } from "../Slices/usersApiSlice";
 import { useGetCoursesQuery } from "../Slices/courseApiSlice";
 import AdminDashboard from "../components/AdminDashboard/AdminDashboard";
 import waiting from '../Assets/waiting.avif';
+import AccountDeletedNotification from "../components/AdminDeletion/AccountDeletion";
 const Home = () => {
   const [courseData, setCourseData] = useState([]);
   const [userCourses, setUserCourses] = useState([]);
@@ -81,7 +82,7 @@ const Home = () => {
 
   if(!user){
     return(
-      <h1>No user found</h1>
+      <AccountDeletedNotification/>
     )
   }
 

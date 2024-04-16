@@ -1,19 +1,19 @@
 import React from "react";
-import StudentQuiz from "../components/Quiz/StudentQuiz";
 import { useTitle } from "../Hooks/title-hook";
+import EditCourse from "../components/TeacherHomeComponents/EditCourse";
 import { motion } from "framer-motion";
 import GoBackButton from "../shared/components/FrontendTools/GoBack";
-const StudentQuizPage = () => {
-  useTitle("Student Quiz Page");
+const EditCoursePage = () => {
+  useTitle("Add Course");
   return (
     <motion.div
     initial={{ opacity: 0, scale: 0.5 }}
     animate={{ opacity: 1, scale: 1 }}
     transition={{ duration: 0.5 }}>
       <GoBackButton/>
-        <StudentQuiz/>
+      <EditCourse/>
     </motion.div>
   );
 };
 
-export default StudentQuizPage;
+export default EditCoursePage;

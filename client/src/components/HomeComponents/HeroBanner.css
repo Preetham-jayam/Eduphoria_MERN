@@ -53,4 +53,23 @@
     background-color: orange;
     
   }
+  @media (max-width: 768px) {
+    .hero-banner {
+      height: 50vh;
+    }
+  
+    .hero-title {
+      font-size: 2rem;
+    }
+  
+    .hero-subtitle {
+      font-size: 1rem;
+      margin-bottom: 20px;
+    }
+  
+    .join-button {
+      font-size: 1rem;
+      padding: 8px 16px;
+    }
+  }
   
