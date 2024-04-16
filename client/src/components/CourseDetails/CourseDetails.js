@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState ,useRef} from "react";
 import { useSelector } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 import Tab from "../Tabs/Tab";
@@ -18,6 +18,7 @@ import {
   FaNewspaper,
   FaMobileAlt,
   FaTrophy,
+  FaRegStar
 } from "react-icons/fa";
 const CourseDetails = () => {
   const navigate = useNavigate();
@@ -38,7 +39,10 @@ const CourseDetails = () => {
   const [reviews, setReviews] = useState([]);
   const [courseChapters, setCourseChapters] = useState([]);
 
+  const totalRatingRef = useRef(0);
+
   useEffect(() => {
+    let sum=0;
     if (data) {
       setCourse(data.course);
       setCourseChapters(data.course.chapters);
@@ -46,8 +50,16 @@ const CourseDetails = () => {
     }
     if (reviewData) {
       setReviews(reviewData.reviews);
+      reviewData.reviews.forEach((review) => {
+        sum += review.rating;
+      });
+
+      totalRatingRef.current = sum;
     }
+
   }, [data, course.price, reviewData]);
+
+  const average = reviewData && reviewData.reviews.length > 0 ? totalRatingRef.current / reviewData.reviews.length : 0;
   useEffect(() => {
     if (courseError) {
       console.log("error fetching course:", courseError);
@@ -59,6 +71,26 @@ const CourseDetails = () => {
   }, [courseError, reviewError]);
   let discount = parseInt(((10999 - price) / 10999) * 100);
 
+  const StarRating = ({ average }) => {
+    const fullStars = Math.floor(average); 
+    const remainingStars = 5 - fullStars; 
+    const hasHalfStar = average - fullStars >= 0.5; 
+
+    const fullStarsArray = Array.from({ length: fullStars }, (_, index) => (
+      <FaStar key={index} className="i-star" />
+    ));
+
+    return (
+      <span className="average-stars">
+        {fullStarsArray}
+        {hasHalfStar && <FaStarHalfAlt className="i-star" />}
+        {[...Array(remainingStars)].map((_, index) => (
+          <FaRegStar key={index} className="i-star" />
+        ))}
+      </span>
+    );
+  };
+  
   const tabs = [
     {
       label: "Curriculum",
@@ -132,8 +164,8 @@ const CourseDetails = () => {
               {reviews.map((review, index) => (
                 <div key={index} className="review-item">
                   <div className="review-header">
-                    <div className="review-author">{review.author}</div>
-                    <div className="review-date">{review.date}</div>
+                    <div className="review-author">{review.studentName}</div>
+                    <div className="review-date">{review.todaysdate}</div>
                   </div>
                   <div className="review-rating">
                     <span className="star">&#9733;</span> {review.rating}
@@ -172,14 +204,8 @@ const CourseDetails = () => {
           </h2>
           <div className="rating">
             <div className="custom-box">
-              <span className="average-rating">(4.5)</span>
-              <span className="average-stars">
-                <FaStar className="i-star" />
-                <FaStar className="i-star" />
-                <FaStar className="i-star" />
-                <FaStar className="i-star" />
-                <FaStarHalfAlt className="i-star" />
-              </span>
+              <span className="average-rating">({average})</span>
+              <StarRating average={average}/>
               <span className="reviews">({reviews.length} Reviews)</span>
             </div>
 
