@@ -115,7 +115,6 @@ exports.updateProfile = async (req, res) => {
 
 exports.updateQuizResults = async (req, res) => {
   const { studentId, quizId, courseId, marks, totalMarks, answers } = req.body;
-
   try {
     const student = await Student.findById(studentId);
 

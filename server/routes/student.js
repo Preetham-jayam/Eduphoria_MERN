@@ -243,6 +243,8 @@ router.put('/updateprofile/:studentId', checkAuth, StudentController.updateProfi
  *   patch:
  *     summary: Update quiz results for a student
  *     tags: [Student]
+ *     security:
+ *       - BearerAuth: []
  *     parameters:
  *       - in: path
  *         name: studentId
@@ -277,6 +279,6 @@ router.put('/updateprofile/:studentId', checkAuth, StudentController.updateProfi
  *       200:
  *         description: Quiz results updated successfully
  */
-router.patch('/updateQuizResults/:studentId', StudentController.updateQuizResults);
+router.patch('/updateQuizResults/:studentId',checkAuth, StudentController.updateQuizResults);
 
 module.exports = router;

@@ -90,7 +90,7 @@ const TeacherController = require('../controllers/Teacher');
  *       summary: Add a new course
  *       tags: [Teacher]
  *       security:
- *         - bearerAuth: []
+ *         - BearerAuth: []
  *       requestBody:
  *         required: true
  *         content:
@@ -140,7 +140,7 @@ router.post('/addcourse', checkAuth, fileUpload.single('image'), TeacherControll
  *       summary: Edit an existing course
  *       tags: [Teacher]
  *       security:
- *         - bearerAuth: []
+ *         - BearerAuth: []
  *       parameters:
  *         - in: path
  *           name: courseId
@@ -195,7 +195,7 @@ router.put('/editcourse/:courseId',checkAuth,fileUpload.single('image'),TeacherC
  *       summary: Add a new chapter to a course
  *       tags: [Teacher]
  *       security:
- *         - bearerAuth: []
+ *         - BearerAuth: []
  *       parameters:
  *         - in: path
  *           name: courseId
@@ -235,7 +235,7 @@ router.post('/addchapter/:courseId', checkAuth, TeacherController.addChapter);
  *       summary: Add a new lesson to a chapter
  *       tags: [Teacher]
  *       security:
- *         - bearerAuth: []
+ *         - BearerAuth: []
  *       parameters:
  *         - in: path
  *           name: chapterId
@@ -283,7 +283,7 @@ router.post('/addlesson/:chapterId', checkAuth, fileUpload.single('videoFile'), 
  *       summary: Update a chapter
  *       tags: [Teacher]
  *       security:
- *         - bearerAuth: []
+ *         - BearerAuth: []
  *       parameters:
  *         - in: path
  *           name: chapterId
@@ -325,7 +325,7 @@ router.put('/updatechapter/:chapterId', checkAuth, TeacherController.updateChapt
  *       summary: Update a lesson
  *       tags: [Teacher]
  *       security:
- *         - bearerAuth: []
+ *         - BearerAuth: []
  *       parameters:
  *         - in: path
  *           name: lessonId
@@ -374,7 +374,7 @@ router.put('/updatelesson/:lessonId', checkAuth, fileUpload.single('videoFile'),
  *       summary: Delete a lesson
  *       tags: [Teacher]
  *       security:
- *         - bearerAuth: []
+ *         - BearerAuth: []
  *       parameters:
  *         - in: path
  *           name: lessonId
@@ -410,6 +410,8 @@ router.delete('/deletelesson/:lessonId', checkAuth, TeacherController.deleteLess
  *     post:
  *       summary: Add or update a quiz for a course
  *       tags: [Teacher]
+ *       security:
+ *          - BearerAuth: []
  *       parameters:
  *         - in: path
  *           name: cid
@@ -463,7 +465,7 @@ router.delete('/deletelesson/:lessonId', checkAuth, TeacherController.deleteLess
  *           description: Internal Server Error
  */
 
-router.post('/addquiz/:cid', TeacherController.addQuizToCourse);
+router.post('/addquiz/:cid', checkAuth,TeacherController.addQuizToCourse);
 
 /**
  * @swagger

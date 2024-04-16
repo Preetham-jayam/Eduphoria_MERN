@@ -69,6 +69,16 @@ const options = {
         url: "http://localhost:8000/",
       },
     ],
+    components: {
+      securitySchemes: {
+          BearerAuth: {
+              type: "http",
+              scheme: "bearer",
+              bearerFormat: "JWT",
+              value: "Bearer <JWT token here>"
+          }
+      }
+  }
   },
   apis: ['./routes/*.js'],
 };

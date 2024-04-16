@@ -49,7 +49,7 @@ const checkAuth = require('../middleware/isAuth');
  *     summary: Register new admin
  *     tags: [Admin]
  *     security:
- *       - bearerAuth: []
+ *       - BearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -82,7 +82,7 @@ router.post("/register", checkAuth, adminController.registerAdmin);
  *     summary: Get pending teachers
  *     tags: [Admin]
  *     security:
- *       - bearerAuth: []
+ *       - BearerAuth: []
  *     responses:
  *       200:
  *         description: Pending teachers retrieved successfully
@@ -98,7 +98,7 @@ router.get('/pending-teachers', checkAuth, adminController.pendingTeachers);
  *     summary: Accept teacher
  *     tags: [Admin]
  *     security:
- *       - bearerAuth: []
+ *       - BearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -122,7 +122,7 @@ router.patch('/accept-teacher/:id', adminController.acceptTeacher);
  *     summary: Decline teacher
  *     tags: [Admin]
  *     security:
- *       - bearerAuth: []
+ *       - BearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -146,7 +146,7 @@ router.patch('/decline-teacher/:id', adminController.declineTeacher);
  *     summary: Block/Unblock user
  *     tags: [Admin]
  *     security:
- *       - bearerAuth: []
+ *       - BearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -170,7 +170,7 @@ router.patch('/block-user/:id', adminController.BlockUser);
  *     summary: Delete user
  *     tags: [Admin]
  *     security:
- *       - bearerAuth: []
+ *       - BearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -194,7 +194,7 @@ router.delete('/delete-user/:id', adminController.DeleteUser);
  *     summary: Send mail to all users
  *     tags: [Admin]
  *     security:
- *       - bearerAuth: []
+ *       - BearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -223,7 +223,7 @@ router.post('/send-mail', checkAuth, adminController.postsendmail);
  *     summary: Delete course
  *     tags: [Admin]
  *     security:
- *       - bearerAuth: []
+ *       - BearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -247,7 +247,7 @@ router.delete('/delete-course/:id', checkAuth, adminController.deleteCourse);
  *     summary: Add new course
  *     tags: [Admin]
  *     security:
- *       - bearerAuth: []
+ *       - BearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
