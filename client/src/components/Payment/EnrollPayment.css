@@ -1,47 +1,29 @@
-
 .enroll-payment-container {
-    max-width: 400px;
-    margin: 20px auto;
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-  
+  display: grid;
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
 
-  .enroll-payment-form {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .enroll-input {
-    width: 100%;
-    padding: 8px;
-    margin-top: 5px;
-    box-sizing: border-box;
-  }
-  
-  
-  .enroll-error {
-    color: red;
-    font-size: 14px;
-    margin-top: 5px;
-    display: block;
-  }
-  
+.enroll-payment-container h2 {
+  color: green;
+  text-decoration: underline;
+}
 
-  .enroll-button {
-    background-color: #4caf50;
-    color: white;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    margin-top: 10px;
-  }
-  
-  .enroll-button:hover {
-    background-color: #45a049;
-  }
-  
+.enroll-payment-form {
+  margin-top: 20px;
+}
+
+.enroll-payment-form h3 {
+  color: #333;
+}
+
+.enroll-payment-form p {
+  color: #777;
+}
+
+
