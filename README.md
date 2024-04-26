@@ -2,6 +2,25 @@
 
 Welcome to Eduphoria, an e-learning platform built using the MERN stack. Eduphoria offers a comprehensive set of features for teachers, students, and administrators, facilitating seamless learning and management within the platform.
 
+## Deployment Links
+
+- Frontend : https://eduphoria-mern-frontend.vercel.app/
+- Backend : https://eduphoria-mern-backend.onrender.com/
+
+- Documentation :  https://eduphoria-mern-backend.onrender.com/api-docs 
+
+## Screenshots
+
+![App Screenshot](Screenshots/Home.png)
+![Courses](Screenshots/courses.png)
+![Course](Screenshots/course.png)
+![SHome](Screenshots/SHome.png)
+![Content](Screenshots/Content.png)
+![Quiz](Screenshots/Quiz.png)
+![Teacher Course ](Screenshots/CUpdate.png)
+![Admin](Screenshots/Admin.png)
+
+
 ## How to Run
 
 To get started with Eduphoria, follow these steps:
@@ -12,6 +31,7 @@ git clone https://github.com/Preetham-jayam/Eduphoria_MERN.git
 ```
 
 2. Open your terminal and navigate to the cloned directory.
+
 
 3. Install Node.js modules for both the client and server:
 ```bash
@@ -24,7 +44,21 @@ cd server
 npm install
 ```
 
-4. Start the development server:
+4. ## Environment Variables
+
+To run this project, you will need to add the following environment variables to your `.env` file:
+
+- `API_KEY`: `<your_api_key>`
+- `ANOTHER_API_KEY`: `<another_api_key>`
+- `ADMIN_EMAIL`: `<admin_email>`
+- `ADMIN_PASSWORD`: `<admin_password>`
+- `MONGODB_URL`: `<mongodb_url>`
+- `CLOUD_NAME`: `<cloud_name>`
+- `API_KEY`: `<api_key>`
+- `API_SECRET`: `<api_secret>`
+- `CLOUDINARY_URL`: `<cloudinary_url>`
+
+5. Start the development server:
 
 ```bash
 cd client
@@ -36,7 +70,7 @@ cd server
 npm start
 ```
 
-5. Access the website at [http://localhost:3000](http://localhost:3000).
+6. Access the website at [http://localhost:3000](http://localhost:3000).
 
 ## Users
 
