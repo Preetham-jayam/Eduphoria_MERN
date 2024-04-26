@@ -11,14 +11,29 @@ Welcome to Eduphoria, an e-learning platform built using the MERN stack. Eduphor
 
 ## Screenshots
 
-![App Screenshot](Screenshots/Home.png)
-![Courses](Screenshots/courses.png)
-![Course](Screenshots/course.png)
-![SHome](Screenshots/SHome.png)
-![Content](Screenshots/Content.png)
-![Quiz](Screenshots/Quiz.png)
-![Teacher Course ](Screenshots/CUpdate.png)
-![Admin](Screenshots/Admin.png)
+1. **Home Page**
+   ![Home Page](Screenshots/Home.png)
+
+2. **Courses Page**
+   ![Courses Page](Screenshots/Courses.png)
+
+3. **Single Course Page**
+   ![Single Course Page](Screenshots/Course.png)
+
+4. **Specialized Home Page**
+   ![Specialized Home Page](Screenshots/SHome.png)
+
+5. **Course Content Page**
+   ![Course Content Page](Screenshots/Content.png)
+
+6. **Quiz Page**
+   ![Quiz Page](Screenshots/Quiz.png)
+
+7. **Teacher Course Update Page**
+   ![Teacher Course Update Page](Screenshots/CUpdate.png)
+
+8. **Admin Dashboard**
+   ![Admin Dashboard](Screenshots/Admin.png)
 
 
 ## How to Run
@@ -48,8 +63,6 @@ npm install
 
 To run this project, you will need to add the following environment variables to your `.env` file:
 
-- `API_KEY`: `<your_api_key>`
-- `ANOTHER_API_KEY`: `<another_api_key>`
 - `ADMIN_EMAIL`: `<admin_email>`
 - `ADMIN_PASSWORD`: `<admin_password>`
 - `MONGODB_URL`: `<mongodb_url>`
