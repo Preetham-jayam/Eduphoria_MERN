@@ -2,6 +2,7 @@ version: "3.8"
 services:
   api-server:
     build: ./server
+    image: preethamjayam/api-server:latest   
     container_name: node-api
     restart: always
     ports:
@@ -24,6 +25,7 @@ services:
 
   frontend:
     build: ./client
+    image: preethamjayam/frontend:latest   
     container_name: react-app
     ports:
       - "3000:3000"
