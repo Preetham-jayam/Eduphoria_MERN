@@ -39,10 +39,15 @@ exports.getCourseById = async (req, res, next) => {
         },
       },
     ]);
+
+    if (!course) {
+      const error = new HttpError('Course not found', 404);
+      throw error;
+    }
     res.status(200).json({ course: course });
   } catch (error) {
-    const err=new HttpError( 'Could not get course data',500);
-    return next(err);
+    
+    return next(error);
   }
 };
 

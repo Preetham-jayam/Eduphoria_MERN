@@ -12,6 +12,7 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
+    "chai": "^5.1.0",
     "cloudinary": "^2.1.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.2",
@@ -32,5 +33,9 @@
     "swagger-ui-express": "^5.0.0",
     "sweetalert": "^2.1.2",
     "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "mocha": "^10.4.0",
+    "supertest": "^7.0.0"
   }
 }

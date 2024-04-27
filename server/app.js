@@ -91,7 +91,9 @@ app.use(
   swaggerui.setup(specs)
 )
 
-
+app.get('/',(req,res)=>{
+  res.send('API is running');
+});
 
 
 app.use((req, res, next) => {
@@ -125,3 +127,5 @@ mongoose
     
   })
   .catch((err) => console.log("MongoDB connection error:", err));
+
+  module.exports = app;
