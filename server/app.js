@@ -62,7 +62,7 @@ const options = {
     info: {
       title: "Eduphoria API",
       version: "1.0.0",
-      description: "This is eduphoria API application made with express and documented with swagger"
+      description: "This is eduphoria API application made with express and documented with swaggerAPI"
     },
     servers: [
       {
