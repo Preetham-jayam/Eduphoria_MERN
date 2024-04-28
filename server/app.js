@@ -69,6 +69,9 @@ const options = {
       {
         url: "http://localhost:8000/",
       },
+      {
+        url: "https://backend-eduphoria.onrender.com/",
+      }
     ],
     components: {
       securitySchemes: {

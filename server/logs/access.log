@@ -200,3 +200,4 @@
 ::1 - - [28/Apr/2024:08:25:04 +0000] "GET /api/user/65a262661383d6a0720c65a1 HTTP/1.1" 200 1841 "http://localhost:3000/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
 ::1 - - [28/Apr/2024:08:39:02 +0000] "GET /api/courses HTTP/1.1" 304 - "http://localhost:3000/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
 ::1 - - [28/Apr/2024:08:39:03 +0000] "GET /api/user/65a262661383d6a0720c65a1 HTTP/1.1" 304 - "http://localhost:3000/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+::1 - - [28/Apr/2024:08:52:03 +0000] "GET /api/user/65a262661383d6a0720c65a1 HTTP/1.1" 304 - "http://localhost:3000/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"

@@ -1,7 +1,7 @@
 let BASE_URL;
 
 if (process.env.NODE_ENV === 'production') {
-    BASE_URL = 'https://eduphoria-mern-backend.onrender.com/';
+    BASE_URL = 'https://backend-eduphoria.onrender.com/';
 } else {
     BASE_URL = 'http://localhost:8000/';
 }
