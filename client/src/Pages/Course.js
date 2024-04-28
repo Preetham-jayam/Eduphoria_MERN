@@ -8,6 +8,18 @@ import GoBackButton from "../shared/components/FrontendTools/GoBack";
 import Loader from "../components/Loader/Loader";
 import { useSelector } from "react-redux";
 
+const useUserData = (userId, loggedIn) => {
+  const { data, isLoading, isError } = useGetUserDetailsQuery(userId);
+  
+  useEffect(() => {
+    if (loggedIn && isError) {
+      console.error("Error fetching user details:", isError);
+    }
+  }, [loggedIn, isError]);
+
+  return { data, isLoading, isError };
+};
+
 const Courses = () => {
   useTitle("Courses Page");
 
@@ -15,7 +27,8 @@ const Courses = () => {
   const [sortValue, setSortValue] = useState("");
   const auth = useSelector((state) => state.auth);
 
-  const { data: userData, isLoading: userLoading, isError: userError } = useGetUserDetailsQuery(auth.userInfo?.userId);
+ // eslint-disable-next-line react-hooks/rules-of-hooks
+  const { data: userData, isLoading: userLoading, isError: userError } = auth.loggedIn ? useUserData(auth.userInfo?.userId, auth.loggedIn):{};
   const user = userData?.user;
 
 

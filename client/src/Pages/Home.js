@@ -15,16 +15,25 @@ import { useGetCoursesQuery } from "../Slices/courseApiSlice";
 import AdminDashboard from "../components/AdminDashboard/AdminDashboard";
 import waiting from '../Assets/waiting.avif';
 import AccountDeletedNotification from "../components/AdminDeletion/AccountDeletion";
+
+const useUserData = (userId, loggedIn) => {
+  const { data, isLoading, isError } = useGetUserDetailsQuery(userId);
+  
+  useEffect(() => {
+    if (loggedIn && isError) {
+      console.error("Error fetching user details:", isError);
+    }
+  }, [loggedIn, isError]);
+
+  return { data, isLoading, isError };
+};
 const Home = () => {
   const [courseData, setCourseData] = useState([]);
   const [userCourses, setUserCourses] = useState([]);
   const auth = useSelector((state) => state.auth);
 
-  const {
-    data: user,
-    isLoading: userLoading,
-    isError: userError,
-  } = useGetUserDetailsQuery(auth.userInfo?.userId);
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const { data: user, isLoading: userLoading, isError: userError } = auth.loggedIn ? useUserData(auth.userInfo?.userId, auth.loggedIn):{};
   const {
     data: courses,
     isLoading: courseLoading,
