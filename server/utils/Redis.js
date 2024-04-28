@@ -7,7 +7,9 @@ const client = redis.createClient({
         port: process.env.REDIS_PORT
     }
 });
-client.connect();
+(async () => {
+    await client.connect();
+})();
 client.on('connect', () => {
     console.log('Redis client connected');
 });
