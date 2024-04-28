@@ -6,17 +6,28 @@ const User = require("../models/user");
 const Review =require('../models/review');
 const Quiz=require('../models/quiz');
 const HttpError = require("../models/http-error");
+const redisClient=require('../utils/Redis');
 
 exports.getAllCourses = async (req, res, next) => {
   try {
-    const courses = await Course.find().populate('teacher');
-    res.status(200).json({courses:courses});
+      const cacheKey = 'all-courses';
+      let courses = await redisClient.get(cacheKey);
+      
+      if (!courses) {
+          courses = await Course.find().populate('teacher');
+          redisClient.set(cacheKey, JSON.stringify(courses));
+          console.log('Courses data set into Redis cache');
+      } else {
+          console.log('Courses data retrieved from Redis cache');
+          courses = JSON.parse(courses);
+      }
+
+      res.status(200).json({ courses: courses });
   } catch (error) {
-    const err=new HttpError( 'Could not get courses data',500);
-    return next(err);
+      const err = new HttpError('Could not get courses data', 500);
+      return next(err);
   }
 };
-
 exports.getCourseById = async (req, res, next) => {
   try {
     const course = await Course.findById(req.params.cid).populate([

@@ -119,7 +119,8 @@ router.post("/login", authController.Login);
  * /api/user/signup:
  *   post:
  *     summary: Signup
- *     tags: [Authentication]
+ *     tags: 
+ *       - Authentication
  *     requestBody:
  *       required: true
  *       content:
@@ -131,6 +132,31 @@ router.post("/login", authController.Login);
  *                 type: string
  *               password:
  *                 type: string
+ *               role:
+ *                 type: integer
+ *                 description: "User role. 0 for student, 1 for teacher."
+ *               firstName:
+ *                 type: string
+ *                 description: "First name of the student (required if role is 0)."
+ *               lastName:
+ *                 type: string
+ *                 description: "Last name of the student (required if role is 0)."
+ *               phoneNo:
+ *                 type: string
+ *                 description: "Phone number of the user (required)."
+ *               address:
+ *                 type: string
+ *                 description: "Address of the student (required if role is 0)."
+ *               dob:
+ *                 type: string
+ *                 format: date
+ *                 description: "Date of birth of the student (required if role is 0)."
+ *               fullName:
+ *                 type: string
+ *                 description: "Full name of the teacher (required if role is 1)."
+ *               instituteName:
+ *                 type: string
+ *                 description: "Name of the institute for the teacher (required if role is 1)."
  *     responses:
  *       200:
  *         description: Signup successful
