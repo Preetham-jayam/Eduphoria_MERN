@@ -80,7 +80,7 @@ const Home = () => {
     );
   }
 
-  if(!user){
+  if(!user && !userLoading){
     return(
       <AccountDeletedNotification/>
     )

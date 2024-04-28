@@ -13,7 +13,7 @@ const CourseList = ({ courses }) => {
     <>
       <div className="course-list">
         {courses.map((course) => (
-          <CourseCard key={course.id} course={course} onReadMoreClick={handleReadMore} enrolled={false}/>
+          <CourseCard key={course._id} course={course} onReadMoreClick={handleReadMore} enrolled={false}/>
         ))}
       </div>
     </>
