@@ -47,7 +47,7 @@ exports.forgotPassword = async (req, res) => {
             <p style="color: #333; margin-bottom: 20px;">
               You have requested to reset your password. Click the link below to reset your password:
             </p>
-            <a href="http://localhost:3000/reset-password/${token}" 
+            <a href="https://frontend-mern-delta.vercel.app/reset-password/${token}" 
               style="display: inline-block; padding: 10px 20px; background-color: #06bbcc; color: #fff; text-decoration: none; border-radius: 5px; margin-bottom: 20px;">
               Reset Password
             </a>
