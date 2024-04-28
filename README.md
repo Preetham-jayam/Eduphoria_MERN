@@ -17,9 +17,9 @@ Welcome to Eduphoria, an e-learning platform built using the MERN stack. Eduphor
 
 ## Deployment Links
 
-- **Frontend:** [https://eduphoria-mern-frontend.vercel.app/](https://eduphoria-mern-frontend.vercel.app/)
-- **Backend:** [https://eduphoria-mern-backend.onrender.com/](https://eduphoria-mern-backend.onrender.com/)
-- **Documentation:** [https://eduphoria-mern-backend.onrender.com/api-docs](https://eduphoria-mern-backend.onrender.com/api-docs)
+- **Frontend:** [https://frontend-mern-delta.vercel.app/](https://frontend-mern-delta.vercel.app/)
+- **Backend:** [https://backend-eduphoria.onrender.com/](https://backend-eduphoria.onrender.com/)
+- **Documentation:** [https://backend-eduphoria.onrender.com/api-docs](https://backend-eduphoria.onrender.com/api-docs)
 
 ## Screenshots
 
