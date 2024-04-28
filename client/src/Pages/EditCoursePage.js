@@ -4,7 +4,7 @@ import EditCourse from "../components/TeacherHomeComponents/EditCourse";
 import { motion } from "framer-motion";
 import GoBackButton from "../shared/components/FrontendTools/GoBack";
 const EditCoursePage = () => {
-  useTitle("Add Course");
+  useTitle("Edit Course");
   return (
     <motion.div
     initial={{ opacity: 0, scale: 0.5 }}

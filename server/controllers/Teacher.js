@@ -6,6 +6,7 @@
   const Quiz=require('../models/quiz');
   const HttpError = require("../models/http-error");
   const cloudinaryconfig = require("../cloudconfig");
+  const redisClient=require('../utils/Redis');
 
   exports.getTeacherById = async (req,res,next)=>{
     const userId=req.user.userId;
@@ -51,6 +52,7 @@
 
       teacherUser.courses.push(courseId);
       await teacherUser.save();
+      await redisClient.del('all-courses');
 
       res.status(201).json(result);
     } catch (error) {
@@ -69,7 +71,13 @@
           upload_preset: "eduphoria",
         }); 
         Imageurl = result.secure_url; 
-      }
+      }  else {
+       
+        const existingCourse = await Course.findById(courseId);
+        if (existingCourse) {
+            Imageurl = existingCourse.Imageurl;
+        }
+    }
   
       const updatedCourse = await Course.findByIdAndUpdate(courseId,{
         title,
@@ -84,6 +92,7 @@
       if(!updatedCourse){
         throw new HttpError('Course Not Found',404);
       }
+      await redisClient.del('all-courses');
 
       res.status(200).json(updatedCourse);
 
@@ -115,6 +124,7 @@
 
       course.chapters.push(newChapter);
       await course.save();
+      await redisClient.del('all-courses');
 
       res.status(201).json(newChapter);
     } catch (error) {
@@ -153,6 +163,7 @@
 
       chapter.lessons.push(newLesson);
       await chapter.save();
+      await redisClient.del('all-courses');
 
       res.status(201).json({lesson:newLesson});
     } catch (error) {
@@ -175,6 +186,7 @@
       if (!chapter) {
         throw new HttpError("Chapter not found",404);
       }
+      await redisClient.del('all-courses');
 
       res.status(200).json(chapter);
     } catch (error) {
@@ -207,6 +219,7 @@
       if (!lesson) {
         throw new HttpError("Lesson not found",404);
       }
+      await redisClient.del('all-courses');
 
       res.status(200).json({ lesson });
     } catch (error) {
@@ -223,6 +236,7 @@
       if (!lesson) {
         throw new HttpError("Lesson not found",404);
       }
+      await redisClient.del('all-courses');
 
       res.status(200).json({ message: 'Lesson deleted successfully' });
     } catch (error) {
@@ -259,6 +273,7 @@
 
         course.quizzes.push(newQuiz._id);
         await course.save();
+        await redisClient.del('all-courses');
 
         res.status(201).json(newQuiz);
       }
@@ -284,6 +299,7 @@
         quiz.questions = questions;
     
         await quiz.save();
+        
     
         res.status(200).json(quiz);
       } catch (error) {

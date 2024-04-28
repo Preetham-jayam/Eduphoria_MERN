@@ -8,6 +8,7 @@ const sendgridTransport = require("nodemailer-sendgrid-transport");
 const Course = require("../models/course");
 const HttpError = require("../models/http-error");
 const cloudinaryconfig = require("../cloudconfig");
+const redisClient=require('../utils/Redis');
 const mailTransporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
@@ -215,6 +216,9 @@ exports.deleteCourse = (req, res) => {
       );
     })
     .then(() => {
+      return redisClient.del('all-courses');
+    })
+    .then(() => {
       console.log(`Course id ${id} deleted from all students`);
       res.status(200).json({ success: true, message: 'Course deleted successfully' });
     })
@@ -257,6 +261,7 @@ exports.AdminAddCourse = async (req, res, next) => {
 
     teacherUser.courses.push(courseId);
     await teacherUser.save();
+    await redisClient.del('all-courses');
 
     res.status(201).json(result);
   } catch (error) {
