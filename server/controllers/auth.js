@@ -143,7 +143,6 @@ exports.getUserProfile = async (req, res, next) => {
     }
 
     res.json({ user: user.toObject({ getters: true }) });
-    console.log(user);
   } catch (err) {
     const error = new HttpError('Something went wrong, could not find a user.', 500);
     return next(error);
@@ -367,7 +366,6 @@ exports.getUsers = async (req, res, next) => {
 
 exports.DeleteUser = (req, res) => {
   const id = req.params.id;
-  console.log(id);
   User.findByIdAndDelete(id).then((user) => {
     if (!user) {
       const error=new HttpError("User not found", 404);

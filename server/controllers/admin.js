@@ -153,7 +153,6 @@ exports.BlockUser = (req, res) => {
 
 exports.DeleteUser = (req, res) => {
   const id = req.params.id;
-  console.log(id);
   User.findByIdAndDelete(id).then((user) => {
     if (!user) {
       throw new HttpError("User not found",404);

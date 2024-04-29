@@ -146,7 +146,6 @@
   exports.addChapter = async (req, res,next) => {
     try {
       const { courseId } = req.params;
-      console.log(courseId);
       const { name, description } = req.body;
     
 
