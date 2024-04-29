@@ -73,7 +73,7 @@ To get started with Eduphoria, follow these steps:
 
 4. **Environment Variables**
 
-   To run this project, you will need to add the following environment variables to your `.env` file those API_KEY and API_SECRET can get from paypal signup:
+   To run this project, you will need to add the following environment variables to your `.env` file those API_KEY and API_SECRET can get from cloundinary signup:
 
    - `ADMIN_EMAIL`: `<admin_email>`
    - `ADMIN_PASSWORD`: `<admin_password>`
