@@ -5,7 +5,6 @@ const getJWTToken = () => {
   const userInfo = JSON.parse(localStorage.getItem('userInfo'));
   return userInfo ? userInfo.token : null;
 };
-console.log(getJWTToken());
 export const adminApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
    

@@ -14,7 +14,26 @@ exports.getAllCourses = async (req, res, next) => {
       let courses = await redisClient.get(cacheKey);
       
       if (!courses) {
-          courses = await Course.find().populate('teacher');
+          courses = await Course.find({}).populate([
+            {
+              path: 'teacher',
+              populate: {
+                path: 'courses',
+                populate: {
+                  path: 'chapters',
+                  populate: {
+                    path: 'lessons',
+                  },
+                },
+              },
+            },
+            {
+              path: 'chapters',
+              populate: {
+                path: 'lessons',
+              },
+            },
+          ]);
           redisClient.set(cacheKey, JSON.stringify(courses));
           console.log('Courses data set into Redis cache');
       } else {
@@ -30,34 +49,45 @@ exports.getAllCourses = async (req, res, next) => {
 };
 exports.getCourseById = async (req, res, next) => {
   try {
-    const course = await Course.findById(req.params.cid).populate([
-      {
-        path: 'teacher',
-        populate: {
-          path: 'courses',
+    const cacheKey = 'all-courses';
+    let courses = await redisClient.get(cacheKey);
+    let course;
+
+    if (!courses) {
+     
+      course = await Course.findById(req.params.cid).populate([
+        {
+          path: 'teacher',
           populate: {
-            path: 'chapters',
+            path: 'courses',
             populate: {
-              path: 'lessons',
+              path: 'chapters',
+              populate: {
+                path: 'lessons',
+              },
             },
           },
         },
-      },
-      {
-        path: 'chapters',
-        populate: {
-          path: 'lessons',
+        {
+          path: 'chapters',
+          populate: {
+            path: 'lessons',
+          },
         },
-      },
-    ]);
+      ]);
+    } else {
+      courses = JSON.parse(courses);
+      course = courses.find(c => c._id.toString() === req.params.cid);
+      console.log('Course Data retrieved from redis cache');
+    }
 
     if (!course) {
       const error = new HttpError('Course not found', 404);
       throw error;
     }
+
     res.status(200).json({ course: course });
   } catch (error) {
-    
     return next(error);
   }
 };

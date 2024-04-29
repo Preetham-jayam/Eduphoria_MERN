@@ -53,6 +53,27 @@
       teacherUser.courses.push(courseId);
       await teacherUser.save();
       await redisClient.del('all-courses');
+      const allCourses = await Course.find({}).populate([
+        {
+          path: 'teacher',
+          populate: {
+            path: 'courses',
+            populate: {
+              path: 'chapters',
+              populate: {
+                path: 'lessons',
+              },
+            },
+          },
+        },
+        {
+          path: 'chapters',
+          populate: {
+            path: 'lessons',
+          },
+        },
+      ]);; 
+      await redisClient.set('all-courses', JSON.stringify(allCourses));
 
       res.status(201).json(result);
     } catch (error) {
@@ -93,6 +114,27 @@
         throw new HttpError('Course Not Found',404);
       }
       await redisClient.del('all-courses');
+      const allCourses = await Course.find({}).populate([
+        {
+          path: 'teacher',
+          populate: {
+            path: 'courses',
+            populate: {
+              path: 'chapters',
+              populate: {
+                path: 'lessons',
+              },
+            },
+          },
+        },
+        {
+          path: 'chapters',
+          populate: {
+            path: 'lessons',
+          },
+        },
+      ]);; 
+      await redisClient.set('all-courses', JSON.stringify(allCourses));
 
       res.status(200).json(updatedCourse);
 
