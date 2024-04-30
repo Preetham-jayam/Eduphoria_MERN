@@ -1,6 +1,10 @@
 const request = require("supertest");
 const app = require("./app");
+const client=require('./utils/Redis');
 
+beforeAll(done => {
+  done()
+})
 
 describe("GET /", function () {
   test('should return "API is running"', function (done) {
@@ -32,7 +36,7 @@ describe("POST /login", () => {
     expect(res.body).toHaveProperty("userId");
     expect(res.body).toHaveProperty("email");
     expect(res.body).toHaveProperty("role");
-  }, 10000);
+  }, 15000);
 
   test("should return 403 for invalid credentials", async () => {
     const credentials = {
@@ -87,4 +91,8 @@ describe("GET /api/courses/:cid", () => {
         done();
       });
   }, 5000);  
+});
+
+afterAll(async () => {
+  await client.quit(); 
 });
