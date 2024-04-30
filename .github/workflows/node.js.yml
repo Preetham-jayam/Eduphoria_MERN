@@ -32,8 +32,8 @@ jobs:
     
     # Install server dependencies
     - name: Install server dependencies
-      run: npm ci --prefix server
+      run: npm ci 
 
     # Run server tests
     - name: Run server tests
-      run: npm test --prefix server
+      run: npm test 
