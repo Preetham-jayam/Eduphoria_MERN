@@ -15,6 +15,7 @@ describe("GET /", function () {
   });
 });
 
+
 describe("POST /login", () => {
   test("should return a token for valid email and password", async () => {
     const credentials = {
@@ -59,6 +60,7 @@ describe("POST /login", () => {
     expect(res.status).toBe(403);
   });
 });
+
 
 describe("GET /api/courses/:cid", () => {
   test("should return course data for valid course ID", (done) => {
